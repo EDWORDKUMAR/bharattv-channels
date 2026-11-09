@@ -29,7 +29,7 @@ jobs:
 
       - name: Run Channel Discovery & Health Check
         run: |
-          python tools/channel_updater.py
+          python channel_updater.py
 
       - name: Commit and Push Updated Channels
         run: |
