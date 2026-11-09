@@ -1,0 +1,44 @@
+name: Auto Update Bharat TV Channels
+
+on:
+  schedule:
+    # 3 Times Daily (IST Schedule):
+    # 1. 00:30 UTC = 06:00 AM IST (Morning Refresh)
+    # 2. 08:30 UTC = 02:00 PM IST (Mid-Day Refresh)
+    # 3. 14:30 UTC = 08:00 PM IST (Prime-Time Peak Refresh)
+    - cron: '30 0 * * *'
+    - cron: '30 8 * * *'
+    - cron: '30 14 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+
+permissions:
+  contents: write
+
+jobs:
+  update-channels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Channel Discovery & Health Check
+        run: |
+          python tools/channel_updater.py
+
+      - name: Commit and Push Updated Channels
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "BharatTV Channel Bot"
+          git add channels.json channels.m3u
+          if git diff --staged --quiet; then
+            echo "No changes in channels. Everything is up to date."
+          else
+            git commit -m "Auto-update verified channels (3x daily) [skip ci]"
+            git push
+          fi
