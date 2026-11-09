@@ -29,7 +29,15 @@ jobs:
 
       - name: Run Channel Discovery & Health Check
         run: |
-          python tools/channel_updater.py
+          if [ -f "tools/channel_updater.py" ]; then
+            python tools/channel_updater.py
+          elif [ -f "channel_updater.py" ]; then
+            python channel_updater.py
+          else
+            echo "Error: channel_updater.py file nahi mili!"
+            ls -la
+            exit 1
+          fi
 
       - name: Commit and Push Updated Channels
         run: |
