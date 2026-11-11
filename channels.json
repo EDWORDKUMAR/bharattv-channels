@@ -1,8 +1,8 @@
 {
   "app": "Bharat TV",
   "version": 1,
-  "updated_at": "2026-11-10T20:58:43Z",
-  "total_channels": 750,
+  "updated_at": "2026-11-11T06:58:23Z",
+  "total_channels": 746,
   "channels": [
     {
       "ch_no": 1,
@@ -816,11 +816,17 @@
       "language": "Hindi",
       "tier": "FTA",
       "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SYMANDTV/images/LOGO_HD/LOGO_HD_image.png",
-      "url": "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
-      "fallback_urls": [],
+      "url": "https://3f56f997.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9BbmRUVl9ITFM/playlist.m3u8",
+      "fallback_urls": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8"
+      ],
       "streams": [
         {
           "name": "Server 1",
+          "url": "https://3f56f997.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9BbmRUVl9ITFM/playlist.m3u8"
+        },
+        {
+          "name": "Server 2",
           "url": "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8"
         }
       ],
@@ -3532,6 +3538,24 @@
     },
     {
       "ch_no": 189,
+      "id": "ch_ddyadagiri",
+      "name": "DD Yadagiri (576p)",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_DD_YADAGIRI/images/LOGO_HD/image.png",
+      "url": "https://fta.ektv.in/live/678/master.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://fta.ektv.in/live/678/master.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 190,
       "id": "ch_desichannel",
       "name": "Desi Channel (720p)",
       "category": "Entertainment",
@@ -3549,7 +3573,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 190,
+      "ch_no": 191,
       "id": "ch_dharmsandesh",
       "name": "Dharm Sandesh (576p)",
       "category": "Entertainment",
@@ -3567,7 +3591,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 191,
+      "ch_no": 192,
       "id": "ch_dheerantv",
       "name": "Dheeran TV (576p)",
       "category": "Entertainment",
@@ -3585,7 +3609,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 192,
+      "ch_no": 193,
       "id": "ch_dhooltv",
       "name": "Dhool TV (576p)",
       "category": "Music",
@@ -3603,7 +3627,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 193,
+      "ch_no": 194,
       "id": "ch_dhoommusic",
       "name": "Dhoom Music (720p)",
       "category": "Music",
@@ -3621,7 +3645,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 194,
+      "ch_no": 195,
       "id": "ch_dishatv",
       "name": "Disha TV (396p)",
       "category": "Entertainment",
@@ -3639,7 +3663,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 195,
+      "ch_no": 196,
       "id": "ch_divyabhajan",
       "name": "Divya Bhajan (1080p)",
       "category": "Entertainment",
@@ -3657,7 +3681,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 196,
+      "ch_no": 197,
       "id": "ch_divyavanitv",
       "name": "Divyavani TV (576p)",
       "category": "Entertainment",
@@ -3675,7 +3699,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 197,
+      "ch_no": 198,
       "id": "ch_dnn",
       "name": "DNN (576p)",
       "category": "News",
@@ -3693,7 +3717,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 198,
+      "ch_no": 199,
       "id": "ch_docubaytv",
       "name": "DocuBay TV (1080p)",
       "category": "Entertainment",
@@ -3711,7 +3735,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 199,
+      "ch_no": 200,
       "id": "ch_dukhnivaran",
       "name": "Dukh Nivaran (720p) [Not 24/7]",
       "category": "Entertainment",
@@ -3729,7 +3753,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 200,
+      "ch_no": 201,
       "id": "ch_dukhnivaranpatialalive",
       "name": "Dukhnivaran Patiala Live (720p)",
       "category": "Entertainment",
@@ -3747,7 +3771,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 201,
+      "ch_no": 202,
       "id": "ch_dy365",
       "name": "DY 365 (360p)",
       "category": "News",
@@ -3765,7 +3789,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 202,
+      "ch_no": 203,
       "id": "ch_e24",
       "name": "E 24 (576p)",
       "category": "Entertainment",
@@ -3783,7 +3807,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 203,
+      "ch_no": 204,
       "id": "ch_ekamrabharatodia",
       "name": "Ekamra Bharat Odia (400p)",
       "category": "News",
@@ -3801,7 +3825,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 204,
+      "ch_no": 205,
       "id": "ch_enterr10bangla",
       "name": "Enterr 10 Bangla (720p)",
       "category": "Entertainment",
@@ -3819,7 +3843,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 205,
+      "ch_no": 206,
       "id": "ch_epicbharat",
       "name": "Epic Bharat (576p)",
       "category": "Entertainment",
@@ -3837,7 +3861,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 206,
+      "ch_no": 207,
       "id": "ch_epicbharatdigital",
       "name": "Epic Bharat Digital (1080p)",
       "category": "Entertainment",
@@ -3855,7 +3879,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 207,
+      "ch_no": 208,
       "id": "ch_epicbhojpuri",
       "name": "Epic Bhojpuri (576p)",
       "category": "Movies",
@@ -3873,7 +3897,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 208,
+      "ch_no": 209,
       "id": "ch_epicbhojpuridigital",
       "name": "Epic Bhojpuri Digital (1080p)",
       "category": "Movies",
@@ -3891,7 +3915,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 209,
+      "ch_no": 210,
       "id": "ch_epiccrimes",
       "name": "Epic Crimes (1080p)",
       "category": "Entertainment",
@@ -3909,7 +3933,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 210,
+      "ch_no": 211,
       "id": "ch_epickidsdigital",
       "name": "Epic Kids Digital (1080p)",
       "category": "Kids",
@@ -3927,7 +3951,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 211,
+      "ch_no": 212,
       "id": "ch_epicmusic",
       "name": "Epic Music (576p)",
       "category": "Music",
@@ -3945,7 +3969,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 212,
+      "ch_no": 213,
       "id": "ch_epicmusicdigital",
       "name": "Epic Music Digital (1080p)",
       "category": "Music",
@@ -3963,7 +3987,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 213,
+      "ch_no": 214,
       "id": "ch_epictv",
       "name": "Epic TV (1080p)",
       "category": "Entertainment",
@@ -3981,7 +4005,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 214,
+      "ch_no": 215,
       "id": "ch_epictvdigital",
       "name": "Epic TV Digital (1080p)",
       "category": "Entertainment",
@@ -3999,7 +4023,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 215,
+      "ch_no": 216,
       "id": "ch_etvbeats",
       "name": "ETV Beats (1080p)",
       "category": "Music",
@@ -4017,7 +4041,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 216,
+      "ch_no": 217,
       "id": "ch_etvcinema",
       "name": "ETV Cinema (396p)",
       "category": "Movies",
@@ -4035,7 +4059,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 217,
+      "ch_no": 218,
       "id": "ch_etvcomedy",
       "name": "ETV Comedy (1080p)",
       "category": "Entertainment",
@@ -4053,7 +4077,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 218,
+      "ch_no": 219,
       "id": "ch_etvjosh",
       "name": "ETV Josh (1080p)",
       "category": "Entertainment",
@@ -4071,7 +4095,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 219,
+      "ch_no": 220,
       "id": "ch_etvnews",
       "name": "ETV News (1080p)",
       "category": "News",
@@ -4089,7 +4113,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 220,
+      "ch_no": 221,
       "id": "ch_etvplus",
       "name": "ETV Plus (396p)",
       "category": "Entertainment",
@@ -4107,7 +4131,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 221,
+      "ch_no": 222,
       "id": "ch_eurosporthd",
       "name": "Eurosport (India) HD (1080p)",
       "category": "Sports",
@@ -4125,7 +4149,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 222,
+      "ch_no": 223,
       "id": "ch_fast1",
       "name": "Fast1 (576p)",
       "category": "Entertainment",
@@ -4143,7 +4167,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 223,
+      "ch_no": 224,
       "id": "ch_fatehtv",
       "name": "Fateh TV (576p)",
       "category": "Entertainment",
@@ -4167,7 +4191,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 224,
+      "ch_no": 225,
       "id": "ch_fgnchannel",
       "name": "FGN Channel (360p)",
       "category": "Entertainment",
@@ -4185,7 +4209,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 225,
+      "ch_no": 226,
       "id": "ch_firstindianews",
       "name": "First India News (576p)",
       "category": "News",
@@ -4209,7 +4233,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 226,
+      "ch_no": 227,
       "id": "ch_foodfood",
       "name": "Food Food (576p)",
       "category": "Entertainment",
@@ -4227,7 +4251,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 227,
+      "ch_no": 228,
       "id": "ch_friendstv",
       "name": "Friends TV (1080p)",
       "category": "Entertainment",
@@ -4245,7 +4269,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 228,
+      "ch_no": 229,
+      "id": "ch_gangaurtv",
+      "name": "Gangaur TV (1080p)",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Gangaur.png",
+      "url": "https://pbgangaur.wiseplayout.com/Gangaur/master.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://pbgangaur.wiseplayout.com/Gangaur/master.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 230,
       "id": "ch_gaundapunjabtv",
       "name": "Gaunda Punjab TV (720p)",
       "category": "Entertainment",
@@ -4263,7 +4305,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 229,
+      "ch_no": 231,
       "id": "ch_globalindia",
       "name": "Global India (720p)",
       "category": "News",
@@ -4281,7 +4323,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 230,
+      "ch_no": 232,
       "id": "ch_globalpunjab",
       "name": "Global Punjab (1080p)",
       "category": "News",
@@ -4299,7 +4341,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 231,
+      "ch_no": 233,
       "id": "ch_globetv",
       "name": "Globe TV (720p)",
       "category": "News",
@@ -4317,7 +4359,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 232,
+      "ch_no": 234,
       "id": "ch_godstandstvhindi",
       "name": "God Stands TV Hindi",
       "category": "Entertainment",
@@ -4335,7 +4377,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 233,
+      "ch_no": 235,
       "id": "ch_goodnesstv",
       "name": "Goodness TV (576p)",
       "category": "Entertainment",
@@ -4353,7 +4395,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 234,
+      "ch_no": 236,
       "id": "ch_goodnewstv",
       "name": "GoodNews TV (720p)",
       "category": "News",
@@ -4371,7 +4413,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 235,
+      "ch_no": 237,
       "id": "ch_gracetv",
       "name": "Grace TV (360p)",
       "category": "Entertainment",
@@ -4389,7 +4431,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 236,
+      "ch_no": 238,
       "id": "ch_greengoldtv",
       "name": "Green Gold TV (1080p)",
       "category": "Kids",
@@ -4407,7 +4449,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 237,
+      "ch_no": 239,
       "id": "ch_gstv",
       "name": "GS TV (576p)",
       "category": "News",
@@ -4431,7 +4473,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 238,
+      "ch_no": 240,
       "id": "ch_gtcnews",
       "name": "GTC News (1080p)",
       "category": "News",
@@ -4449,7 +4491,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 239,
+      "ch_no": 241,
       "id": "ch_guaranteenews",
       "name": "Guarantee News (1080p)",
       "category": "News",
@@ -4467,7 +4509,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 240,
+      "ch_no": 242,
       "id": "ch_gujaratfirst",
       "name": "Gujarat First (576p)",
       "category": "News",
@@ -4485,31 +4527,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 241,
+      "ch_no": 243,
       "id": "ch_gulistannews",
       "name": "Gulistan News (576p)",
       "category": "News",
       "language": "Hindi",
       "tier": "FTA",
       "logo_url": "https://dtil.tmsimg.com/assets/s143097_ld_h15_aa.png?lock=720x540",
-      "url": "https://fta.ektv.in/live/427/master.m3u8",
-      "fallback_urls": [
-        "https://live.gulistannews.in/hls/gul.m3u8"
-      ],
+      "url": "https://live.gulistannews.in/hls/gul.m3u8",
+      "fallback_urls": [],
       "streams": [
         {
           "name": "Server 1",
-          "url": "https://fta.ektv.in/live/427/master.m3u8"
-        },
-        {
-          "name": "Server 2",
           "url": "https://live.gulistannews.in/hls/gul.m3u8"
         }
       ],
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 242,
+      "ch_no": 244,
       "id": "ch_gursikhsabhatv",
       "name": "GurSikh Sabha TV (720p) [Not 24/7]",
       "category": "Entertainment",
@@ -4527,7 +4563,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 243,
+      "ch_no": 245,
       "id": "ch_gyandarshan",
       "name": "Gyandarshan (720p)",
       "category": "Education",
@@ -4545,7 +4581,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 244,
+      "ch_no": 246,
       "id": "ch_gyandarshanhd",
       "name": "Gyandarshan HD (576p)",
       "category": "Education",
@@ -4563,7 +4599,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 245,
+      "ch_no": 247,
       "id": "ch_hamdardtv",
       "name": "Hamdard TV (1080p)",
       "category": "News",
@@ -4581,7 +4617,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 246,
+      "ch_no": 248,
       "id": "ch_harekrsnatv",
       "name": "Hare Krsna TV (1080p)",
       "category": "Entertainment",
@@ -4599,7 +4635,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 247,
+      "ch_no": 249,
+      "id": "ch_harvesttvkeralam",
+      "name": "Harvest TV Keralam (720p)",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://i.imgur.com/1DyPuIt.png",
+      "url": "https://7mbd4ogkr3gx-hls-live.wmncdn.net/harvestenglish/d1796a22d24e8696c7d5d0b5c349fdd2.sdp/index.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://7mbd4ogkr3gx-hls-live.wmncdn.net/harvestenglish/d1796a22d24e8696c7d5d0b5c349fdd2.sdp/index.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 250,
       "id": "ch_headlinestripura",
       "name": "Headlines Tripura (720p)",
       "category": "News",
@@ -4617,7 +4671,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 248,
+      "ch_no": 251,
       "id": "ch_hebrontv",
       "name": "Hebron TV (1080p)",
       "category": "Entertainment",
@@ -4635,7 +4689,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 249,
+      "ch_no": 252,
       "id": "ch_hidost",
       "name": "Hi Dost! (720p)",
       "category": "Entertainment",
@@ -4653,7 +4707,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 250,
+      "ch_no": 253,
       "id": "ch_highnews",
       "name": "High News (480p)",
       "category": "News",
@@ -4671,13 +4725,13 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 251,
+      "ch_no": 254,
       "id": "ch_hindihits",
       "name": "Hindi Hits (1080p)",
       "category": "Music",
       "language": "Hindi",
       "tier": "FTA",
-      "logo_url": "https://i.postimg.cc/ryC1Y2K4/Capture.png",
+      "logo_url": "https://i.ibb.co/SwWjbPSv/hindi-hits-hd.png",
       "url": "http://146.59.253.52:8080/hindihitshd/index.m3u8",
       "fallback_urls": [],
       "streams": [
@@ -4689,7 +4743,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 252,
+      "ch_no": 255,
       "id": "ch_hindikhabar",
       "name": "Hindi Khabar (1080p)",
       "category": "News",
@@ -4707,7 +4761,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 253,
+      "ch_no": 256,
       "id": "ch_historytv18hd",
       "name": "History TV18 HD (1080p) [Geo-blocked]",
       "category": "Education",
@@ -4725,7 +4779,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 254,
+      "ch_no": 257,
       "id": "ch_hnn24x7",
       "name": "HNN 24x7 (576p)",
       "category": "News",
@@ -4749,7 +4803,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 255,
+      "ch_no": 258,
       "id": "ch_hopechannelindia",
       "name": "Hope Channel India (576p)",
       "category": "Entertainment",
@@ -4767,7 +4821,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 256,
+      "ch_no": 259,
       "id": "ch_hornbilltv",
       "name": "Hornbill TV (576p)",
       "category": "News",
@@ -4785,7 +4839,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 257,
+      "ch_no": 260,
       "id": "ch_hosannatv",
       "name": "Hosanna TV (720p)",
       "category": "Entertainment",
@@ -4803,7 +4857,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 258,
+      "ch_no": 261,
       "id": "ch_hosannatvglobal",
       "name": "Hosanna TV Global",
       "category": "Entertainment",
@@ -4821,7 +4875,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 259,
+      "ch_no": 262,
       "id": "ch_hstv",
       "name": "HSTV (720p)",
       "category": "Entertainment",
@@ -4839,7 +4893,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 260,
+      "ch_no": 263,
       "id": "ch_hydertv",
       "name": "Hyder TV (720p)",
       "category": "Entertainment",
@@ -4857,7 +4911,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 261,
+      "ch_no": 264,
       "id": "ch_ibc24",
       "name": "IBC 24 (1080p)",
       "category": "News",
@@ -4881,7 +4935,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 262,
+      "ch_no": 265,
       "id": "ch_ind24",
       "name": "Ind 24 (720p)",
       "category": "News",
@@ -4899,7 +4953,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 263,
+      "ch_no": 266,
       "id": "ch_indiaahead",
       "name": "India Ahead (576p)",
       "category": "News",
@@ -4917,7 +4971,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 264,
+      "ch_no": 267,
       "id": "ch_indiadailylive",
       "name": "India Daily Live (1080p)",
       "category": "News",
@@ -4935,133 +4989,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 265,
-      "id": "ch_indianews",
-      "name": "India News (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://dtil.tmsimg.com/assets/s143190_ld_h15_aa.png?lock=720x540",
-      "url": "https://fta.ektv.in/live/297/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/297/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 266,
-      "id": "ch_indianewsgujarati",
-      "name": "India News Gujarati (576p)",
-      "category": "News",
-      "language": "Gujarati",
-      "tier": "FTA",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/India_News_Gujarat.png",
-      "url": "https://fta.ektv.in/live/653/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/653/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 267,
-      "id": "ch_indianewsharyana",
-      "name": "India News Haryana (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://dtil.tmsimg.com/assets/s143192_ld_h15_aa.png?lock=720x540",
-      "url": "https://fta.ektv.in/live/590/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/590/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
       "ch_no": 268,
-      "id": "ch_indianewsmadhyapradeshchhattisgarh",
-      "name": "India News Madhya Pradesh/Chhattisgarh (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/India_News_MP.png",
-      "url": "https://fta.ektv.in/live/600/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/600/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 269,
-      "id": "ch_indianewspunjabhimachal",
-      "name": "India News Punjab/Himachal (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://i.imgur.com/Mu1MPvt.png",
-      "url": "https://fta.ektv.in/live/642/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/642/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 270,
-      "id": "ch_indianewsrajasthan",
-      "name": "India News Rajasthan (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/India_News_Rajasthan.png",
-      "url": "https://fta.ektv.in/live/601/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/601/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 271,
-      "id": "ch_indianewsuttarpradesh",
-      "name": "India News Uttar Pradesh (576p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/India_News_UP.png",
-      "url": "https://fta.ektv.in/live/304/master.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://fta.ektv.in/live/304/master.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 272,
       "id": "ch_indiatalkies",
       "name": "India Talkies (360p)",
       "category": "Movies",
@@ -5079,7 +5007,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 273,
+      "ch_no": 269,
       "id": "ch_indiatoday",
       "name": "India Today (720p)",
       "category": "News",
@@ -5097,7 +5025,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 274,
+      "ch_no": 270,
       "id": "ch_indiavoice",
       "name": "India Voice (576p)",
       "category": "News",
@@ -5115,7 +5043,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 275,
+      "ch_no": 271,
       "id": "ch_indywoodtv",
       "name": "Indywood TV (720p)",
       "category": "Movies",
@@ -5133,7 +5061,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 276,
+      "ch_no": 272,
       "id": "ch_inews",
       "name": "INews (720p)",
       "category": "News",
@@ -5151,7 +5079,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 277,
+      "ch_no": 273,
       "id": "ch_infast",
       "name": "INFAST (1080p)",
       "category": "Entertainment",
@@ -5169,7 +5097,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 278,
+      "ch_no": 274,
       "id": "ch_inh24x7",
       "name": "INH 24x7 (576p)",
       "category": "News",
@@ -5193,7 +5121,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 279,
+      "ch_no": 275,
       "id": "ch_insync",
       "name": "Insync (576p)",
       "category": "Music",
@@ -5211,7 +5139,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 280,
+      "ch_no": 276,
       "id": "ch_inwild",
       "name": "INWILD (1080p)",
       "category": "Entertainment",
@@ -5229,7 +5157,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 281,
+      "ch_no": 277,
       "id": "ch_inwonder",
       "name": "InWonder (1080p)",
       "category": "Education",
@@ -5247,7 +5175,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 282,
+      "ch_no": 278,
       "id": "ch_isaiaruvi",
       "name": "Isai Aruvi (396p)",
       "category": "Music",
@@ -5265,7 +5193,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 283,
+      "ch_no": 279,
       "id": "ch_ishwarbhaktitv",
       "name": "Ishwar Bhakti TV (720p)",
       "category": "Devotional",
@@ -5283,7 +5211,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 284,
+      "ch_no": 280,
       "id": "ch_jaimaharashtra",
       "name": "Jai Maharashtra (576p)",
       "category": "News",
@@ -5301,7 +5229,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 285,
+      "ch_no": 281,
       "id": "ch_jaihindtv",
       "name": "Jaihind TV (576p)",
       "category": "Entertainment",
@@ -5319,7 +5247,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 286,
+      "ch_no": 282,
       "id": "ch_jalshamovies",
       "name": "Jalsha Movies (1080p)",
       "category": "Movies",
@@ -5337,7 +5265,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 287,
+      "ch_no": 283,
       "id": "ch_jantv",
       "name": "Jan TV (576p)",
       "category": "Entertainment",
@@ -5355,7 +5283,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 288,
+      "ch_no": 284,
       "id": "ch_jantatv",
       "name": "Janta TV (1080p)",
       "category": "News",
@@ -5373,7 +5301,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 289,
+      "ch_no": 285,
       "id": "ch_jantantratv",
       "name": "Jantantra TV (576p)",
       "category": "News",
@@ -5391,7 +5319,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 290,
+      "ch_no": 286,
       "id": "ch_jeevantv",
       "name": "Jeevan TV (576p)",
       "category": "Entertainment",
@@ -5409,7 +5337,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 291,
+      "ch_no": 287,
       "id": "ch_jinvanichannel",
       "name": "Jinvani Channel (720p)",
       "category": "Entertainment",
@@ -5427,7 +5355,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 292,
+      "ch_no": 288,
       "id": "ch_jk24x7news",
       "name": "JK 24x7 News (720p)",
       "category": "News",
@@ -5445,7 +5373,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 293,
+      "ch_no": 289,
       "id": "ch_jonack",
       "name": "Jonack (576p)",
       "category": "Entertainment",
@@ -5463,7 +5391,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 294,
+      "ch_no": 290,
       "id": "ch_joytv",
       "name": "Joy TV (1080p)",
       "category": "Entertainment",
@@ -5481,7 +5409,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 295,
+      "ch_no": 291,
       "id": "ch_jtbsclassic",
       "name": "JTBS Classic",
       "category": "Entertainment",
@@ -5499,25 +5427,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 296,
-      "id": "ch_kabaddi24x7",
-      "name": "Kabaddi 24x7 (720p)",
-      "category": "Sports",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://papaji.freetvindia.com/media/kabaddi_24x7.png",
-      "url": "https://samitaorigin.tangotv.in/KABADDI24X7/SAMITAORIGIN/index.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://samitaorigin.tangotv.in/KABADDI24X7/SAMITAORIGIN/index.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 297,
+      "ch_no": 292,
       "id": "ch_kadak",
       "name": "Kadak (1080p)",
       "category": "News",
@@ -5535,7 +5445,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 298,
+      "ch_no": 293,
       "id": "ch_kairalinews",
       "name": "Kairali News (720p)",
       "category": "News",
@@ -5553,7 +5463,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 299,
+      "ch_no": 294,
       "id": "ch_kairalitv",
       "name": "Kairali TV (576p)",
       "category": "Entertainment",
@@ -5571,7 +5481,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 300,
+      "ch_no": 295,
       "id": "ch_kairaliwe",
       "name": "Kairali We (576p)",
       "category": "Movies",
@@ -5595,7 +5505,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 301,
+      "ch_no": 296,
       "id": "ch_kalaignarmurasu",
       "name": "Kalaignar Murasu (396p)",
       "category": "Entertainment",
@@ -5613,7 +5523,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 302,
+      "ch_no": 297,
       "id": "ch_kalaignarseithigal",
       "name": "Kalaignar Seithigal (576p)",
       "category": "News",
@@ -5631,7 +5541,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 303,
+      "ch_no": 298,
       "id": "ch_kalaignartv",
       "name": "Kalaignar TV (396p)",
       "category": "Entertainment",
@@ -5649,7 +5559,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 304,
+      "ch_no": 299,
       "id": "ch_kalikatv",
       "name": "Kalika TV (576p)",
       "category": "Music",
@@ -5667,7 +5577,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 305,
+      "ch_no": 300,
       "id": "ch_kalingatv",
       "name": "Kalinga TV (720p)",
       "category": "News",
@@ -5685,7 +5595,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 306,
+      "ch_no": 301,
       "id": "ch_kanaknews",
       "name": "Kanak News (576p)",
       "category": "News",
@@ -5703,25 +5613,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 307,
-      "id": "ch_kanshitv",
-      "name": "Kanshi TV (720p) [Not 24/7]",
-      "category": "Entertainment",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://i.imgur.com/w6uXMrK.png",
-      "url": "https://live.kanshitv.co.uk/mobile/kanshitvkey.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://live.kanshitv.co.uk/mobile/kanshitvkey.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 308,
+      "ch_no": 302,
       "id": "ch_kappatv",
       "name": "Kappa TV (576p)",
       "category": "Entertainment",
@@ -5739,7 +5631,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 309,
+      "ch_no": 303,
       "id": "ch_kashishnews",
       "name": "Kashish News (720p)",
       "category": "News",
@@ -5757,7 +5649,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 310,
+      "ch_no": 304,
       "id": "ch_kaumudytv",
       "name": "Kaumudy TV (720p)",
       "category": "Entertainment",
@@ -5775,7 +5667,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 311,
+      "ch_no": 305,
       "id": "ch_kbcnews",
       "name": "KBC News (1080p)",
       "category": "News",
@@ -5793,7 +5685,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 312,
+      "ch_no": 306,
       "id": "ch_kbptimes",
       "name": "KBP Times (1080p)",
       "category": "News",
@@ -5811,7 +5703,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 313,
+      "ch_no": 307,
       "id": "ch_kcltv",
       "name": "KCL TV (720p)",
       "category": "Entertainment",
@@ -5829,7 +5721,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 314,
+      "ch_no": 308,
       "id": "ch_kcmindia",
       "name": "KCM India (1080p) [Geo-blocked]",
       "category": "Movies",
@@ -5847,7 +5739,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 315,
+      "ch_no": 309,
       "id": "ch_keralavision",
       "name": "Kerala Vision (576p)",
       "category": "Entertainment",
@@ -5865,7 +5757,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 316,
+      "ch_no": 310,
       "id": "ch_khabarfast",
       "name": "Khabar Fast (576p)",
       "category": "News",
@@ -5883,7 +5775,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 317,
+      "ch_no": 311,
       "id": "ch_khabrainabhitak",
       "name": "Khabrain Abhi Tak (576p)",
       "category": "News",
@@ -5901,7 +5793,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 318,
+      "ch_no": 312,
       "id": "ch_khushboobangla",
       "name": "Khushboo Bangla (720p)",
       "category": "Entertainment",
@@ -5919,7 +5811,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 319,
+      "ch_no": 313,
       "id": "ch_kitevicters",
       "name": "Kite Victers (720p) [Not 24/7]",
       "category": "Education",
@@ -5937,7 +5829,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 320,
+      "ch_no": 314,
       "id": "ch_knockbhakti",
       "name": "Knock Bhakti (1080p)",
       "category": "Devotional",
@@ -5955,7 +5847,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 321,
+      "ch_no": 315,
       "id": "ch_kolkatatv",
       "name": "Kolkata TV (1080p)",
       "category": "News",
@@ -5973,7 +5865,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 322,
+      "ch_no": 316,
       "id": "ch_ktvbangla",
       "name": "KTV Bangla (720p)",
       "category": "Entertainment",
@@ -5991,7 +5883,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 323,
+      "ch_no": 317,
       "id": "ch_lifetv",
       "name": "Life TV (India) (720p)",
       "category": "Entertainment",
@@ -6009,7 +5901,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 324,
+      "ch_no": 318,
       "id": "ch_lightinglivesblessingnationstvsouthasia",
       "name": "Lighting Lives Blessing Nations TV South Asia (LLBN) (480p)",
       "category": "Entertainment",
@@ -6027,7 +5919,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 325,
+      "ch_no": 319,
       "id": "ch_livetimes",
       "name": "Live Times (720p)",
       "category": "News",
@@ -6045,7 +5937,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 326,
+      "ch_no": 320,
       "id": "ch_livingindianews",
       "name": "Living India News (1080p)",
       "category": "News",
@@ -6063,7 +5955,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 327,
+      "ch_no": 321,
       "id": "ch_llbntvsouthasia",
       "name": "LLBN TV South Asia (480p)",
       "category": "Entertainment",
@@ -6081,7 +5973,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 328,
+      "ch_no": 322,
       "id": "ch_lokshahinews",
       "name": "Lokshahi News (576p)",
       "category": "News",
@@ -6099,7 +5991,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 329,
+      "ch_no": 323,
       "id": "ch_mnadutv",
       "name": "M Nadu TV (576p)",
       "category": "News",
@@ -6117,7 +6009,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 330,
+      "ch_no": 324,
       "id": "ch_madhatv",
       "name": "Madha TV (576p)",
       "category": "Entertainment",
@@ -6135,7 +6027,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 331,
+      "ch_no": 325,
       "id": "ch_madhimugamtv",
       "name": "Madhimugam TV (576p)",
       "category": "News",
@@ -6159,7 +6051,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 332,
+      "ch_no": 326,
       "id": "ch_mahamovie",
       "name": "Maha Movie (576p)",
       "category": "Movies",
@@ -6177,7 +6069,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 333,
+      "ch_no": 327,
       "id": "ch_mahaabhakti",
       "name": "Mahaa Bhakti (1080p)",
       "category": "Devotional",
@@ -6195,7 +6087,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 334,
+      "ch_no": 328,
       "id": "ch_mahaamax",
       "name": "Mahaa Max (1080p)",
       "category": "Entertainment",
@@ -6213,7 +6105,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 335,
+      "ch_no": 329,
       "id": "ch_mahaanews",
       "name": "Mahaa News (1080p)",
       "category": "News",
@@ -6231,7 +6123,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 336,
+      "ch_no": 330,
       "id": "ch_mahotsavtv",
       "name": "Mahotsav TV (576p)",
       "category": "Entertainment",
@@ -6249,7 +6141,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 337,
+      "ch_no": 331,
       "id": "ch_mahuakhabar",
       "name": "Mahua Khabar (1080p)",
       "category": "News",
@@ -6267,7 +6159,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 338,
+      "ch_no": 332,
       "id": "ch_mahuaplay",
       "name": "Mahua Play (1080p)",
       "category": "Movies",
@@ -6285,7 +6177,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 339,
+      "ch_no": 333,
       "id": "ch_makkaltv",
       "name": "Makkal TV (576i)",
       "category": "Entertainment",
@@ -6309,7 +6201,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 340,
+      "ch_no": 334,
       "id": "ch_malaimurasutv",
       "name": "Malai Murasu TV (576p)",
       "category": "News",
@@ -6327,7 +6219,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 341,
+      "ch_no": 335,
       "id": "ch_mangalmaytv",
       "name": "Mangalmay TV (576p)",
       "category": "Entertainment",
@@ -6345,7 +6237,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 342,
+      "ch_no": 336,
       "id": "ch_mango",
       "name": "Mango (India) (576p)",
       "category": "Entertainment",
@@ -6363,7 +6255,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 343,
+      "ch_no": 337,
       "id": "ch_mangomobiletv",
       "name": "Mango Mobile TV (1080p)",
       "category": "Entertainment",
@@ -6381,7 +6273,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 344,
+      "ch_no": 338,
       "id": "ch_manoramanews",
       "name": "Manorama News (1080p)",
       "category": "News",
@@ -6399,7 +6291,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 345,
+      "ch_no": 339,
       "id": "ch_manoranjangrand",
       "name": "Manoranjan Grand (720p)",
       "category": "Movies",
@@ -6417,7 +6309,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 346,
+      "ch_no": 340,
       "id": "ch_manoranjanmovies",
       "name": "Manoranjan Movies (576p)",
       "category": "Movies",
@@ -6435,7 +6327,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 347,
+      "ch_no": 341,
       "id": "ch_manoranjanprime",
       "name": "Manoranjan Prime (576p)",
       "category": "Entertainment",
@@ -6453,7 +6345,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 348,
+      "ch_no": 342,
       "id": "ch_manoranjantv",
       "name": "Manoranjan TV (720p)",
       "category": "Entertainment",
@@ -6471,7 +6363,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 349,
+      "ch_no": 343,
       "id": "ch_mantavyanews",
       "name": "Mantavya News (576p)",
       "category": "News",
@@ -6489,7 +6381,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 350,
+      "ch_no": 344,
       "id": "ch_marutamtv",
       "name": "Marutam TV (1080p)",
       "category": "Entertainment",
@@ -6507,7 +6399,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 351,
+      "ch_no": 345,
       "id": "ch_mastiii",
       "name": "Mastiii (576p)",
       "category": "Music",
@@ -6525,7 +6417,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 352,
+      "ch_no": 346,
       "id": "ch_mathrubhuminews",
       "name": "Mathrubhumi News (576p)",
       "category": "News",
@@ -6543,7 +6435,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 353,
+      "ch_no": 347,
       "id": "ch_mazhavilmanorama",
       "name": "Mazhavil Manorama (576p)",
       "category": "Entertainment",
@@ -6561,7 +6453,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 354,
+      "ch_no": 348,
       "id": "ch_mazhavilmanoramahd",
       "name": "Mazhavil Manorama HD (1080p)",
       "category": "Entertainment",
@@ -6579,7 +6471,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 355,
+      "ch_no": 349,
       "id": "ch_mbcbollywood",
       "name": "MBC Bollywood (1080p) [Geo-blocked]",
       "category": "Movies",
@@ -6597,7 +6489,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 356,
+      "ch_no": 350,
       "id": "ch_mbctv",
       "name": "MBC TV (576p)",
       "category": "Entertainment",
@@ -6615,7 +6507,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 357,
+      "ch_no": 351,
       "id": "ch_mediaone",
       "name": "Media One (720p)",
       "category": "News",
@@ -6633,7 +6525,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 358,
+      "ch_no": 352,
       "id": "ch_medibiztv",
       "name": "MediBizTV (720p)",
       "category": "News",
@@ -6651,7 +6543,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 359,
+      "ch_no": 353,
       "id": "ch_meialaitv",
       "name": "Mei Alai TV (576p)",
       "category": "Entertainment",
@@ -6669,7 +6561,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 360,
+      "ch_no": 354,
       "id": "ch_mercytv",
       "name": "Mercy TV (India) (1080p)",
       "category": "Entertainment",
@@ -6687,7 +6579,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 361,
+      "ch_no": 355,
       "id": "ch_metrotv",
       "name": "Metro TV (India) (1080p)",
       "category": "Entertainment",
@@ -6705,7 +6597,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 362,
+      "ch_no": 356,
       "id": "ch_mh1music",
       "name": "Mh 1 Music (720p)",
       "category": "Music",
@@ -6723,7 +6615,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 363,
+      "ch_no": 357,
       "id": "ch_mh1news",
       "name": "Mh 1 News (576p)",
       "category": "News",
@@ -6741,7 +6633,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 364,
+      "ch_no": 358,
       "id": "ch_mh1prime",
       "name": "Mh 1 Prime (576p)",
       "category": "Entertainment",
@@ -6759,7 +6651,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 365,
+      "ch_no": 359,
       "id": "ch_mhone",
       "name": "MH One (576p)",
       "category": "Entertainment",
@@ -6777,7 +6669,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 366,
+      "ch_no": 360,
       "id": "ch_mhonedilse",
       "name": "MH One Dil Se (576p)",
       "category": "Entertainment",
@@ -6795,7 +6687,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 367,
+      "ch_no": 361,
       "id": "ch_mhonemovies",
       "name": "MH One Movies (576p)",
       "category": "Movies",
@@ -6813,7 +6705,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 368,
+      "ch_no": 362,
       "id": "ch_mhoneshraddha",
       "name": "MH One Shraddha (576p)",
       "category": "Entertainment",
@@ -6831,7 +6723,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 369,
+      "ch_no": 363,
       "id": "ch_mirrornow",
       "name": "Mirror Now (720p)",
       "category": "News",
@@ -6849,7 +6741,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 370,
+      "ch_no": 364,
       "id": "ch_mksix",
       "name": "MK Six (576p)",
       "category": "Entertainment",
@@ -6867,7 +6759,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 371,
+      "ch_no": 365,
       "id": "ch_mojotv",
       "name": "Mojo TV (576p)",
       "category": "News",
@@ -6885,7 +6777,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 372,
+      "ch_no": 366,
       "id": "ch_moontv",
       "name": "Moon TV (576p)",
       "category": "News",
@@ -6903,7 +6795,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 373,
+      "ch_no": 367,
       "id": "ch_moviepunjab",
       "name": "Movie Punjab (720p)",
       "category": "Movies",
@@ -6921,7 +6813,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 374,
+      "ch_no": 368,
       "id": "ch_mrbeananimated",
       "name": "Mr Bean Animated (1080p)",
       "category": "Kids",
@@ -6939,7 +6831,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 375,
+      "ch_no": 369,
       "id": "ch_mta2europe",
       "name": "MTA2 Europe (720p)",
       "category": "Entertainment",
@@ -6957,7 +6849,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 376,
+      "ch_no": 370,
       "id": "ch_mta7asia",
       "name": "MTA7 Asia (1080p)",
       "category": "Entertainment",
@@ -6975,7 +6867,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 377,
+      "ch_no": 371,
       "id": "ch_munsiftv",
       "name": "Munsif TV (576p)",
       "category": "News",
@@ -6993,7 +6885,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 378,
+      "ch_no": 372,
       "id": "ch_musicindia",
       "name": "Music India (576p)",
       "category": "Music",
@@ -7011,7 +6903,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 379,
+      "ch_no": 373,
       "id": "ch_nambikkaitv",
       "name": "Nambikkai TV (576p)",
       "category": "Entertainment",
@@ -7029,7 +6921,43 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 380,
+      "ch_no": 374,
+      "id": "ch_namdhari",
+      "name": "Namdhari (404p) [Not 24/7]",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://i.imgur.com/NalsXTo.png",
+      "url": "https://namdhari.tv/live/sbs1.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://namdhari.tv/live/sbs1.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 375,
+      "id": "ch_namdharitv",
+      "name": "Namdhari TV (404p) [Not 24/7]",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://i.imgur.com/NalsXTo.png",
+      "url": "https://namdhari.tv/live/sbs1.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://namdhari.tv/live/sbs1.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 376,
       "id": "ch_nammabangalore",
       "name": "Namma Bangalore (1080p)",
       "category": "Entertainment",
@@ -7047,7 +6975,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 381,
+      "ch_no": 377,
       "id": "ch_nanaksarlive",
       "name": "Nanaksar Live (720p)",
       "category": "Entertainment",
@@ -7065,7 +6993,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 382,
+      "ch_no": 378,
       "id": "ch_nandighoshatv",
       "name": "Nandighosha TV (576p)",
       "category": "Entertainment",
@@ -7083,7 +7011,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 383,
+      "ch_no": 379,
       "id": "ch_nationnews",
       "name": "Nation News (720p)",
       "category": "News",
@@ -7101,7 +7029,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 384,
+      "ch_no": 380,
       "id": "ch_naxatranewshindi",
       "name": "Naxatra News Hindi (576p)",
       "category": "News",
@@ -7119,7 +7047,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 385,
+      "ch_no": 381,
       "id": "ch_nazara",
       "name": "Nazara (1080p)",
       "category": "Entertainment",
@@ -7137,7 +7065,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 386,
+      "ch_no": 382,
       "id": "ch_nenews",
       "name": "NE News (576p)",
       "category": "News",
@@ -7155,7 +7083,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 387,
+      "ch_no": 383,
       "id": "ch_nepal1",
       "name": "Nepal 1 (576p)",
       "category": "Entertainment",
@@ -7173,7 +7101,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 388,
+      "ch_no": 384,
       "id": "ch_network10",
       "name": "Network 10 (720p)",
       "category": "Entertainment",
@@ -7191,7 +7119,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 389,
+      "ch_no": 385,
       "id": "ch_news1india",
       "name": "News 1 India (576p)",
       "category": "News",
@@ -7209,7 +7137,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 390,
+      "ch_no": 386,
       "id": "ch_news11",
       "name": "News 11 (576p)",
       "category": "News",
@@ -7227,7 +7155,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 391,
+      "ch_no": 387,
       "id": "ch_news1st",
       "name": "News 1st (576p)",
       "category": "News",
@@ -7245,7 +7173,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 392,
+      "ch_no": 388,
       "id": "ch_news24mpchhattisgarh",
       "name": "News 24 MP & Chhattisgarh (576p)",
       "category": "News",
@@ -7263,7 +7191,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 393,
+      "ch_no": 389,
       "id": "ch_news7tamil",
       "name": "News 7 Tamil (576p)",
       "category": "News",
@@ -7281,7 +7209,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 394,
+      "ch_no": 390,
       "id": "ch_newscapitalgujarat",
       "name": "News Capital Gujarat (1080p)",
       "category": "News",
@@ -7299,7 +7227,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 395,
+      "ch_no": 391,
       "id": "ch_newscapitalmarket",
       "name": "News Capital Market (1080p)",
       "category": "News",
@@ -7317,7 +7245,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 396,
+      "ch_no": 392,
       "id": "ch_newsdaily24",
       "name": "News Daily 24 (576p)",
       "category": "News",
@@ -7335,7 +7263,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 397,
+      "ch_no": 393,
       "id": "ch_newshour",
       "name": "News Hour (576p)",
       "category": "News",
@@ -7353,7 +7281,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 398,
+      "ch_no": 394,
       "id": "ch_newsindia24x7",
       "name": "News India 24x7 (1080p)",
       "category": "News",
@@ -7371,7 +7299,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 399,
+      "ch_no": 395,
       "id": "ch_newsj",
       "name": "News J (720p) [Not 24/7]",
       "category": "News",
@@ -7389,7 +7317,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 400,
+      "ch_no": 396,
       "id": "ch_newsleader",
       "name": "News Leader (576p)",
       "category": "News",
@@ -7407,7 +7335,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 401,
+      "ch_no": 397,
       "id": "ch_newslive",
       "name": "News Live (576p)",
       "category": "News",
@@ -7425,7 +7353,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 402,
+      "ch_no": 398,
       "id": "ch_newslivebangla",
       "name": "News Live Bangla (1080p)",
       "category": "News",
@@ -7443,7 +7371,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 403,
+      "ch_no": 399,
       "id": "ch_newsmalayalam24x7",
       "name": "News Malayalam 24x7 (1080p)",
       "category": "News",
@@ -7461,7 +7389,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 404,
+      "ch_no": 400,
       "id": "ch_newsmarathi24x7",
       "name": "News Marathi 24x7 (1080p)",
       "category": "News",
@@ -7479,7 +7407,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 405,
+      "ch_no": 401,
       "id": "ch_newsnation",
       "name": "News Nation (1080p)",
       "category": "News",
@@ -7503,7 +7431,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 406,
+      "ch_no": 402,
       "id": "ch_newsnation81",
       "name": "News Nation 81 (1080p)",
       "category": "News",
@@ -7521,7 +7449,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 407,
+      "ch_no": 403,
       "id": "ch_newsonly",
       "name": "News Only (1080p)",
       "category": "News",
@@ -7539,7 +7467,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 408,
+      "ch_no": 404,
       "id": "ch_newsstatempchg",
       "name": "News State MP & CHG (1080p)",
       "category": "News",
@@ -7557,7 +7485,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 409,
+      "ch_no": 405,
       "id": "ch_newsstatepunjabharyanahimachal",
       "name": "News State Punjab Haryana Himachal (1080p)",
       "category": "News",
@@ -7575,7 +7503,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 410,
+      "ch_no": 406,
       "id": "ch_newsstateupuk",
       "name": "News State UP & UK (1080p)",
       "category": "News",
@@ -7593,7 +7521,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 411,
+      "ch_no": 407,
       "id": "ch_newstamil24x7",
       "name": "News Tamil 24x7 (1080p)",
       "category": "News",
@@ -7611,7 +7539,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 412,
+      "ch_no": 408,
       "id": "ch_news18assamnortheast",
       "name": "News18 Assam North-East (1080p)",
       "category": "News",
@@ -7629,7 +7557,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 413,
+      "ch_no": 409,
       "id": "ch_news18bangla",
       "name": "News18 Bangla (1080p)",
       "category": "News",
@@ -7647,7 +7575,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 414,
+      "ch_no": 410,
       "id": "ch_news18biharjharkhand",
       "name": "News18 Bihar Jharkhand (1080p)",
       "category": "News",
@@ -7665,7 +7593,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 415,
+      "ch_no": 411,
       "id": "ch_news18delhincrjk",
       "name": "News18 Delhi NCR JK (1080p)",
       "category": "News",
@@ -7683,7 +7611,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 416,
+      "ch_no": 412,
       "id": "ch_news18gujarati",
       "name": "News18 Gujarati (1080p)",
       "category": "News",
@@ -7701,7 +7629,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 417,
+      "ch_no": 413,
       "id": "ch_news18india",
       "name": "News18 India (1080p)",
       "category": "News",
@@ -7719,7 +7647,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 418,
+      "ch_no": 414,
       "id": "ch_news18jklh",
       "name": "News18 JKLH (1080p)",
       "category": "News",
@@ -7737,7 +7665,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 419,
+      "ch_no": 415,
       "id": "ch_news18kerala",
       "name": "News18 Kerala (1080p)",
       "category": "News",
@@ -7755,7 +7683,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 420,
+      "ch_no": 416,
       "id": "ch_news18madhyapradeshchhattisgarh",
       "name": "News18 Madhya Pradesh/Chhattisgarh (1080p)",
       "category": "News",
@@ -7773,7 +7701,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 421,
+      "ch_no": 417,
       "id": "ch_news18marathi",
       "name": "News18 Marathi (1080p)",
       "category": "News",
@@ -7791,7 +7719,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 422,
+      "ch_no": 418,
       "id": "ch_news18punjabharyanahimachal",
       "name": "News18 Punjab/Haryana/Himachal (1080p)",
       "category": "News",
@@ -7809,7 +7737,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 423,
+      "ch_no": 419,
       "id": "ch_news18rajasthan",
       "name": "News18 Rajasthan (1080p)",
       "category": "News",
@@ -7827,7 +7755,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 424,
+      "ch_no": 420,
       "id": "ch_news18tamilnadu",
       "name": "News18 Tamil Nadu (1080p)",
       "category": "News",
@@ -7845,7 +7773,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 425,
+      "ch_no": 421,
       "id": "ch_news18urdu",
       "name": "News18 Urdu (1080p)",
       "category": "News",
@@ -7863,7 +7791,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 426,
+      "ch_no": 422,
       "id": "ch_news18uttarpradeshuttarakhand",
       "name": "News18 Uttar Pradesh Uttarakhand (1080p)",
       "category": "News",
@@ -7881,7 +7809,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 427,
+      "ch_no": 423,
       "id": "ch_news9live",
       "name": "News9Live (1080p)",
       "category": "News",
@@ -7899,7 +7827,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 428,
+      "ch_no": 424,
       "id": "ch_newsx",
       "name": "NewsX (720p)",
       "category": "News",
@@ -7917,7 +7845,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 429,
+      "ch_no": 425,
       "id": "ch_newsxworld",
       "name": "NewsX World (576p)",
       "category": "News",
@@ -7935,7 +7863,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 430,
+      "ch_no": 426,
       "id": "ch_nhbollyflix",
       "name": "NH BollyFlix (1080p)",
       "category": "Movies",
@@ -7953,7 +7881,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 431,
+      "ch_no": 427,
       "id": "ch_nhbollyraga",
       "name": "NH BollyRaga (1080p)",
       "category": "Music",
@@ -7971,7 +7899,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 432,
+      "ch_no": 428,
       "id": "ch_nhtamilgold",
       "name": "NH Tamil Gold (1080p)",
       "category": "Movies",
@@ -7989,7 +7917,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 433,
+      "ch_no": 429,
       "id": "ch_nireekshanatv",
       "name": "Nireekshana TV (576p)",
       "category": "Entertainment",
@@ -8007,7 +7935,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 434,
+      "ch_no": 430,
       "id": "ch_nktvbangla",
       "name": "NK TV Bangla (1080p)",
       "category": "News",
@@ -8025,7 +7953,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 435,
+      "ch_no": 431,
       "id": "ch_nkrtv",
       "name": "NKR TV",
       "category": "Entertainment",
@@ -8043,7 +7971,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 436,
+      "ch_no": 432,
       "id": "ch_northeastlive",
       "name": "Northeast Live (720p)",
       "category": "News",
@@ -8067,7 +7995,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 437,
+      "ch_no": 433,
       "id": "ch_nsc9news",
       "name": "NSC9 News (1080p)",
       "category": "News",
@@ -8085,7 +8013,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 438,
+      "ch_no": 434,
       "id": "ch_ntctv",
       "name": "NTC TV (720p)",
       "category": "Entertainment",
@@ -8103,7 +8031,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 439,
+      "ch_no": 435,
       "id": "ch_ntvtelugu",
       "name": "NTV Telugu (1080p)",
       "category": "News",
@@ -8127,7 +8055,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 440,
+      "ch_no": 436,
       "id": "ch_odishatv",
       "name": "Odisha TV (720p)",
       "category": "Entertainment",
@@ -8145,7 +8073,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 441,
+      "ch_no": 437,
       "id": "ch_olitv",
       "name": "Oli TV (India) (1080p)",
       "category": "Entertainment",
@@ -8163,7 +8091,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 442,
+      "ch_no": 438,
       "id": "ch_omtv",
       "name": "OM TV (576p)",
       "category": "Entertainment",
@@ -8181,7 +8109,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 443,
+      "ch_no": 439,
       "id": "ch_onepaschima",
       "name": "One Paschima (400p)",
       "category": "Entertainment",
@@ -8199,7 +8127,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 444,
+      "ch_no": 440,
       "id": "ch_onkarnews",
       "name": "Onkar News (1080p)",
       "category": "News",
@@ -8217,7 +8145,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 445,
+      "ch_no": 441,
       "id": "ch_onlybharat",
       "name": "Only Bharat (576p)",
       "category": "News",
@@ -8235,7 +8163,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 446,
+      "ch_no": 442,
       "id": "ch_orangebanglatv",
       "name": "Orange Bangla TV (720p)",
       "category": "Music",
@@ -8253,7 +8181,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 447,
+      "ch_no": 443,
       "id": "ch_oscarmoviesbhojpuri",
       "name": "Oscar Movies Bhojpuri (720p)",
       "category": "Movies",
@@ -8277,7 +8205,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 448,
+      "ch_no": 444,
       "id": "ch_padharosa",
       "name": "Padharo SA (720p)",
       "category": "Entertainment",
@@ -8295,7 +8223,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 449,
+      "ch_no": 445,
       "id": "ch_pankh",
       "name": "Pankh (360p)",
       "category": "Music",
@@ -8319,7 +8247,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 450,
+      "ch_no": 446,
       "id": "ch_parasgold",
       "name": "Paras Gold (576p)",
       "category": "Entertainment",
@@ -8343,7 +8271,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 451,
+      "ch_no": 447,
       "id": "ch_pasandtv",
       "name": "Pasand TV (576p)",
       "category": "Entertainment",
@@ -8367,7 +8295,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 452,
+      "ch_no": 448,
       "id": "ch_peaceofmindtv",
       "name": "Peace of Mind TV (576p)",
       "category": "Entertainment",
@@ -8385,7 +8313,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 453,
+      "ch_no": 449,
       "id": "ch_peacetvbangla",
       "name": "Peace TV Bangla (1080p)",
       "category": "Entertainment",
@@ -8403,7 +8331,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 454,
+      "ch_no": 450,
       "id": "ch_peacetvurdu",
       "name": "Peace TV Urdu (1080p)",
       "category": "Entertainment",
@@ -8421,7 +8349,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 455,
+      "ch_no": 451,
       "id": "ch_peartv",
       "name": "Pear TV (576p)",
       "category": "Entertainment",
@@ -8445,7 +8373,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 456,
+      "ch_no": 452,
       "id": "ch_pepperstv",
       "name": "Peppers TV (751p)",
       "category": "Music",
@@ -8469,7 +8397,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 457,
+      "ch_no": 453,
       "id": "ch_pitaara",
       "name": "Pitaara (1080p)",
       "category": "Movies",
@@ -8498,7 +8426,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 458,
+      "ch_no": 454,
       "id": "ch_pitaaracomedy",
       "name": "Pitaara Comedy (1080p)",
       "category": "Entertainment",
@@ -8516,7 +8444,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 459,
+      "ch_no": 455,
       "id": "ch_pocketfilms",
       "name": "Pocket Films",
       "category": "Movies",
@@ -8534,7 +8462,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 460,
+      "ch_no": 456,
       "id": "ch_polimernews",
       "name": "Polimer News (576p)",
       "category": "News",
@@ -8558,7 +8486,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 461,
+      "ch_no": 457,
       "id": "ch_polimertv",
       "name": "Polimer TV (720p)",
       "category": "Entertainment",
@@ -8582,7 +8510,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 462,
+      "ch_no": 458,
       "id": "ch_powertv",
       "name": "Power TV (India) (576p)",
       "category": "News",
@@ -8600,7 +8528,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 463,
+      "ch_no": 459,
       "id": "ch_powervision",
       "name": "Powervision",
       "category": "Entertainment",
@@ -8618,7 +8546,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 464,
+      "ch_no": 460,
       "id": "ch_powervisiontv",
       "name": "Powervision TV (720p)",
       "category": "Entertainment",
@@ -8636,7 +8564,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 465,
+      "ch_no": 461,
+      "id": "ch_pradesh24gujarati",
+      "name": "Pradesh24 Gujarati (1080p)",
+      "category": "News",
+      "language": "Gujarati",
+      "tier": "FTA",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Pradesh24_Gujarati.png",
+      "url": "https://stream2.livebox.co.in/pradesh24hls/live.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://stream2.livebox.co.in/pradesh24hls/live.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 462,
       "id": "ch_pragnews",
       "name": "Prag News (576p)",
       "category": "News",
@@ -8660,7 +8606,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 466,
+      "ch_no": 463,
       "id": "ch_prameyanews7",
       "name": "Prameya News7 (720p)",
       "category": "News",
@@ -8678,7 +8624,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 467,
+      "ch_no": 464,
       "id": "ch_prarthanabhawantv",
       "name": "Prarthana Bhawan TV (576p)",
       "category": "Entertainment",
@@ -8696,7 +8642,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 468,
+      "ch_no": 465,
       "id": "ch_prarthanalife",
       "name": "Prarthana Life (720p)",
       "category": "Entertainment",
@@ -8714,7 +8660,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 469,
+      "ch_no": 466,
       "id": "ch_prathamkhabar24x7",
       "name": "Pratham Khabar 24x7 (576p)",
       "category": "News",
@@ -8732,7 +8678,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 470,
+      "ch_no": 467,
       "id": "ch_pratidintime",
       "name": "Pratidin Time (576p)",
       "category": "News",
@@ -8750,7 +8696,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 471,
+      "ch_no": 468,
       "id": "ch_pravasichannel",
       "name": "Pravasi Channel (1080p)",
       "category": "Entertainment",
@@ -8768,7 +8714,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 472,
+      "ch_no": 469,
       "id": "ch_prime9plus",
       "name": "Prime 9 Plus",
       "category": "Entertainment",
@@ -8786,7 +8732,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 473,
+      "ch_no": 470,
       "id": "ch_primenews",
       "name": "Prime News (1080p)",
       "category": "News",
@@ -8810,7 +8756,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 474,
+      "ch_no": 471,
       "id": "ch_prime9news",
       "name": "Prime9 News (1080p)",
       "category": "News",
@@ -8828,7 +8774,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 475,
+      "ch_no": 472,
       "id": "ch_prudentmedia",
       "name": "Prudent Media (1080p)",
       "category": "News",
@@ -8846,7 +8792,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 476,
+      "ch_no": 473,
       "id": "ch_ptcchakde",
       "name": "PTC Chakde (720p)",
       "category": "Music",
@@ -8864,7 +8810,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 477,
+      "ch_no": 474,
       "id": "ch_ptcmusic",
       "name": "PTC Music (720p)",
       "category": "Music",
@@ -8888,7 +8834,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 478,
+      "ch_no": 475,
       "id": "ch_ptcnews",
       "name": "PTC News (576p)",
       "category": "News",
@@ -8906,7 +8852,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 479,
+      "ch_no": 476,
       "id": "ch_ptcsimran",
       "name": "PTC Simran (576p)",
       "category": "Entertainment",
@@ -8930,7 +8876,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 480,
+      "ch_no": 477,
       "id": "ch_publicmovies",
       "name": "Public Movies (576p)",
       "category": "Movies",
@@ -8954,7 +8900,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 481,
+      "ch_no": 478,
       "id": "ch_publicmusic",
       "name": "Public Music (576p)",
       "category": "Music",
@@ -8978,7 +8924,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 482,
+      "ch_no": 479,
       "id": "ch_publictv",
       "name": "Public TV (720p)",
       "category": "News",
@@ -9002,7 +8948,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 483,
+      "ch_no": 480,
       "id": "ch_pudharinews",
       "name": "Pudhari News (576p)",
       "category": "News",
@@ -9026,7 +8972,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 484,
+      "ch_no": 481,
       "id": "ch_pularitv",
       "name": "Pulari TV (576p)",
       "category": "Entertainment",
@@ -9044,7 +8990,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 485,
+      "ch_no": 482,
       "id": "ch_punjabihits",
       "name": "Punjabi Hits (1080p)",
       "category": "Music",
@@ -9062,7 +9008,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 486,
+      "ch_no": 483,
       "id": "ch_punjabimusichd",
       "name": "Punjabi Music HD (720p)",
       "category": "Music",
@@ -9086,7 +9032,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 487,
+      "ch_no": 484,
       "id": "ch_punjabishorts",
       "name": "Punjabi Shorts (1080p)",
       "category": "Movies",
@@ -9104,7 +9050,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 488,
+      "ch_no": 485,
       "id": "ch_puthiyathalaimurai",
       "name": "Puthiya Thalaimurai (576p)",
       "category": "News",
@@ -9128,7 +9074,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 489,
+      "ch_no": 486,
       "id": "ch_puthiyathalaimuraiexpress",
       "name": "Puthiya Thalaimurai Express (720p)",
       "category": "News",
@@ -9152,7 +9098,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 490,
+      "ch_no": 487,
       "id": "ch_puthuyugamtv",
       "name": "Puthuyugam TV (576p)",
       "category": "Entertainment",
@@ -9170,7 +9116,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 491,
+      "ch_no": 488,
       "id": "ch_qtv",
       "name": "Q TV (576p)",
       "category": "Entertainment",
@@ -9188,7 +9134,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 492,
+      "ch_no": 489,
       "id": "ch_qelloconcertsbystingray",
       "name": "Qello Concerts by Stingray (1080p)",
       "category": "Music",
@@ -9206,7 +9152,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 493,
+      "ch_no": 490,
       "id": "ch_rplus",
       "name": "R Plus (1080p)",
       "category": "Entertainment",
@@ -9230,7 +9176,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 494,
+      "ch_no": 491,
       "id": "ch_rplusgold",
       "name": "R Plus Gold (1080p)",
       "category": "Entertainment",
@@ -9248,7 +9194,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 495,
+      "ch_no": 492,
       "id": "ch_raatdinbangla",
       "name": "Raatdin Bangla (720p)",
       "category": "News",
@@ -9266,7 +9212,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 496,
+      "ch_no": 493,
       "id": "ch_raftaarmedia",
       "name": "Raftaar Media (576p)",
       "category": "Entertainment",
@@ -9290,7 +9236,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 497,
+      "ch_no": 494,
       "id": "ch_ragni",
       "name": "Ragni (360p)",
       "category": "Entertainment",
@@ -9308,7 +9254,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 498,
+      "ch_no": 495,
       "id": "ch_ragnitv",
       "name": "Ragni TV",
       "category": "Entertainment",
@@ -9326,7 +9272,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 499,
+      "ch_no": 496,
       "id": "ch_rajdigitalplus",
       "name": "Raj Digital Plus (1080p)",
       "category": "Movies",
@@ -9344,7 +9290,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 500,
+      "ch_no": 497,
       "id": "ch_rajmusixkannada",
       "name": "Raj Musix Kannada (576p)",
       "category": "Music",
@@ -9362,7 +9308,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 501,
+      "ch_no": 498,
       "id": "ch_rajmusixmalayalam",
       "name": "Raj Musix Malayalam (576p)",
       "category": "Music",
@@ -9386,7 +9332,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 502,
+      "ch_no": 499,
       "id": "ch_rajmusixtamil",
       "name": "Raj Musix Tamil (1080p)",
       "category": "Music",
@@ -9404,7 +9350,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 503,
+      "ch_no": 500,
       "id": "ch_rajmusixtelugu",
       "name": "Raj Musix Telugu (720p)",
       "category": "Music",
@@ -9428,7 +9374,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 504,
+      "ch_no": 501,
       "id": "ch_rajnewskannada",
       "name": "Raj News Kannada (576p)",
       "category": "News",
@@ -9446,7 +9392,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 505,
+      "ch_no": 502,
       "id": "ch_rajnewsmalayalam",
       "name": "Raj News Malayalam (576p)",
       "category": "News",
@@ -9464,7 +9410,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 506,
+      "ch_no": 503,
       "id": "ch_rajnewstelugu",
       "name": "Raj News Telugu (576p)",
       "category": "News",
@@ -9488,7 +9434,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 507,
+      "ch_no": 504,
       "id": "ch_rajtv",
       "name": "Raj TV (1080p)",
       "category": "Entertainment",
@@ -9506,7 +9452,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 508,
+      "ch_no": 505,
       "id": "ch_ramdhenu",
       "name": "Ramdhenu (576p)",
       "category": "Entertainment",
@@ -9524,7 +9470,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 509,
+      "ch_no": 506,
       "id": "ch_rang",
       "name": "Rang (576p)",
       "category": "Entertainment",
@@ -9548,7 +9494,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 510,
+      "ch_no": 507,
       "id": "ch_realnewskerala",
       "name": "Real News Kerala (1080p) [Not 24/7]",
       "category": "News",
@@ -9566,7 +9512,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 511,
+      "ch_no": 508,
       "id": "ch_rengoni",
       "name": "Rengoni (576p)",
       "category": "Entertainment",
@@ -9590,7 +9536,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 512,
+      "ch_no": 509,
       "id": "ch_reporter",
       "name": "Reporter",
       "category": "Entertainment",
@@ -9608,7 +9554,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 513,
+      "ch_no": 510,
       "id": "ch_reportertv",
       "name": "Reporter TV (576p)",
       "category": "News",
@@ -9626,7 +9572,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 514,
+      "ch_no": 511,
       "id": "ch_republicbangla",
       "name": "Republic Bangla (576p)",
       "category": "News",
@@ -9644,7 +9590,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 515,
+      "ch_no": 512,
       "id": "ch_republicbharat",
       "name": "Republic Bharat (1080p)",
       "category": "News",
@@ -9668,7 +9614,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 516,
+      "ch_no": 513,
       "id": "ch_republickannada",
       "name": "Republic Kannada (720p)",
       "category": "News",
@@ -9692,7 +9638,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 517,
+      "ch_no": 514,
       "id": "ch_republictv",
       "name": "Republic TV (1080p)",
       "category": "News",
@@ -9716,7 +9662,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 518,
+      "ch_no": 515,
       "id": "ch_rongeentv",
       "name": "Rongeen TV (720p)",
       "category": "Entertainment",
@@ -9740,7 +9686,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 519,
+      "ch_no": 516,
       "id": "ch_rozanaspokesman",
       "name": "Rozana Spokesman (1080p)",
       "category": "News",
@@ -9758,7 +9704,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 520,
+      "ch_no": 517,
       "id": "ch_rtindia",
       "name": "RT India (1080p)",
       "category": "News",
@@ -9776,7 +9722,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 521,
+      "ch_no": 518,
       "id": "ch_rupasibangla",
       "name": "Rupasi Bangla (720p)",
       "category": "Entertainment",
@@ -9794,7 +9740,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 522,
+      "ch_no": 519,
       "id": "ch_ruposhibangla",
       "name": "Ruposhi Bangla",
       "category": "Entertainment",
@@ -9812,7 +9758,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 523,
+      "ch_no": 520,
       "id": "ch_saamtv",
       "name": "Saam TV (576p)",
       "category": "Entertainment",
@@ -9836,7 +9782,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 524,
+      "ch_no": 521,
       "id": "ch_saang",
       "name": "Saang (720p)",
       "category": "Entertainment",
@@ -9854,7 +9800,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 525,
+      "ch_no": 522,
       "id": "ch_sachbedhadak",
       "name": "Sach Bedhadak (576p)",
       "category": "News",
@@ -9872,7 +9818,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 526,
+      "ch_no": 523,
       "id": "ch_sadatv",
       "name": "SADA TV (1080p) [Not 24/7]",
       "category": "Entertainment",
@@ -9890,7 +9836,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 527,
+      "ch_no": 524,
       "id": "ch_sadhna",
       "name": "Sadhna (720p)",
       "category": "Devotional",
@@ -9908,7 +9854,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 528,
+      "ch_no": 525,
       "id": "ch_sadhnanewsmadhyapradeshchhattisgarh",
       "name": "Sadhna News Madhya Pradesh/Chhattisgarh (576p)",
       "category": "News",
@@ -9926,7 +9872,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 529,
+      "ch_no": 526,
       "id": "ch_sadhnaplusnews",
       "name": "Sadhna Plus News (720p)",
       "category": "News",
@@ -9944,7 +9890,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 530,
+      "ch_no": 527,
       "id": "ch_sadhnatv",
       "name": "Sadhna TV (576p)",
       "category": "Devotional",
@@ -9962,7 +9908,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 531,
+      "ch_no": 528,
       "id": "ch_sadvidyatv",
       "name": "Sadvidya TV (720p)",
       "category": "Entertainment",
@@ -9980,7 +9926,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 532,
+      "ch_no": 529,
       "id": "ch_safaritv",
       "name": "Safari TV (576p)",
       "category": "Entertainment",
@@ -9998,7 +9944,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 533,
+      "ch_no": 530,
       "id": "ch_saitv",
       "name": "Sai TV (576p)",
       "category": "Entertainment",
@@ -10016,7 +9962,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 534,
+      "ch_no": 531,
       "id": "ch_sairamtv",
       "name": "Sairam TV (576p)",
       "category": "Entertainment",
@@ -10040,7 +9986,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 535,
+      "ch_no": 532,
       "id": "ch_sakshitv",
       "name": "Sakshi TV (1080p)",
       "category": "News",
@@ -10064,7 +10010,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 536,
+      "ch_no": 533,
       "id": "ch_salaamtv",
       "name": "Salaam TV (720p)",
       "category": "News",
@@ -10088,7 +10034,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 537,
+      "ch_no": 534,
       "id": "ch_salvationtv",
       "name": "Salvation TV (India) (1080p)",
       "category": "Entertainment",
@@ -10106,25 +10052,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 538,
-      "id": "ch_samacharplus",
-      "name": "Samachar Plus (1080p)",
-      "category": "News",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Samachar_Plus.png",
-      "url": "https://samacharplus.livebox.co.in/samacharplushls/live.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://samacharplus.livebox.co.in/samacharplushls/live.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 539,
+      "ch_no": 535,
       "id": "ch_samacharplus24x7",
       "name": "Samachar Plus 24x7 (576p)",
       "category": "News",
@@ -10142,7 +10070,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 540,
+      "ch_no": 536,
       "id": "ch_samaykolkata",
       "name": "Samay Kolkata (1080p)",
       "category": "News",
@@ -10160,7 +10088,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 541,
+      "ch_no": 537,
       "id": "ch_sanaplus",
       "name": "Sana Plus (1080p)",
       "category": "Music",
@@ -10178,7 +10106,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 542,
+      "ch_no": 538,
       "id": "ch_sanatv",
       "name": "Sana TV (1080p)",
       "category": "Entertainment",
@@ -10196,7 +10124,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 543,
+      "ch_no": 539,
       "id": "ch_sandeshnews",
       "name": "Sandesh News (576p)",
       "category": "News",
@@ -10214,7 +10142,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 544,
+      "ch_no": 540,
       "id": "ch_sangeetbangla",
       "name": "Sangeet Bangla (720p)",
       "category": "Music",
@@ -10238,7 +10166,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 545,
+      "ch_no": 541,
       "id": "ch_sangeetbhojpuri",
       "name": "Sangeet Bhojpuri (576p)",
       "category": "Music",
@@ -10262,7 +10190,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 546,
+      "ch_no": 542,
       "id": "ch_sangeetmarathi",
       "name": "Sangeet Marathi (720p)",
       "category": "Music",
@@ -10286,7 +10214,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 547,
+      "ch_no": 543,
       "id": "ch_sankaratv",
       "name": "Sankara TV (576p)",
       "category": "Entertainment",
@@ -10304,7 +10232,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 548,
+      "ch_no": 544,
       "id": "ch_sansadtv1",
       "name": "Sansad TV 1 (1080p)",
       "category": "Entertainment",
@@ -10322,7 +10250,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 549,
+      "ch_no": 545,
       "id": "ch_sansadtv1hd",
       "name": "Sansad TV 1 HD (1080p)",
       "category": "Entertainment",
@@ -10340,7 +10268,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 550,
+      "ch_no": 546,
       "id": "ch_sansadtv2",
       "name": "Sansad TV 2 (576p)",
       "category": "Entertainment",
@@ -10358,7 +10286,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 551,
+      "ch_no": 547,
       "id": "ch_sansadtv2hd",
       "name": "Sansad TV 2 HD (1080p)",
       "category": "Entertainment",
@@ -10376,7 +10304,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 552,
+      "ch_no": 548,
       "id": "ch_sanskartv",
       "name": "Sanskar TV (1080p)",
       "category": "Devotional",
@@ -10400,7 +10328,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 553,
+      "ch_no": 549,
       "id": "ch_sanskaruk",
       "name": "Sanskar UK (1080p)",
       "category": "Devotional",
@@ -10418,7 +10346,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 554,
+      "ch_no": 550,
       "id": "ch_sanskarusa",
       "name": "Sanskar USA (1080p)",
       "category": "Devotional",
@@ -10436,7 +10364,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 555,
+      "ch_no": 551,
       "id": "ch_sanskarwebtv",
       "name": "Sanskar Web TV (1080p)",
       "category": "Devotional",
@@ -10454,7 +10382,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 556,
+      "ch_no": 552,
       "id": "ch_santvanichannel",
       "name": "Santvani Channel (576p)",
       "category": "Entertainment",
@@ -10478,7 +10406,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 557,
+      "ch_no": 553,
       "id": "ch_sarvdharmsangam",
       "name": "Sarv Dharm Sangam (576p)",
       "category": "Entertainment",
@@ -10496,7 +10424,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 558,
+      "ch_no": 554,
       "id": "ch_sathiyamtv",
       "name": "Sathiyam TV (576p)",
       "category": "News",
@@ -10514,7 +10442,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 559,
+      "ch_no": 555,
       "id": "ch_satsangtv",
       "name": "Satsang TV (1080p)",
       "category": "Entertainment",
@@ -10538,7 +10466,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 560,
+      "ch_no": 556,
       "id": "ch_satsangwebtv",
       "name": "Satsang Web TV (1080p)",
       "category": "Entertainment",
@@ -10556,7 +10484,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 561,
+      "ch_no": 557,
       "id": "ch_shalom",
       "name": "Shalom (1080p)",
       "category": "Entertainment",
@@ -10574,7 +10502,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 562,
+      "ch_no": 558,
       "id": "ch_sharnamtv",
       "name": "Sharnam TV (576p)",
       "category": "Entertainment",
@@ -10592,7 +10520,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 563,
+      "ch_no": 559,
       "id": "ch_shemaroojosh",
       "name": "Shemaroo Josh (576p)",
       "category": "Movies",
@@ -10621,7 +10549,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 564,
+      "ch_no": 560,
       "id": "ch_shemarootv",
       "name": "Shemaroo TV (720p)",
       "category": "Entertainment",
@@ -10650,7 +10578,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 565,
+      "ch_no": 561,
       "id": "ch_shemarooumang",
       "name": "Shemaroo Umang (720p)",
       "category": "Entertainment",
@@ -10674,7 +10602,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 566,
+      "ch_no": 562,
       "id": "ch_shikshatv",
       "name": "Shiksha TV (720p)",
       "category": "Education",
@@ -10692,7 +10620,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 567,
+      "ch_no": 563,
       "id": "ch_shraddhamhone",
       "name": "Shraddha MH One",
       "category": "Entertainment",
@@ -10710,7 +10638,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 568,
+      "ch_no": 564,
       "id": "ch_shreehazursahibji",
       "name": "Shree Hazur Sahibji (720p)",
       "category": "Entertainment",
@@ -10728,7 +10656,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 569,
+      "ch_no": 565,
       "id": "ch_shreesanatantv",
       "name": "Shree Sanatan TV (720p)",
       "category": "Entertainment",
@@ -10746,7 +10674,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 570,
+      "ch_no": 566,
       "id": "ch_shubhcinematv",
       "name": "Shubh Cinema TV (720p)",
       "category": "Movies",
@@ -10764,7 +10692,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 571,
+      "ch_no": 567,
       "id": "ch_shubhtv",
       "name": "Shubh TV (1080p)",
       "category": "Entertainment",
@@ -10782,7 +10710,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 572,
+      "ch_no": 568,
       "id": "ch_shubhsandeshtv",
       "name": "Shubhsandesh TV (576p)",
       "category": "Entertainment",
@@ -10806,25 +10734,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 573,
-      "id": "ch_sikhspiritualcentrerexdale",
-      "name": "Sikh Spiritual Centre Rexdale (720p)",
-      "category": "Entertainment",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://i.imgur.com/YKXoIsr.png",
-      "url": "https://cdn12.henico.net:8443/live/ssct/index.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://cdn12.henico.net:8443/live/ssct/index.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 574,
+      "ch_no": 569,
       "id": "ch_sindhtv",
       "name": "Sindh TV (India) (720p)",
       "category": "Entertainment",
@@ -10848,7 +10758,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 575,
+      "ch_no": 570,
       "id": "ch_sirippolitv",
       "name": "Sirippoli TV (576p)",
       "category": "Entertainment",
@@ -10866,7 +10776,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 576,
+      "ch_no": 571,
       "id": "ch_sonarbangla",
       "name": "Sonar Bangla (360p)",
       "category": "Movies",
@@ -10890,7 +10800,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 577,
+      "ch_no": 572,
       "id": "ch_sonericinema",
       "name": "Soneri Cinema (360p)",
       "category": "Movies",
@@ -10914,7 +10824,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 578,
+      "ch_no": 573,
       "id": "ch_songdewtv",
       "name": "Songdew TV (396p)",
       "category": "Music",
@@ -10932,7 +10842,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 579,
+      "ch_no": 574,
       "id": "ch_sonyentertainmenttelevisionhd",
       "name": "Sony Entertainment Television HD (1080p)",
       "category": "Entertainment",
@@ -10950,7 +10860,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 580,
+      "ch_no": 575,
       "id": "ch_sonykalhindi",
       "name": "Sony KAL Hindi (1080p)",
       "category": "Entertainment",
@@ -10968,7 +10878,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 581,
+      "ch_no": 576,
       "id": "ch_sonywah",
       "name": "Sony Wah (576p)",
       "category": "Movies",
@@ -10986,7 +10896,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 582,
+      "ch_no": 577,
+      "id": "ch_southstation",
+      "name": "South Station (1080p)",
+      "category": "Movies",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IN3800008CX_20260325T012316SQUARE.png",
+      "url": "https://cc-yw7ztecy8do3q.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-yw7ztecy8do3q/SS_IN.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://cc-yw7ztecy8do3q.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-yw7ztecy8do3q/SS_IN.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 578,
       "id": "ch_spondon",
       "name": "Spondon (1080p)",
       "category": "Entertainment",
@@ -11004,7 +10932,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 583,
+      "ch_no": 579,
       "id": "ch_srisankara",
       "name": "Sri Sankara",
       "category": "Entertainment",
@@ -11022,7 +10950,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 584,
+      "ch_no": 580,
       "id": "ch_srktv",
       "name": "SRK TV (1080p)",
       "category": "Entertainment",
@@ -11040,7 +10968,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 585,
+      "ch_no": 581,
       "id": "ch_starbharat",
       "name": "Star Bharat (United Kingdom) (576p)",
       "category": "Entertainment",
@@ -11058,25 +10986,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 586,
-      "id": "ch_starjalsha",
-      "name": "Star Jalsha (1080p) [Geo-blocked]",
-      "category": "Entertainment",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://i.imgur.com/IlufzR5.png",
-      "url": "http://cdn98.com/play/live.php?extension=ts&mac=00:1A:79:99:54:11&play_token=o1cczsG9wV&stream=225805",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "http://cdn98.com/play/live.php?extension=ts&mac=00:1A:79:99:54:11&play_token=o1cczsG9wV&stream=225805"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 587,
+      "ch_no": 582,
       "id": "ch_starmaahd",
       "name": "Star Maa HD (720p)",
       "category": "Entertainment",
@@ -11094,7 +11004,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 588,
+      "ch_no": 583,
       "id": "ch_starmaamovieshd",
       "name": "Star Maa Movies HD (720p)",
       "category": "Movies",
@@ -11112,7 +11022,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 589,
+      "ch_no": 584,
       "id": "ch_starpravahhd",
       "name": "Star Pravah HD (720p)",
       "category": "Entertainment",
@@ -11130,7 +11040,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 590,
+      "ch_no": 585,
       "id": "ch_starutsav",
       "name": "Star Utsav (576p)",
       "category": "Entertainment",
@@ -11148,7 +11058,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 591,
+      "ch_no": 586,
       "id": "ch_starutsavmovies",
       "name": "Star Utsav Movies (576p)",
       "category": "Movies",
@@ -11166,7 +11076,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 592,
+      "ch_no": 587,
       "id": "ch_starnet",
       "name": "Starnet (480p)",
       "category": "Entertainment",
@@ -11184,7 +11094,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 593,
+      "ch_no": 588,
       "id": "ch_starplus",
       "name": "StarPlus (United Kingdom) (576p)",
       "category": "Entertainment",
@@ -11202,7 +11112,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 594,
+      "ch_no": 589,
       "id": "ch_steelbirdmusic",
       "name": "Steelbird Music (720p) [Not 24/7]",
       "category": "Music",
@@ -11220,7 +11130,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 595,
+      "ch_no": 590,
       "id": "ch_stingrayclassicrock",
       "name": "Stingray Classic Rock (1080p)",
       "category": "Music",
@@ -11238,7 +11148,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 596,
+      "ch_no": 591,
       "id": "ch_stingraydjazz",
       "name": "Stingray DJAZZ (1080p)",
       "category": "Music",
@@ -11256,7 +11166,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 597,
+      "ch_no": 592,
       "id": "ch_stingrayeasylistening",
       "name": "Stingray Easy Listening (1080p)",
       "category": "Music",
@@ -11274,7 +11184,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 598,
+      "ch_no": 593,
       "id": "ch_stingraynaturescape",
       "name": "Stingray Naturescape (1080p)",
       "category": "Music",
@@ -11292,7 +11202,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 599,
+      "ch_no": 594,
       "id": "ch_stingraythespa",
       "name": "Stingray The Spa (1080p)",
       "category": "Music",
@@ -11310,7 +11220,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 600,
+      "ch_no": 595,
       "id": "ch_stingraytodayskpop",
       "name": "Stingray Today's K-Pop (1080p)",
       "category": "Music",
@@ -11328,7 +11238,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 601,
+      "ch_no": 596,
       "id": "ch_studioone",
       "name": "Studio One + (720p)",
       "category": "Movies",
@@ -11346,7 +11256,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 602,
+      "ch_no": 597,
       "id": "ch_studiooneplus",
       "name": "Studio One Plus",
       "category": "Entertainment",
@@ -11364,7 +11274,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 603,
+      "ch_no": 598,
       "id": "ch_studioyuva",
       "name": "Studio Yuva (576p)",
       "category": "Entertainment",
@@ -11388,7 +11298,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 604,
+      "ch_no": 599,
       "id": "ch_subhavaarthatv",
       "name": "Subhavaartha TV (720p)",
       "category": "Entertainment",
@@ -11412,7 +11322,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 605,
+      "ch_no": 600,
       "id": "ch_subintv",
       "name": "Subin TV (1080p)",
       "category": "Entertainment",
@@ -11430,7 +11340,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 606,
+      "ch_no": 601,
       "id": "ch_sudarshannews",
       "name": "Sudarshan News (1080p)",
       "category": "News",
@@ -11459,7 +11369,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 607,
+      "ch_no": 602,
       "id": "ch_sungemini",
       "name": "Sun Gemini (576p)",
       "category": "Entertainment",
@@ -11477,7 +11387,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 608,
+      "ch_no": 603,
       "id": "ch_suriyatv",
       "name": "Suriya TV (1080p)",
       "category": "Entertainment",
@@ -11495,7 +11405,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 609,
+      "ch_no": 604,
       "id": "ch_suriyantv",
       "name": "Suriyan TV (576p)",
       "category": "Movies",
@@ -11513,7 +11423,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 610,
+      "ch_no": 605,
       "id": "ch_suryasamachar",
       "name": "Surya Samachar (576p)",
       "category": "News",
@@ -11531,7 +11441,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 611,
+      "ch_no": 606,
       "id": "ch_suvarnanews",
       "name": "Suvarna News",
       "category": "News",
@@ -11555,7 +11465,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 612,
+      "ch_no": 607,
       "id": "ch_suvarnanewssd",
       "name": "Suvarna News SD (576p)",
       "category": "News",
@@ -11573,7 +11483,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 613,
+      "ch_no": 608,
       "id": "ch_svbc",
       "name": "SVBC (1080p)",
       "category": "Entertainment",
@@ -11597,7 +11507,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 614,
+      "ch_no": 609,
+      "id": "ch_svbc2",
+      "name": "SVBC 2 (1080p)",
+      "category": "Entertainment",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://dtil.tmsimg.com/assets/s143890_ld_h9_aa.png?lock=720x540",
+      "url": "https://player.mslivestream.net/tamil/ac206e74d75b285755ee4924df87d951.sdp/playlist.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://player.mslivestream.net/tamil/ac206e74d75b285755ee4924df87d951.sdp/playlist.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 610,
       "id": "ch_svbc3",
       "name": "SVBC 3 (720p)",
       "category": "Entertainment",
@@ -11621,25 +11549,31 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 615,
+      "ch_no": 611,
       "id": "ch_svbc4",
       "name": "SVBC 4 (1080p)",
       "category": "Entertainment",
       "language": "Hindi",
       "tier": "FTA",
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/SVBC4.png",
-      "url": "https://mumt05.tangotv.in/87NeALx2SVBC4HINDI/index.m3u8",
-      "fallback_urls": [],
+      "url": "https://player.mslivestream.net/mslive/13a2927187b9700ae7ea82d7841d5b68.sdp/playlist.m3u8",
+      "fallback_urls": [
+        "https://mumt05.tangotv.in/87NeALx2SVBC4HINDI/index.m3u8"
+      ],
       "streams": [
         {
           "name": "Server 1",
+          "url": "https://player.mslivestream.net/mslive/13a2927187b9700ae7ea82d7841d5b68.sdp/playlist.m3u8"
+        },
+        {
+          "name": "Server 2",
           "url": "https://mumt05.tangotv.in/87NeALx2SVBC4HINDI/index.m3u8"
         }
       ],
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 616,
+      "ch_no": 612,
       "id": "ch_swadeshnews",
       "name": "Swadesh News (720p)",
       "category": "News",
@@ -11657,7 +11591,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 617,
+      "ch_no": 613,
       "id": "ch_swarajexpresssmbc",
       "name": "Swaraj Express SMBC (576p)",
       "category": "News",
@@ -11681,7 +11615,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 618,
+      "ch_no": 614,
       "id": "ch_swastiktv",
       "name": "Swastik TV (720p)",
       "category": "Entertainment",
@@ -11699,7 +11633,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 619,
+      "ch_no": 615,
       "id": "ch_swatantratv",
       "name": "Swatantra TV (1080p)",
       "category": "News",
@@ -11717,7 +11651,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 620,
+      "ch_no": 616,
       "id": "ch_tnews",
       "name": "T News (720p)",
       "category": "News",
@@ -11735,7 +11669,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 621,
+      "ch_no": 617,
       "id": "ch_taazatv",
       "name": "Taaza TV (720p)",
       "category": "Entertainment",
@@ -11753,7 +11687,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 622,
+      "ch_no": 618,
       "id": "ch_tabbarhits",
       "name": "Tabbar Hits (1080p)",
       "category": "Music",
@@ -11782,7 +11716,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 623,
+      "ch_no": 619,
       "id": "ch_tagtv",
       "name": "TAG TV (1080p) [Not 24/7]",
       "category": "Entertainment",
@@ -11800,7 +11734,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 624,
+      "ch_no": 620,
       "id": "ch_tamiljanam",
       "name": "Tamil Janam (576p)",
       "category": "News",
@@ -11818,7 +11752,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 625,
+      "ch_no": 621,
       "id": "ch_tarangmusic",
       "name": "Tarang Music (720p)",
       "category": "Music",
@@ -11836,7 +11770,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 626,
+      "ch_no": 622,
       "id": "ch_tarangtv",
       "name": "Tarang TV (720p)",
       "category": "Entertainment",
@@ -11854,7 +11788,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 627,
+      "ch_no": 623,
       "id": "ch_tbntv",
       "name": "TBN TV (720p) [Not 24/7]",
       "category": "Entertainment",
@@ -11872,7 +11806,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 628,
+      "ch_no": 624,
       "id": "ch_tehzeebtv",
       "name": "Tehzeeb TV (720p)",
       "category": "Entertainment",
@@ -11896,7 +11830,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 629,
+      "ch_no": 625,
       "id": "ch_thalaatv",
       "name": "Thalaa TV (1080p)",
       "category": "Movies",
@@ -11914,7 +11848,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 630,
+      "ch_no": 626,
       "id": "ch_thanthione",
       "name": "Thanthi One (576p)",
       "category": "Entertainment",
@@ -11932,7 +11866,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 631,
+      "ch_no": 627,
       "id": "ch_thejunglebook",
       "name": "The Jungle Book (1080p)",
       "category": "Kids",
@@ -11950,7 +11884,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 632,
+      "ch_no": 628,
       "id": "ch_themovieclub",
       "name": "The Movie Club (1080p)",
       "category": "Movies",
@@ -11968,7 +11902,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 633,
+      "ch_no": 629,
       "id": "ch_themovieclub2",
       "name": "The Movie Club +2 (1080p)",
       "category": "Movies",
@@ -11986,7 +11920,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 634,
+      "ch_no": 630,
       "id": "ch_thepetcollectiveindia",
       "name": "The Pet Collective India (720p)",
       "category": "Entertainment",
@@ -12004,7 +11938,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 635,
+      "ch_no": 631,
       "id": "ch_theq",
       "name": "The Q",
       "category": "Entertainment",
@@ -12022,7 +11956,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 636,
+      "ch_no": 632,
       "id": "ch_theqindia",
       "name": "The Q India (576p)",
       "category": "Entertainment",
@@ -12040,7 +11974,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 637,
+      "ch_no": 633,
       "id": "ch_thevoicetv",
       "name": "The Voice TV (1080p)",
       "category": "News",
@@ -12058,25 +11992,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 638,
-      "id": "ch_thendraltv",
-      "name": "Thendral TV (576p)",
-      "category": "Entertainment",
-      "language": "Hindi",
-      "tier": "FTA",
-      "logo_url": "https://i.imgur.com/kQK80gB.png",
-      "url": "https://hls.thendraltv.in/thendraltv_1210b43d/index.m3u8",
-      "fallback_urls": [],
-      "streams": [
-        {
-          "name": "Server 1",
-          "url": "https://hls.thendraltv.in/thendraltv_1210b43d/index.m3u8"
-        }
-      ],
-      "quality": "1080p FHD"
-    },
-    {
-      "ch_no": 639,
+      "ch_no": 634,
       "id": "ch_timesnownavbharat",
       "name": "Times Now Navbharat (1080p)",
       "category": "News",
@@ -12094,7 +12010,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 640,
+      "ch_no": 635,
       "id": "ch_timesnownavbharathd",
       "name": "Times Now Navbharat HD (1080p)",
       "category": "News",
@@ -12112,7 +12028,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 641,
+      "ch_no": 636,
       "id": "ch_tnpnews",
       "name": "TNP News (1080p)",
       "category": "News",
@@ -12130,7 +12046,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 642,
+      "ch_no": 637,
       "id": "ch_tollytv",
       "name": "Tolly TV (1080p)",
       "category": "Movies",
@@ -12148,7 +12064,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 643,
+      "ch_no": 638,
       "id": "ch_topnewsmarathi",
       "name": "Top News Marathi (1080p)",
       "category": "News",
@@ -12166,7 +12082,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 644,
+      "ch_no": 639,
       "id": "ch_totalbhakti",
       "name": "Total Bhakti (1080p)",
       "category": "Devotional",
@@ -12184,7 +12100,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 645,
+      "ch_no": 640,
       "id": "ch_totaltvharyana",
       "name": "Total TV Haryana (576p)",
       "category": "Entertainment",
@@ -12202,7 +12118,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 646,
+      "ch_no": 641,
       "id": "ch_travelxphd",
       "name": "Travelxp HD (1080p) [Geo-blocked]",
       "category": "Entertainment",
@@ -12220,7 +12136,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 647,
+      "ch_no": 642,
       "id": "ch_trishulbroadcastingnetwork",
       "name": "Trishul Broadcasting Network (720p) [Not 24/7]",
       "category": "Entertainment",
@@ -12238,7 +12154,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 648,
+      "ch_no": 643,
       "id": "ch_ttn24",
       "name": "TTN24 (720p)",
       "category": "News",
@@ -12256,7 +12172,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 649,
+      "ch_no": 644,
       "id": "ch_tunes6",
       "name": "Tunes 6 (720p)",
       "category": "Music",
@@ -12274,7 +12190,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 650,
+      "ch_no": 645,
       "id": "ch_tv100",
       "name": "TV 100 (India) (576p)",
       "category": "Entertainment",
@@ -12292,7 +12208,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 651,
+      "ch_no": 646,
       "id": "ch_tvbricsenglish",
       "name": "TV BRICS English (1080p)",
       "category": "Entertainment",
@@ -12310,7 +12226,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 652,
+      "ch_no": 647,
       "id": "ch_tvpunjab",
       "name": "TV Punjab (720p) [Geo-blocked]",
       "category": "News",
@@ -12328,7 +12244,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 653,
+      "ch_no": 648,
       "id": "ch_tv13gujarati",
       "name": "TV13 Gujarati (480p)",
       "category": "News",
@@ -12346,7 +12262,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 654,
+      "ch_no": 649,
       "id": "ch_tv27news",
       "name": "TV27 News (1080p)",
       "category": "News",
@@ -12370,7 +12286,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 655,
+      "ch_no": 650,
       "id": "ch_tv30india",
       "name": "TV30 India (1080p)",
       "category": "News",
@@ -12388,7 +12304,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 656,
+      "ch_no": 651,
       "id": "ch_tv45",
       "name": "TV45 (1080p)",
       "category": "News",
@@ -12406,7 +12322,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 657,
+      "ch_no": 652,
       "id": "ch_tv5kannada",
       "name": "TV5 Kannada (576p)",
       "category": "News",
@@ -12424,7 +12340,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 658,
+      "ch_no": 653,
       "id": "ch_tv5news",
       "name": "TV5 News (576p)",
       "category": "News",
@@ -12448,7 +12364,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 659,
+      "ch_no": 654,
       "id": "ch_tv7bharat",
       "name": "TV7 Bharat (576p)",
       "category": "News",
@@ -12466,7 +12382,25 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 660,
+      "ch_no": 655,
+      "id": "ch_tv7national",
+      "name": "TV7 National (1080p)",
+      "category": "News",
+      "language": "Hindi",
+      "tier": "FTA",
+      "logo_url": "https://d3jnkp3lrs2hd5.cloudfront.net/images/100x100/52ac91e7-2c9d-415b-a63f-fb41413105ff.jpg",
+      "url": "https://stream.ottlive.co.in/tv7national/index.m3u8",
+      "fallback_urls": [],
+      "streams": [
+        {
+          "name": "Server 1",
+          "url": "https://stream.ottlive.co.in/tv7national/index.m3u8"
+        }
+      ],
+      "quality": "1080p FHD"
+    },
+    {
+      "ch_no": 656,
       "id": "ch_tv9bangla",
       "name": "TV9 Bangla (720p)",
       "category": "News",
@@ -12495,7 +12429,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 661,
+      "ch_no": 657,
       "id": "ch_tv9bharatvarsh",
       "name": "TV9 Bharatvarsh (720p)",
       "category": "News",
@@ -12524,7 +12458,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 662,
+      "ch_no": 658,
       "id": "ch_tv9gujarati",
       "name": "TV9 Gujarati (720p)",
       "category": "News",
@@ -12548,7 +12482,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 663,
+      "ch_no": 659,
       "id": "ch_tv9kannada",
       "name": "TV9 Kannada (576p)",
       "category": "News",
@@ -12577,7 +12511,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 664,
+      "ch_no": 660,
       "id": "ch_tv9marathi",
       "name": "TV9 Marathi (720p)",
       "category": "News",
@@ -12606,7 +12540,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 665,
+      "ch_no": 661,
       "id": "ch_tv9telugu",
       "name": "TV9 Telugu (720p)",
       "category": "News",
@@ -12635,7 +12569,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 666,
+      "ch_no": 662,
       "id": "ch_ubangla",
       "name": "U Bangla (1080p)",
       "category": "Entertainment",
@@ -12653,7 +12587,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 667,
+      "ch_no": 663,
       "id": "ch_ultimatetv",
       "name": "Ultimate TV (1080p)",
       "category": "Music",
@@ -12671,7 +12605,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 668,
+      "ch_no": 664,
       "id": "ch_uniquetv",
       "name": "Unique TV (576p)",
       "category": "Kids",
@@ -12695,7 +12629,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 669,
+      "ch_no": 665,
       "id": "ch_upnow",
       "name": "UP NOW (720p)",
       "category": "News",
@@ -12713,7 +12647,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 670,
+      "ch_no": 666,
       "id": "ch_utsavbharat",
       "name": "Utsav Bharat (720p)",
       "category": "Entertainment",
@@ -12731,7 +12665,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 671,
+      "ch_no": 667,
       "id": "ch_utsavplus",
       "name": "Utsav Plus (720p)",
       "category": "Entertainment",
@@ -12749,7 +12683,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 672,
+      "ch_no": 668,
       "id": "ch_utvanandam",
       "name": "UTV Anandam",
       "category": "Entertainment",
@@ -12767,7 +12701,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 673,
+      "ch_no": 669,
       "id": "ch_v6news",
       "name": "V6 News (576p)",
       "category": "News",
@@ -12791,7 +12725,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 674,
+      "ch_no": 670,
       "id": "ch_vaanaviltv",
       "name": "Vaanavil TV (720p)",
       "category": "Music",
@@ -12815,7 +12749,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 675,
+      "ch_no": 671,
       "id": "ch_valamtv",
       "name": "Valam TV (720p)",
       "category": "Entertainment",
@@ -12833,7 +12767,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 676,
+      "ch_no": 672,
       "id": "ch_vanithatv",
       "name": "Vanitha TV (576p)",
       "category": "Entertainment",
@@ -12851,7 +12785,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 677,
+      "ch_no": 673,
       "id": "ch_vasanthtv",
       "name": "Vasanth TV (576p)",
       "category": "Entertainment",
@@ -12875,7 +12809,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 678,
+      "ch_no": 674,
       "id": "ch_vedic",
       "name": "Vedic (576p)",
       "category": "Entertainment",
@@ -12904,7 +12838,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 679,
+      "ch_no": 675,
       "id": "ch_velichamtv",
       "name": "Velicham TV (576p)",
       "category": "News",
@@ -12928,7 +12862,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 680,
+      "ch_no": 676,
       "id": "ch_vendhartv",
       "name": "Vendhar TV (576p)",
       "category": "Entertainment",
@@ -12952,7 +12886,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 681,
+      "ch_no": 677,
       "id": "ch_vertentsamacharplus24x7",
       "name": "Vertent Samachar Plus 24x7",
       "category": "News",
@@ -12970,7 +12904,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 682,
+      "ch_no": 678,
       "id": "ch_villagetv",
       "name": "Village TV (1080p)",
       "category": "Entertainment",
@@ -12988,7 +12922,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 683,
+      "ch_no": 679,
       "id": "ch_vision",
       "name": "Vision (India) (576p)",
       "category": "Entertainment",
@@ -13006,13 +12940,13 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 684,
+      "ch_no": 680,
       "id": "ch_visionbeats",
       "name": "Vision Beats (720p)",
       "category": "Music",
       "language": "Hindi",
       "tier": "FTA",
-      "logo_url": "https://i.imgur.com/xx5RQdi.png",
+      "logo_url": "https://i.imgur.com/lxR5FKh.png",
       "url": "http://a-edge.bliscdn.com/Visionbeats/index.m3u8",
       "fallback_urls": [],
       "streams": [
@@ -13024,7 +12958,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 685,
+      "ch_no": 681,
       "id": "ch_vissatv",
       "name": "Vissa TV (576p)",
       "category": "Entertainment",
@@ -13042,7 +12976,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 686,
+      "ch_no": 682,
       "id": "ch_vistaarnews",
       "name": "Vistaar News (1080p)",
       "category": "News",
@@ -13060,7 +12994,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 687,
+      "ch_no": 683,
       "id": "ch_vrlive",
       "name": "VR Live (720p)",
       "category": "News",
@@ -13078,7 +13012,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 688,
+      "ch_no": 684,
       "id": "ch_vtvnews",
       "name": "VTV News (576p)",
       "category": "News",
@@ -13096,7 +13030,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 689,
+      "ch_no": 685,
       "id": "ch_vyaschannel",
       "name": "Vyas Channel (576p)",
       "category": "Education",
@@ -13114,7 +13048,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 690,
+      "ch_no": 686,
       "id": "ch_wahpunjabi",
       "name": "Wah Punjabi (720p)",
       "category": "Music",
@@ -13132,7 +13066,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 691,
+      "ch_no": 687,
       "id": "ch_weatherspy",
       "name": "WeatherSpy (India) (720p)",
       "category": "Entertainment",
@@ -13150,7 +13084,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 692,
+      "ch_no": 688,
       "id": "ch_worldpunjabitv",
       "name": "World Punjabi TV (1080p)",
       "category": "News",
@@ -13168,7 +13102,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 693,
+      "ch_no": 689,
       "id": "ch_wowkidz",
       "name": "WOW Kidz (720p)",
       "category": "Kids",
@@ -13186,7 +13120,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 694,
+      "ch_no": 690,
       "id": "ch_wowkidztamil",
       "name": "WOW Kidz Tamil (720p)",
       "category": "Kids",
@@ -13204,7 +13138,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 695,
+      "ch_no": 691,
       "id": "ch_wowkidztelugu",
       "name": "WOW Kidz Telugu (720p)",
       "category": "Kids",
@@ -13222,7 +13156,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 696,
+      "ch_no": 692,
       "id": "ch_yrfmusic",
       "name": "YRF Music (1080p)",
       "category": "Music",
@@ -13240,7 +13174,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 697,
+      "ch_no": 693,
       "id": "ch_yrfmusicnepal",
       "name": "YRF Music Nepal",
       "category": "Music",
@@ -13258,7 +13192,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 698,
+      "ch_no": 694,
       "id": "ch_zainabiachannel",
       "name": "Zainabia Channel",
       "category": "Entertainment",
@@ -13276,7 +13210,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 699,
+      "ch_no": 695,
       "id": "ch_zbbhakti",
       "name": "ZB Bhakti (720p)",
       "category": "Devotional",
@@ -13294,7 +13228,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 700,
+      "ch_no": 696,
       "id": "ch_zbcartoon",
       "name": "ZB Cartoon (1080p)",
       "category": "Kids",
@@ -13312,7 +13246,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 701,
+      "ch_no": 697,
       "id": "ch_zbcinema",
       "name": "ZB Cinema (1080p)",
       "category": "Movies",
@@ -13330,7 +13264,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 702,
+      "ch_no": 698,
       "id": "ch_zbmusic",
       "name": "ZB Music (720p)",
       "category": "Music",
@@ -13348,7 +13282,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 703,
+      "ch_no": 699,
       "id": "ch_zee24kalak",
       "name": "Zee 24 Kalak (720p)",
       "category": "News",
@@ -13366,7 +13300,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 704,
+      "ch_no": 700,
       "id": "ch_zee24taas",
       "name": "Zee 24 Taas (720p)",
       "category": "News",
@@ -13395,7 +13329,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 705,
+      "ch_no": 701,
       "id": "ch_zeebanglahd",
       "name": "Zee Bangla HD (1080p)",
       "category": "Entertainment",
@@ -13413,7 +13347,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 706,
+      "ch_no": 702,
       "id": "ch_zeebharat",
       "name": "Zee Bharat (720p)",
       "category": "News",
@@ -13431,7 +13365,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 707,
+      "ch_no": 703,
       "id": "ch_zeebiharjharkhand",
       "name": "Zee Bihar Jharkhand (720p)",
       "category": "News",
@@ -13449,7 +13383,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 708,
+      "ch_no": 704,
       "id": "ch_zeebusiness",
       "name": "Zee Business (1080p)",
       "category": "Business",
@@ -13473,7 +13407,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 709,
+      "ch_no": 705,
       "id": "ch_zeedelhincrharyana",
       "name": "Zee Delhi NCR Haryana (720p)",
       "category": "News",
@@ -13491,7 +13425,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 710,
+      "ch_no": 706,
       "id": "ch_zeekannadanews",
       "name": "Zee Kannada News (720p)",
       "category": "News",
@@ -13509,7 +13443,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 711,
+      "ch_no": 707,
       "id": "ch_zeemadhyapradeshchhattisgarh",
       "name": "Zee Madhya Pradesh Chhattisgarh (720p)",
       "category": "News",
@@ -13527,7 +13461,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 712,
+      "ch_no": 708,
       "id": "ch_zeenews",
       "name": "Zee News (1080p)",
       "category": "News",
@@ -13551,7 +13485,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 713,
+      "ch_no": 709,
       "id": "ch_zeepunjabharyanahimachal",
       "name": "Zee Punjab Haryana Himachal (720p)",
       "category": "News",
@@ -13569,7 +13503,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 714,
+      "ch_no": 710,
       "id": "ch_zeerajasthan",
       "name": "Zee Rajasthan (720p)",
       "category": "News",
@@ -13587,7 +13521,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 715,
+      "ch_no": 711,
       "id": "ch_zeetamilnews",
       "name": "Zee Tamil News (720p)",
       "category": "News",
@@ -13605,7 +13539,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 716,
+      "ch_no": 712,
       "id": "ch_zeetelugunews",
       "name": "Zee Telugu News (720p)",
       "category": "News",
@@ -13623,7 +13557,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 717,
+      "ch_no": 713,
       "id": "ch_zeeuttarpradeshuttarakhand",
       "name": "Zee Uttar Pradesh/Uttarakhand (720p)",
       "category": "News",
@@ -13647,7 +13581,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 718,
+      "ch_no": 714,
       "id": "ch_zillarbartanews",
       "name": "ZillarBarta News",
       "category": "News",
@@ -13665,7 +13599,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 719,
+      "ch_no": 715,
       "id": "ch_zingabad",
       "name": "Zingabad (1080p)",
       "category": "Entertainment",
@@ -13683,7 +13617,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 720,
+      "ch_no": 716,
       "id": "ch_zoom",
       "name": "Zoom (India) (720p)",
       "category": "Music",
@@ -13701,7 +13635,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 721,
+      "ch_no": 717,
       "id": "ch_zoomnepal",
       "name": "Zoom (India) Nepal (720p)",
       "category": "Music",
@@ -13719,7 +13653,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 722,
+      "ch_no": 718,
       "id": "ch_chhayachitramtelugu",
       "name": "Chhaya Chitram Telugu (360p)",
       "category": "Regional",
@@ -13743,7 +13677,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 723,
+      "ch_no": 719,
       "id": "ch_ddmalayalam",
       "name": "DD Malayalam (576p)",
       "category": "Regional",
@@ -13761,7 +13695,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 724,
+      "ch_no": 720,
       "id": "ch_ddodia",
       "name": "DD Odia (576p)",
       "category": "Regional",
@@ -13779,7 +13713,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 725,
+      "ch_no": 721,
       "id": "ch_ddpunjabi",
       "name": "DD Punjabi (576p)",
       "category": "Regional",
@@ -13797,7 +13731,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 726,
+      "ch_no": 722,
       "id": "ch_ddtamil",
       "name": "DD Tamil (576p)",
       "category": "Regional",
@@ -13821,7 +13755,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 727,
+      "ch_no": 723,
       "id": "ch_ddtamilhd",
       "name": "DD Tamil HD (1080p)",
       "category": "Regional",
@@ -13839,7 +13773,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 728,
+      "ch_no": 724,
       "id": "ch_faktmarathi",
       "name": "Fakt Marathi (576p)",
       "category": "Regional",
@@ -13857,7 +13791,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 729,
+      "ch_no": 725,
       "id": "ch_godstandstvpunjabi",
       "name": "God Stands TV Punjabi",
       "category": "Regional",
@@ -13875,7 +13809,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 730,
+      "ch_no": 726,
       "id": "ch_gtcpunjabi",
       "name": "GTC Punjabi (1080p)",
       "category": "Regional",
@@ -13893,7 +13827,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 731,
+      "ch_no": 727,
       "id": "ch_gtcpunjabiuk",
       "name": "GTC Punjabi UK (1080p)",
       "category": "Regional",
@@ -13911,7 +13845,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 732,
+      "ch_no": 728,
       "id": "ch_gtcpunjabius",
       "name": "GTC Punjabi US (1080p)",
       "category": "Regional",
@@ -13929,7 +13863,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 733,
+      "ch_no": 729,
       "id": "ch_mahapunjabi",
       "name": "Maha Punjabi (576p)",
       "category": "Regional",
@@ -13947,7 +13881,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 734,
+      "ch_no": 730,
       "id": "ch_nkrtvkannada",
       "name": "NKR TV Kannada (1080p)",
       "category": "Regional",
@@ -13965,7 +13899,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 735,
+      "ch_no": 731,
       "id": "ch_pmctelugu",
       "name": "PMC Telugu (1080p)",
       "category": "Regional",
@@ -13983,7 +13917,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 736,
+      "ch_no": 732,
       "id": "ch_ptcpunjabi",
       "name": "PTC Punjabi (576p)",
       "category": "Regional",
@@ -14012,7 +13946,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 737,
+      "ch_no": 733,
       "id": "ch_ptcpunjabigold",
       "name": "PTC Punjabi Gold (1080p)",
       "category": "Regional",
@@ -14036,7 +13970,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 738,
+      "ch_no": 734,
       "id": "ch_ptcpunjabihd",
       "name": "PTC Punjabi HD (1080p)",
       "category": "Regional",
@@ -14054,7 +13988,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 739,
+      "ch_no": 735,
       "id": "ch_punjabitv",
       "name": "Punjabi TV (720p)",
       "category": "Regional",
@@ -14078,7 +14012,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 740,
+      "ch_no": 736,
       "id": "ch_shemaroomarathibana",
       "name": "Shemaroo Marathi Bana (720p)",
       "category": "Regional",
@@ -14102,7 +14036,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 741,
+      "ch_no": 737,
       "id": "ch_sirikannadaalltime",
       "name": "Siri Kannada All Time (576p)",
       "category": "Regional",
@@ -14120,7 +14054,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 742,
+      "ch_no": 738,
       "id": "ch_tamilratna",
       "name": "Tamil Ratna",
       "category": "Regional",
@@ -14138,7 +14072,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 743,
+      "ch_no": 739,
       "id": "ch_tamilantv",
       "name": "Tamilan TV (576p)",
       "category": "Regional",
@@ -14156,7 +14090,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 744,
+      "ch_no": 740,
       "id": "ch_tamilvisiontv",
       "name": "TamilVision-TV (1080p)",
       "category": "Regional",
@@ -14174,7 +14108,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 745,
+      "ch_no": 741,
       "id": "ch_teluguone",
       "name": "Telugu One (1080p)",
       "category": "Regional",
@@ -14192,7 +14126,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 746,
+      "ch_no": 742,
       "id": "ch_wpnworldpunjabi",
       "name": "WPN World Punjabi",
       "category": "Regional",
@@ -14210,7 +14144,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 747,
+      "ch_no": 743,
       "id": "ch_zeekannadahd",
       "name": "Zee Kannada HD (1080p)",
       "category": "Regional",
@@ -14228,7 +14162,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 748,
+      "ch_no": 744,
       "id": "ch_zeemarathihd",
       "name": "Zee Marathi HD (720p)",
       "category": "Regional",
@@ -14246,7 +14180,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 749,
+      "ch_no": 745,
       "id": "ch_zeeteluguhd",
       "name": "Zee Telugu HD (720p)",
       "category": "Regional",
@@ -14264,7 +14198,7 @@
       "quality": "1080p FHD"
     },
     {
-      "ch_no": 750,
+      "ch_no": 746,
       "id": "ch_zodiaktv",
       "name": "Zodiak TV (1080p)",
       "category": "Regional",
