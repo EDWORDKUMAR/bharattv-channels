@@ -94,6 +94,11 @@ INDIAN_LANG_CODES: dict[str, str] = {
     "snd": "Sindhi",
 }
 
+# Only native regional/national Indian broadcast languages trigger non-.in diaspora discovery.
+# English ("eng") / Urdu ("urd") / Nepali ("nep") are excluded here so global US/UK/EU/PK/NP
+# feeds are not pulled unless the channel's own country/broadcast area is India ("IN" / "c/IN").
+INDIAN_FEED_TRIGGER_LANGS: frozenset[str] = frozenset(INDIAN_LANG_CODES) - {"eng", "urd", "nep"}
+
 DEAD_HOST_SUBSTRINGS: tuple[str, ...] = (
     "d1g8wgjurz8via.cloudfront.net",
     "103.151.60.162",
@@ -123,8 +128,8 @@ def canonical_channel_key(name: str, tvg_id: str = "") -> str:
     paren_tokens: list[str] = []
     for m in re.finditer(r"[\(\[]([^\)\]]+)[\)\]]", raw):
         inner = m.group(1).strip().lower()
-        # Ignore pure resolution or status notes like (1080p), (720p), [Not 24/7], [Geo-blocked]
-        if re.fullmatch(r"\d{3,4}p|hd|sd|fhd|4k|uhd|not\s*24/7|geo[-\s]*blocked|backup|mirror|india|in", inner):
+        # Ignore pure resolution or status notes like (1080p), (1080i), (720p), [Not 24/7], [Geo-blocked]
+        if re.fullmatch(r"\d{3,4}[pi]|hd|sd|fhd|4k|uhd|not\s*24/7|geo[-\s]*blocked|backup|mirror|india|in", inner):
             continue
         paren_tokens.append(re.sub(r"[^a-z0-9]+", "", inner))
 
@@ -270,35 +275,51 @@ PAID_BRAND_PATTERNS: tuple[str, ...] = (
     "zee bangla", "zee tamil", "zee telugu", "zee kannada", "zee keralam", "zee punjabi",
     "zee sarthak", "zee picchar", "zee cinemalu", "zee thirai", "zee zest", "&tv", "and tv",
     "&pictures", "and pictures", "&flix", "and flix", "&privé",
-    "colors", "mtv", "nick", "sonic", "vh1", "comedy central", "sports18",
-    "cartoon network", "pogo", "wb", "hbo", "cnn",
+    "colors", "mtv", "nick", "nickelodeon", "sonic", "vh1", "comedy central", "sports18",
+    "cartoon network", "pogo", "wb channel", "warner", "hbo", "cnn",
     "disney", "hungama", "super hungama", "national geographic", "nat geo", "fox life",
-    "discovery", "animal planet", "tlc", "eurosport", "investigation discovery", "science",
-    "history tv18", "fyi", "cnbc", "et now",
-    "sun tv", "ktv", "adithya", "sun music", "sun life", "gemini", "udaya", "surya",
+    "discovery", "animal planet", "tlc", "eurosport", "investigation discovery",
+    "discovery science", "science channel",
+    "history tv18", "fyi tv18", "cnbc", "et now",
+    "sun tv", "ktv", "adithya", "sun music", "sun life", "gemini", "udaya",
+    "surya tv", "surya movies", "surya comedy", "surya music",
     "asianet", "mazhavil", "etv", "raj tv", "jaya tv", "polimer",
 )
 
 FTA_BRAND_PATTERNS: tuple[str, ...] = (
-    "dd ", "doordarshan", "sansad", "lok sabha", "rajya sabha", "all india radio",
+    "dd", "doordarshan", "sansad", "lok sabha", "rajya sabha", "all india radio",
+    "star utsav", "zee anmol", "sony pal", "sony wah", "colors rishtey",
     "dangal", "shemaroo", "goldmines", "b4u", "enterr10", "manoranjan", "dhamaal",
     "mastiii", "9xm", "9x jalwa", "9x tashan", "9x jhakaas", "zoom", "showbox",
     "aaj tak", "abp", "india tv", "republic", "tv9", "ndtv india", "news18", "zee news",
     "zee bharat", "zee hindustan", "zee business", "good news today", "gnt", "news 24",
     "news nation", "india news", "sudarshan", "public tv", "otv", "kanak", "kalinga",
+    "surya samachar", "ktv bangla", "etv bharat",
     "aastha", "sanskar", "sadhna", "ishwar", "paras", "peace of mind", "mh one",
     "ptc", "chardikla", "bhojpuri cinema", "fakt marathi", "faktananda",
 )
 
 
+def _compile_brand_regex(patterns: tuple[str, ...]) -> re.Pattern[str]:
+    alts = "|".join(re.escape(p) for p in patterns)
+    return re.compile(rf"(?<!\w)(?:{alts})(?!\w)", re.IGNORECASE)
+
+
+_PAID_BRAND_RE = _compile_brand_regex(PAID_BRAND_PATTERNS)
+_FTA_BRAND_RE = _compile_brand_regex(FTA_BRAND_PATTERNS)
+_FTA_REGIONAL_NEWS_RE = re.compile(
+    r"(?<!\w)(?:zee|asianet|polimer|etv|sun)\b.*\b(?:news|samachar|khabar|seithigal)(?!\w)",
+    re.IGNORECASE,
+)
+
+
 def classify_tier(name: str, raw_group: str = "") -> str:
-    text = f"{name} {raw_group}".lower()
-    if any(fta in text for fta in FTA_BRAND_PATTERNS):
-        # Note: Star Utsav, Zee Anmol, Sony Pal, Colors Rishtey are also FreeDish/FTA friendly
+    clean_name = (name or "").strip().lower()
+    if not clean_name:
         return "FTA"
-    if any(ft in text for ft in ("star utsav", "zee anmol", "sony pal", "colors rishtey")):
+    if _FTA_BRAND_RE.search(clean_name) or _FTA_REGIONAL_NEWS_RE.search(clean_name):
         return "FTA"
-    if any(paid in text for paid in PAID_BRAND_PATTERNS):
+    if _PAID_BRAND_RE.search(clean_name):
         return "PAID"
     return "FTA"
 
@@ -379,21 +400,27 @@ USER_AGENT = (
 )
 
 
-def fetch_text(url: str, timeout: float = 15.0) -> str:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "*/*",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            raw = resp.read()
-            return raw.decode("utf-8", errors="replace")
-    except Exception as exc:
-        print(f"[Warn] Failed to fetch {url}: {exc}", file=sys.stderr)
-        return ""
+def fetch_text(url: str, timeout: float = 15.0, retries: int = 3) -> str:
+    last_exc: Exception | None = None
+    for attempt in range(1, max(1, retries) + 1):
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": USER_AGENT,
+                "Accept": "*/*",
+                "Connection": "close",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read()
+                return raw.decode("utf-8", errors="replace")
+        except Exception as exc:
+            last_exc = exc
+            if attempt < retries:
+                time.sleep(1.0 * attempt)
+    print(f"[Warn] Failed to fetch {url} after {retries} attempts: {last_exc}", file=sys.stderr)
+    return ""
 
 
 def parse_m3u_entries(m3u_text: str, default_lang: str = "Hindi") -> list[dict[str, Any]]:
@@ -423,9 +450,9 @@ def parse_m3u_entries(m3u_text: str, default_lang: str = "Hindi") -> list[dict[s
             if not display_name and name_m:
                 display_name = name_m.group(1).strip()
 
-            # Clean display_name of noisy tags like (1080p) [Not 24/7] while keeping language/variant tags
-            clean_display = re.sub(r"\s*[\(\[](\d{3,4}p|not\s*24/7|geo[-\s]*blocked|backup)[\)\]]", "", display_name, flags=re.I).strip()
-            res_m = re.search(r"(\d{3,4}p)", display_name, re.I)
+            # Clean display_name of noisy tags like (1080p) (1080i) [Not 24/7] while keeping language/variant tags
+            clean_display = re.sub(r"\s*[\(\[](\d{3,4}[pi]|not\s*24/7|geo[-\s]*blocked|backup)[\)\]]", "", display_name, flags=re.I).strip()
+            res_m = re.search(r"(\d{3,4}[pi])", display_name, re.I)
 
             cur_meta = {
                 "tvg_id": id_m.group(1).strip() if id_m else "",
@@ -467,10 +494,10 @@ def discover_from_iptv_org_api() -> list[dict[str, Any]]:
     and extracts all Indian channels (country == 'IN' or Indian broadcast languages) with exact channel IDs.
     """
     print("[Discovery] Fetching official IPTV-org JSON API...")
-    channels_raw = fetch_text(IPTV_API_CHANNELS, timeout=20.0)
-    streams_raw = fetch_text(IPTV_API_STREAMS, timeout=25.0)
-    logos_raw = fetch_text(IPTV_API_LOGOS, timeout=20.0)
-    feeds_raw = fetch_text(IPTV_API_FEEDS, timeout=20.0)
+    channels_raw = fetch_text(IPTV_API_CHANNELS, timeout=25.0, retries=3)
+    streams_raw = fetch_text(IPTV_API_STREAMS, timeout=30.0, retries=3)
+    logos_raw = fetch_text(IPTV_API_LOGOS, timeout=25.0, retries=3)
+    feeds_raw = fetch_text(IPTV_API_FEEDS, timeout=25.0, retries=3)
 
     if not channels_raw or not streams_raw:
         return []
@@ -501,7 +528,7 @@ def discover_from_iptv_org_api() -> list[dict[str, Any]]:
             continue
         langs = fd.get("languages") or []
         areas = fd.get("broadcast_area") or []
-        if any(a in ("c/IN", "r/SAS") for a in areas) or any(l in INDIAN_LANG_CODES for l in langs):
+        if "c/IN" in areas or any(l in INDIAN_FEED_TRIGGER_LANGS for l in langs):
             indian_feed_channels.add(cid)
         for lcode in langs:
             if lcode in INDIAN_LANG_CODES and cid not in feed_lang_map:
@@ -555,7 +582,12 @@ def discover_from_iptv_org_api() -> list[dict[str, Any]]:
 # 5. Stream Health Probing (Concurrent HLS Manifest Verification)
 # ---------------------------------------------------------------------------
 
-def probe_hls_stream(url: str, timeout: float = 6.5) -> tuple[bool, int]:
+def probe_hls_stream(
+    url: str,
+    timeout: float = 6.5,
+    user_agent: str = "",
+    referrer: str = "",
+) -> tuple[bool, int]:
     """
     Checks if a stream URL is alive and returns a valid HLS playlist or media stream.
     Returns (is_alive, latency_ms).
@@ -566,14 +598,18 @@ def probe_hls_stream(url: str, timeout: float = 6.5) -> tuple[bool, int]:
     if any(dead in url.lower() for dead in DEAD_HOST_SUBSTRINGS):
         return (False, 99999)
 
+    ua = (user_agent or "").replace("\r", "").replace("\n", "").strip() or USER_AGENT
+    ref = (referrer or "").replace("\r", "").replace("\n", "").strip()
+    headers = {
+        "User-Agent": ua,
+        "Accept": "application/vnd.apple.mpegurl,application/x-mpegurl,*/*",
+        "Connection": "close",
+    }
+    if ref:
+        headers["Referer"] = ref
+
     start_ts = time.monotonic()
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "application/vnd.apple.mpegurl,application/x-mpegurl,*/*",
-        },
-    )
+    req = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             status = getattr(resp, "status", 200)
@@ -631,6 +667,7 @@ def build_catalogue() -> tuple[list[dict[str, Any]], str]:
     # 4. Group by canonical channel identity
     grouped: dict[str, dict[str, Any]] = {}
     candidate_urls: set[str] = set()
+    url_headers: dict[str, tuple[str, str]] = {}
 
     for rec in raw_records:
         name = (rec.get("name") or "").strip()
@@ -677,13 +714,26 @@ def build_catalogue() -> tuple[list[dict[str, Any]], str]:
         if url not in entry["urls"]:
             entry["urls"].append(url)
             candidate_urls.add(url)
+        ua = (rec.get("user_agent") or "").strip()
+        ref = (rec.get("referrer") or "").strip()
+        if (ua or ref) and url not in url_headers:
+            url_headers[url] = (ua, ref)
 
     print(f"[Verify] Probing {len(candidate_urls)} unique HTTPS stream URLs across {len(grouped)} channels...")
 
     # 5. Concurrent health check of all candidate URLs
     url_health: dict[str, tuple[bool, int]] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=40) as pool:
-        fut_to_url = {pool.submit(probe_hls_stream, u): u for u in candidate_urls}
+        fut_to_url = {
+            pool.submit(
+                probe_hls_stream,
+                u,
+                6.5,
+                url_headers.get(u, ("", ""))[0],
+                url_headers.get(u, ("", ""))[1],
+            ): u
+            for u in candidate_urls
+        }
         for fut in concurrent.futures.as_completed(fut_to_url):
             u = fut_to_url[fut]
             try:
@@ -770,11 +820,15 @@ def main() -> None:
         "channels": channels,
     }
 
-    Path("channels.json").write_text(
+    json_tmp = Path("channels.json.tmp")
+    m3u_tmp = Path("channels.m3u.tmp")
+    json_tmp.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    Path("channels.m3u").write_text(m3u_text, encoding="utf-8")
+    m3u_tmp.write_text(m3u_text, encoding="utf-8")
+    os.replace(json_tmp, Path("channels.json"))
+    os.replace(m3u_tmp, Path("channels.m3u"))
     print(
         f"[Success] Wrote {len(channels)} verified channels "
         f"(FTA: {payload['fta_channels']}, PAID: {payload['paid_channels']}) "
