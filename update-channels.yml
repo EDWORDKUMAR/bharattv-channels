@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -46,7 +46,14 @@ jobs:
           python - <<'PY'
           import json
           import re
+          import sys
           from pathlib import Path
+
+          for candidate in (Path('tools'), Path('.')):
+              if (candidate / 'channel_updater.py').is_file():
+                  sys.path.insert(0, str(candidate))
+                  break
+          from channel_updater import canonical_channel_key
 
           data = json.loads(Path('channels.json').read_text(encoding='utf-8'))
           channels = data.get('channels', [])
@@ -69,13 +76,14 @@ jobs:
 
               # Guard against known cross-channel stream mismatches (e.g. Zee Cinema on SET Max)
               lname = re.sub(r'[^a-z0-9]', '', name.lower())
+              owner_key = canonical_channel_key(name, channel.get('id', '')) or lname
               lurl = url.lower()
               if ('sonymax' in lname or 'setmax' in lname) and ('zeecinema' in lurl or '/live/53/' in lurl):
                   raise SystemExit(f"Blocked cross-channel mismatch on {name}: {url}")
               if 'starsports' in lname and ('b17adfe543354fdd8d189b110617cddd' in lurl or '/live/1161/' in lurl):
                   raise SystemExit(f"Blocked generic sports stream on {name}: {url}")
 
-              url_owners.setdefault(url, set()).add(lname)
+              url_owners.setdefault(url, set()).add(owner_key)
               if len(url_owners[url]) >= 3:
                   raise SystemExit(f"Stream URL reused across 3+ unrelated channels ({url_owners[url]}): {url}")
 
@@ -95,5 +103,6 @@ jobs:
             echo "No changes in channels. Everything is up to date."
           else
             git commit -m "Auto-update verified Indian FTA & Paid channel catalogue (5x daily) [skip ci]"
+            git pull --rebase
             git push
           fi
