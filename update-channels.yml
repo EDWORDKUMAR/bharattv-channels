@@ -2,13 +2,12 @@ name: Auto Update Bharat TV Channels
 
 on:
   schedule:
-    # 3 Times Daily (IST Schedule):
-    # 1. 00:30 UTC = 06:00 AM IST (Morning Refresh)
-    # 2. 08:30 UTC = 02:00 PM IST (Mid-Day Refresh)
-    # 3. 14:30 UTC = 08:00 PM IST (Prime-Time Peak Refresh)
-    - cron: '30 0 * * *'
-    - cron: '30 8 * * *'
-    - cron: '30 14 * * *'
+    # 07:00, 12:00, 16:00, 19:00 and 22:00 IST (UTC cron).
+    - cron: '30 1 * * *'
+    - cron: '30 6 * * *'
+    - cron: '30 10 * * *'
+    - cron: '30 13 * * *'
+    - cron: '30 16 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI anytime
 
 permissions:
@@ -17,27 +16,75 @@ permissions:
 jobs:
   update-channels:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: channel-catalog-refresh
+      cancel-in-progress: false
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run Channel Discovery & Health Check
+      - name: Run Multi-Source Indian Channel Discovery & Deep HLS Verification
         run: |
           if [ -f "tools/channel_updater.py" ]; then
             python tools/channel_updater.py
           elif [ -f "channel_updater.py" ]; then
             python channel_updater.py
           else
-            echo "Error: channel_updater.py file nahi mili!"
-            ls -la
+            echo "Error: channel_updater.py not found in tools/ or repository root"
             exit 1
           fi
+
+      - name: Validate Generated Catalogue & Stream Identity Integrity
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          data = json.loads(Path('channels.json').read_text(encoding='utf-8'))
+          channels = data.get('channels', [])
+          if not channels or len(channels) != data.get('total_channels'):
+              raise SystemExit('Refusing to publish an empty or inconsistent channel catalogue')
+
+          # Track stream usage across channels to prevent generic stream reuse
+          url_owners = {}
+          for channel in channels:
+              name = channel.get('name', '').strip()
+              url = channel.get('url', '').strip()
+              fallbacks = channel.get('fallback_urls', [])
+
+              if not name or not url or not url.startswith('https://'):
+                  raise SystemExit(f"Invalid or insecure stream entry: {name or '<unnamed>'}")
+              if url in fallbacks:
+                  raise SystemExit(f"Duplicate primary/fallback stream: {name}")
+              if channel.get('tier') not in ('FTA', 'PAID'):
+                  raise SystemExit(f"Missing or invalid FTA/PAID tier on channel: {name}")
+
+              # Guard against known cross-channel stream mismatches (e.g. Zee Cinema on SET Max)
+              lname = re.sub(r'[^a-z0-9]', '', name.lower())
+              lurl = url.lower()
+              if ('sonymax' in lname or 'setmax' in lname) and ('zeecinema' in lurl or '/live/53/' in lurl):
+                  raise SystemExit(f"Blocked cross-channel mismatch on {name}: {url}")
+              if 'starsports' in lname and ('b17adfe543354fdd8d189b110617cddd' in lurl or '/live/1161/' in lurl):
+                  raise SystemExit(f"Blocked generic sports stream on {name}: {url}")
+
+              url_owners.setdefault(url, set()).add(lname)
+              if len(url_owners[url]) >= 3:
+                  raise SystemExit(f"Stream URL reused across 3+ unrelated channels ({url_owners[url]}): {url}")
+
+          print(
+              f"Validated {len(channels)} HTTPS channel entries "
+              f"(FTA: {data.get('fta_channels', 0)}, PAID: {data.get('paid_channels', 0)}) "
+              f"with zero cross-channel mismatches."
+          )
+          PY
 
       - name: Commit and Push Updated Channels
         run: |
@@ -47,6 +94,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes in channels. Everything is up to date."
           else
-            git commit -m "Auto-update verified channels (3x daily) [skip ci]"
+            git commit -m "Auto-update verified Indian FTA & Paid channel catalogue (5x daily) [skip ci]"
             git push
           fi
