@@ -1,0 +1,720 @@
+{
+  "description": "Curated India-oriented premium WATCHLIST; not a validated current channel lineup, not streaming URLs.",
+  "targets": [
+    {
+      "name": "Star Sports 1",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 HD",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 Hindi",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 Hindi HD",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 Tamil",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 Telugu",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 1 Kannada",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 2",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 2 HD",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports 3",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports Select 1",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports Select 1 HD",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports Select 2",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports Select 2 HD",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Sports First",
+      "network": "JioStar",
+      "category": "Sports"
+    },
+    {
+      "name": "Star Plus",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Plus HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Bharat",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Bharat HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Jalsha",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Jalsha HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Pravah",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Pravah HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Maa",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Maa HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Vijay",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Vijay HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Suvarna",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Suvarna HD",
+      "network": "JioStar",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Star Gold",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold HD",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold 2",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold Select",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold Select HD",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold Romance",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Gold Thrills",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Movies",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Star Movies Select HD",
+      "network": "JioStar",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony Sports Ten 1",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 1 HD",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 2",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 2 HD",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 3",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 3 HD",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 4",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 4 HD",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 5",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Sports Ten 5 HD",
+      "network": "Sony Pictures Networks",
+      "category": "Sports"
+    },
+    {
+      "name": "Sony Entertainment Television",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony Entertainment Television HD",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony SAB",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony SAB HD",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony Marathi",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony Aath",
+      "network": "Sony Pictures Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sony MAX",
+      "network": "Sony Pictures Networks",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony MAX HD",
+      "network": "Sony Pictures Networks",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony MAX 2",
+      "network": "Sony Pictures Networks",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony PIX",
+      "network": "Sony Pictures Networks",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony PIX HD",
+      "network": "Sony Pictures Networks",
+      "category": "Movies"
+    },
+    {
+      "name": "Sony YAY!",
+      "network": "Sony Pictures Networks",
+      "category": "Kids"
+    },
+    {
+      "name": "Zee TV",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee TV HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "&TV",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "&TV HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Marathi",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Marathi HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Bangla",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Bangla HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Tamil",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Tamil HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Telugu",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Telugu HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Kannada",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Kannada HD",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Punjabi",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Sarthak",
+      "network": "Zee",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Zee Cinema",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Cinema HD",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Action",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Classic",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Bollywood",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "&pictures",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "&pictures HD",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "&flix",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "&flix HD",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Talkies",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Cinemalu",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Zee Thirai",
+      "network": "Zee",
+      "category": "Movies"
+    },
+    {
+      "name": "Colors",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors HD",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Marathi",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Marathi HD",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Bangla",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Bangla HD",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Kannada",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Kannada HD",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Tamil",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Tamil HD",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "MTV India",
+      "network": "JioStar / Colors",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Colors Cineplex",
+      "network": "JioStar / Colors",
+      "category": "Movies"
+    },
+    {
+      "name": "Colors Cineplex HD",
+      "network": "JioStar / Colors",
+      "category": "Movies"
+    },
+    {
+      "name": "Colors Cineplex Superhits",
+      "network": "JioStar / Colors",
+      "category": "Movies"
+    },
+    {
+      "name": "Nickelodeon India",
+      "network": "JioStar / Colors",
+      "category": "Kids"
+    },
+    {
+      "name": "Nick HD+",
+      "network": "JioStar / Colors",
+      "category": "Kids"
+    },
+    {
+      "name": "Nick Jr. India",
+      "network": "JioStar / Colors",
+      "category": "Kids"
+    },
+    {
+      "name": "Sonic India",
+      "network": "JioStar / Colors",
+      "category": "Kids"
+    },
+    {
+      "name": "Cartoon Network India",
+      "network": "Warner Bros. Discovery",
+      "category": "Kids"
+    },
+    {
+      "name": "Cartoon Network HD+",
+      "network": "Warner Bros. Discovery",
+      "category": "Kids"
+    },
+    {
+      "name": "Pogo",
+      "network": "Warner Bros. Discovery",
+      "category": "Kids"
+    },
+    {
+      "name": "Pogo HD",
+      "network": "Warner Bros. Discovery",
+      "category": "Kids"
+    },
+    {
+      "name": "Discovery Kids India",
+      "network": "Warner Bros. Discovery",
+      "category": "Kids"
+    },
+    {
+      "name": "Discovery Channel India",
+      "network": "Warner Bros. Discovery",
+      "category": "Education"
+    },
+    {
+      "name": "Discovery HD World",
+      "network": "Warner Bros. Discovery",
+      "category": "Education"
+    },
+    {
+      "name": "Animal Planet India",
+      "network": "Warner Bros. Discovery",
+      "category": "Education"
+    },
+    {
+      "name": "TLC India",
+      "network": "Warner Bros. Discovery",
+      "category": "Education"
+    },
+    {
+      "name": "Eurosport India",
+      "network": "Warner Bros. Discovery",
+      "category": "Education"
+    },
+    {
+      "name": "Disney Channel India",
+      "network": "Disney / JioStar",
+      "category": "Kids"
+    },
+    {
+      "name": "Disney Junior India",
+      "network": "Disney / JioStar",
+      "category": "Kids"
+    },
+    {
+      "name": "Hungama TV",
+      "network": "Disney / JioStar",
+      "category": "Kids"
+    },
+    {
+      "name": "Super Hungama",
+      "network": "Disney / JioStar",
+      "category": "Kids"
+    },
+    {
+      "name": "National Geographic India",
+      "network": "Disney / JioStar",
+      "category": "Education"
+    },
+    {
+      "name": "National Geographic HD",
+      "network": "Disney / JioStar",
+      "category": "Education"
+    },
+    {
+      "name": "Nat Geo Wild India",
+      "network": "Disney / JioStar",
+      "category": "Education"
+    },
+    {
+      "name": "Nat Geo Wild HD",
+      "network": "Disney / JioStar",
+      "category": "Education"
+    },
+    {
+      "name": "Sun TV",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Sun TV HD",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Gemini TV",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Gemini TV HD",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Udaya TV",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Surya TV",
+      "network": "Sun TV Network",
+      "category": "Entertainment"
+    },
+    {
+      "name": "KTV",
+      "network": "Sun TV Network",
+      "category": "Movies"
+    },
+    {
+      "name": "KTV HD",
+      "network": "Sun TV Network",
+      "category": "Movies"
+    },
+    {
+      "name": "Sun Life",
+      "network": "Sun TV Network",
+      "category": "Movies"
+    },
+    {
+      "name": "Sun Action",
+      "network": "Sun TV Network",
+      "category": "Movies"
+    },
+    {
+      "name": "Asianet",
+      "network": "Other Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Asianet HD",
+      "network": "Other Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Mazhavil Manorama",
+      "network": "Other Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Raj TV",
+      "network": "Other Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "Jaya TV",
+      "network": "Other Networks",
+      "category": "Entertainment"
+    },
+    {
+      "name": "History TV18",
+      "network": "Other Networks",
+      "category": "Education"
+    },
+    {
+      "name": "BBC Earth India",
+      "network": "Other Networks",
+      "category": "Education"
+    },
+    {
+      "name": "CNBC-TV18",
+      "network": "Other Networks",
+      "category": "Business"
+    },
+    {
+      "name": "CNBC Awaaz",
+      "network": "Other Networks",
+      "category": "Business"
+    }
+  ]
+}

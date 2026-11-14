@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bharat TV Smart Bot v3.1 — India-first IPTV and premium sports discovery diagnostics.
+"""Bharat TV Smart Bot v3.3 — India-first, recovery, full Indian paid channel audit.
 
 Python 3.11+; only stdlib. GitHub Actions friendly. Preserves the existing
 channels.json / channels.m3u *live channel* interface. Offline channels are
@@ -38,6 +38,10 @@ API_ENDPOINTS = {
 }
 M3U_SOURCES = [
     ('IPTV-org India', 'https://iptv-org.github.io/iptv/countries/in.m3u'),
+    # Category lists improve Indian coverage, but never confer Indian identity by themselves.
+    # Every entry must still match an Indian metadata channel ID.
+    *[(f'IPTV-org {category.title()}', f'https://iptv-org.github.io/iptv/categories/{category}.m3u')
+      for category in ('news', 'movies', 'entertainment', 'kids', 'music', 'sports')],
     *[(f'IPTV-org {language}', f'https://iptv-org.github.io/iptv/languages/{code}.m3u')
       for language, code in [
           ('Hindi','hin'), ('Tamil','tam'), ('Telugu','tel'), ('Malayalam','mal'),
@@ -46,18 +50,25 @@ M3U_SOURCES = [
           ('Urdu','urd')
       ]]
 ]
-USER_AGENT = 'BharatTV-SmartBot/3.1 (+India feeds, sports diagnostics)'
+USER_AGENT = 'BharatTV-SmartBot/3.3 (+India feeds, safe full paid audit)'
 WORKERS = max(4, min(40, int(os.getenv('SCAN_WORKERS', '24'))))
 ALLOW_COMMUNITY_FTA = os.getenv('ALLOW_COMMUNITY_FTA', '0') == '1'
 SPORTS_DISCOVERY = os.getenv('SPORTS_DISCOVERY', '1') == '1'
 PREMIUM_DISCOVERY = os.getenv('PREMIUM_DISCOVERY', '1') == '1'
 SPORTS_MAX_CANDIDATES = max(1, min(400, int(os.getenv('SPORTS_MAX_CANDIDATES', '160'))))
 OUTPUT_JSON = Path('channels.json')
+# Prevent unexpected reductions in the published playlist after upstream outages.
+MIN_FTA_RETENTION_RATIO = min(1.0, max(0.0, float(os.getenv('MIN_FTA_RETENTION_RATIO', '0.65'))))
+# Maximum missing previously-published FTA channels to re-test per workflow run.
+MAX_FTA_RESCUE = max(0, min(1000, int(os.getenv('MAX_FTA_RESCUE', '240'))))
+
 OUTPUT_M3U = Path('channels.m3u')
 OFFLINE_JSON = Path('offline_channels.json')
 REPORT_JSON = Path('scan_report.json')
 SPORTS_REPORT_JSON = Path('sports_discovery.json')
 SPORTS_TARGETS_JSON = Path(__file__).with_name('sports_targets.json')
+PREMIUM_TARGETS_JSON = Path(__file__).with_name('premium_targets.json')
+PAID_AUDIT_JSON = Path('paid_channel_audit.json')
 MAX_TEXT = 1_000_000
 MAX_PLAYLIST = 256_000
 LANGUAGE_CODES = {name: code for code, name in [
@@ -554,7 +565,9 @@ def parse_channel_id(tvg_id: str) -> tuple[str, str]:
     return (base, feed)
 
 
-def load_previous(path: Path = OUTPUT_JSON) -> dict[str, dict[str, Any]]:
+def load_previous(path: Path | None = None) -> dict[str, dict[str, Any]]:
+    if path is None:
+        path = OUTPUT_JSON
     try:
         payload = json.loads(path.read_text('utf-8'))
         return {str(x['id']).split('@')[0]: x for x in payload.get('channels', []) if x.get('id')}
@@ -877,6 +890,70 @@ def _rank(c: Candidate, result: Result, previous_url: str) -> tuple[int, int]:
     return (-score, result.latency_ms)
 
 
+def rescue_previous_fta(previous: dict[str, dict[str, Any]],
+                        live: list[dict[str, Any]],
+                        metadata: dict[str, dict[str, Any]],
+                        now: str,
+                        stats: Counter[str]) -> list[dict[str, Any]]:
+    """Recheck and keep previously published FTA feeds when discovery temporarily misses them.
+
+    Does not rescue paid channels, unknown identities, foreign feeds, or stale/failed URLs.
+    A successful *new* media probe is mandatory; previous success alone is insufficient.
+    """
+    if not ALLOW_COMMUNITY_FTA or MAX_FTA_RESCUE == 0:
+        return live
+    existing = {str(c.get('id') or '').split('@')[0] for c in live}
+    rescue: list[tuple[str, dict[str, Any], list[str]]] = []
+    for cid, old in previous.items():
+        if cid in existing or cid not in metadata:
+            continue
+        name = str(metadata[cid].get('name') or '')
+        if (classify_tier(name) != 'FTA' or str(old.get('tier') or 'FTA') != 'FTA'
+                or str(metadata[cid].get('country') or '').upper() != 'IN'
+                or str(old.get('country') or 'IN').upper() != 'IN'
+                or contains_foreign_hint(name, old.get('name') or '')):
+            continue
+        raw_urls = [str(old.get('url') or '')] + [str(u) for u in old.get('fallback_urls', []) if isinstance(u, str)]
+        urls = list(dict.fromkeys(url for url in raw_urls if safe_https(url)
+                                  and not contains_foreign_hint(url)
+                                  and not is_cross_channel_mismatch(name, url)))
+        if urls:
+            rescue.append((cid, old, urls[:3]))  # Bound hourly scan time (primary + two backups).
+    # First prioritize Hindi, then national channels, then original channel position.
+    rescue.sort(key=lambda item: (0 if item[1].get('language') == 'Hindi' else 1,
+                                  0 if not item[1].get('is_regional') else 1,
+                                  item[1].get('ch_no', 10**9)))
+    rescue = rescue[:MAX_FTA_RESCUE]
+    stats['fta_rescue_candidates'] = len(rescue)
+    if not rescue:
+        return live
+    # Probe in parallel, but do not force the first fallback to succeed.
+    checks: dict[str, Result] = {}
+    urls = sorted({url for _, _, sources in rescue for url in sources})
+    with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        future = {pool.submit(_probe, url): url for url in urls}
+        for f in concurrent.futures.as_completed(future):
+            try:
+                checks[future[f]] = f.result()
+            except Exception:
+                checks[future[f]] = Result(False, 'rescue_probe_error')
+    for cid, old, urls in rescue:
+        good = [u for u in urls if checks.get(u) and checks[u].ok]
+        if not good:
+            stats['fta_rescue_failed'] += 1
+            continue
+        restored = dict(old)
+        restored.update({'id': str(old.get('id') or cid),
+                         'name': metadata[cid].get('name') or old.get('name'),
+                         'url': good[0],
+                         'fallback_urls': good[1:6],
+                         'tier': 'FTA', 'country': 'IN', 'status': 'ONLINE',
+                         'last_checked': now, 'source': 'reverified_previous_fta'})
+        live.append(restored)
+        stats['fta_rescued'] += 1
+    return live
+
+
 def _m3u_quote(value: str) -> str:
     return (value or '').replace('"', "'").replace('\r',' ').replace('\n',' ')
 
@@ -926,6 +1003,99 @@ def sports_diagnostics(meta: dict[str, dict[str, Any]], candidates: list[Candida
         'targets': records,
     }
 
+
+
+
+def load_premium_targets() -> list[dict[str, Any]]:
+    """Curated *names*, not streaming URLs or proof of current broadcasting."""
+    if not PREMIUM_TARGETS_JSON.exists():
+        return []
+    obj = json.loads(PREMIUM_TARGETS_JSON.read_text(encoding='utf-8'))
+    if not isinstance(obj, dict) or not isinstance(obj.get('targets'), list):
+        raise ValueError('premium_targets.json must contain {"targets": [...]}')
+    return [x for x in obj['targets'] if isinstance(x, dict) and isinstance(x.get('name'), str) and x['name'].strip()]
+
+
+def paid_diagnostics(meta: dict[str, dict[str, Any]], candidates: list[Candidate],
+                     health: dict[tuple[str, str, str], Result], live: list[dict[str, Any]]) -> dict[str, Any]:
+    """Audit all Indian premium channel identities, without disclosing unlicensed URLs.
+
+    A working video segment establishes technical response only; it does not prove
+    that the video belongs to that channel or that it can be redistributed.
+    """
+    targets = load_premium_targets()
+    target_names: dict[str, dict[str, Any]] = {}
+    for target in targets:
+        for name in [target['name'], *(target.get('aliases') or [])]:
+            key = canonical_channel_key(name)
+            if key:
+                target_names.setdefault(key, target)
+
+    published = {str(c.get('id', '')).split('@')[0] for c in live if c.get('tier') == 'PAID'}
+    sources_by_id: dict[str, list[tuple[Candidate, Result]]] = defaultdict(list)
+    for c in candidates:
+        if c.tier == 'PAID':
+            result = health.get((c.url, c.user_agent, c.referrer), Result(False, 'not_tested'))
+            sources_by_id[c.channel_id].append((c, result))
+
+    entries: list[dict[str, Any]] = []
+    matched_target_keys: set[str] = set()
+    for cid, ch in sorted(meta.items(), key=lambda pair: (str(pair[1].get('name') or '').casefold(), pair[0])):
+        if str(ch.get('country') or '').upper() != 'IN':
+            continue
+        name = str(ch.get('name') or cid)
+        name_key = canonical_channel_key(name)
+        target = target_names.get(name_key)
+        if classify_tier(name) != 'PAID' and not target:
+            continue
+        if target:
+            matched_target_keys.add(canonical_channel_key(target['name']))
+        evidence = sources_by_id.get(cid, [])
+        respond = sum(r.ok for _, r in evidence)
+        drm = sum(r.has_drm for _, r in evidence)
+        eligible = sum(r.ok and c.publish_url and c.rights_confirmed for c, r in evidence)
+        if cid in published:
+            status = 'ONLINE_PUBLISHED_WITH_PERMISSION'
+        elif eligible:
+            status = 'ELIGIBLE_BUT_NOT_IN_CURRENT_PLAYLIST'
+        elif respond:
+            status = 'TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH'
+        elif evidence:
+            status = 'SOURCES_CHECKED_NO_PLAYABLE_STREAM'
+        else:
+            status = 'NO_VERIFIED_SOURCE'
+        entries.append({
+            'id': cid, 'name': name, 'network': ch.get('network') or (target or {}).get('network') or '',
+            'category': classify_category(' '.join(ch.get('categories') or []), name),
+            'country': 'IN', 'listing': 'IPTV-org Indian channel metadata',
+            'status': status, 'candidate_count': len(evidence), 'responding_candidates': respond,
+            'drm_indicated': drm,
+            'probe_reasons': dict(sorted(Counter(r.reason for _, r in evidence).items())),
+        })
+
+    # Keep target names that do not appear in the current source metadata, clearly
+    # distinguishing the watchlist from real-world verified active channels.
+    for target in targets:
+        if canonical_channel_key(target['name']) in matched_target_keys:
+            continue
+        entries.append({
+            'id': None, 'name': target['name'], 'network': target.get('network') or '',
+            'category': target.get('category') or 'Other', 'country': 'IN',
+            'listing': 'curated_watchlist_unverified', 'status': 'NOT_FOUND_IN_CURRENT_METADATA',
+            'candidate_count': 0, 'responding_candidates': 0, 'drm_indicated': 0,
+            'probe_reasons': {},
+        })
+
+    entries.sort(key=lambda x: (0 if x['category']=='Sports' else 1, x['category'], x['name'].casefold()))
+    counts = dict(sorted(Counter(x['status'] for x in entries).items()))
+    return {
+        'generated_at': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'scope': 'Indian paid channel identity and stream status diagnostic',
+        'note': 'No unlicensed stream links included. Metadata/watchlist does not prove availability; technical responses do not confer rebroadcast rights.',
+        'metadata_paid_identities': sum(x['listing'] != 'curated_watchlist_unverified' for x in entries),
+        'watchlist_not_in_metadata': sum(x['listing'] == 'curated_watchlist_unverified' for x in entries),
+        'status_counts': counts, 'channels': entries,
+    }
 
 def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     meta, candidates, stats = catalogue_sources()
@@ -1011,6 +1181,11 @@ def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[
             **({'user_agent': selected.user_agent} if selected.user_agent else {}),
             **({'referrer': selected.referrer} if selected.referrer else {}),
         })
+    stats['fresh_live_channels'] = len(live)
+    live = rescue_previous_fta(previous, live, meta, now, stats)
+    # The old offline list can still contain recovered items; remove them.
+    live_ids = {str(c['id']).split('@')[0] for c in live}
+    offline = [c for c in offline if c['id'] not in live_ids]
     # Stable numbering; preserve existing channel numbers wherever possible.
     numbers = {x.get('ch_no') for x in previous.values() if isinstance(x.get('ch_no'), int) and x.get('ch_no') > 0}
     next_num = max(numbers or {0}) + 1
@@ -1026,7 +1201,7 @@ def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[
     stats['offline_indian_channels'] = len(offline)
     stats['live_fta_channels'] = sum(c['tier']=='FTA' for c in live)
     stats['live_paid_licensed_channels'] = sum(c['tier']=='PAID' for c in live)
-    report = {'updated_at': now, 'engine': 'Bharat TV SmartBot v3.1',
+    report = {'updated_at': now, 'engine': 'Bharat TV SmartBot v3.3',
               'policy': 'India identities only; public premium sports discovery diagnostic-only',
               'settings': {'allow_community_fta': ALLOW_COMMUNITY_FTA,
                            'sports_discovery': SPORTS_DISCOVERY,
@@ -1034,16 +1209,30 @@ def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[
                            'sports_max_candidates': SPORTS_MAX_CANDIDATES,
                            'scan_workers': WORKERS},
               'counts': dict(sorted(stats.items())),
-              'sports': sports_diagnostics(meta, candidates, health)}
+              'sports': sports_diagnostics(meta, candidates, health),
+              'paid': paid_diagnostics(meta, candidates, health, live)}
     return live, offline, report
 
 
 def export(live: list[dict[str, Any]], offline: list[dict[str, Any]], report: dict[str, Any]) -> None:
     # Write public-safe sports probe summary with no extracted premium stream URLs.
     atomic_json(SPORTS_REPORT_JSON, report.get('sports', {}))
+    atomic_json(PAID_AUDIT_JSON, report.get('paid', {}))
     if not live:
         # Never destroy an existing working playlist when API or sources go down.
         print('[Warning] 0 verified channels. Existing published playlist unchanged.', file=sys.stderr)
+        atomic_json(REPORT_JSON, report)
+        atomic_json(OFFLINE_JSON, {'updated_at': report['updated_at'], 'channels': offline})
+        return
+    old = load_previous()
+    old_fta = sum(1 for c in old.values() if c.get('tier') == 'FTA')
+    new_fta = sum(1 for c in live if c.get('tier') == 'FTA')
+    if old_fta >= 20 and new_fta < old_fta * MIN_FTA_RETENTION_RATIO:
+        report.setdefault('counts', {})['publish_prevented_due_to_large_fta_drop'] = 1
+        report['counts']['previous_fta_channels'] = old_fta
+        report['counts']['proposed_fta_channels'] = new_fta
+        print(f'[Guard] Prevented suspicious shrink: old FTA={old_fta}, new FTA={new_fta}; '
+              'keeping existing channels.json and channels.m3u unchanged.', file=sys.stderr)
         atomic_json(REPORT_JSON, report)
         atomic_json(OFFLINE_JSON, {'updated_at': report['updated_at'], 'channels': offline})
         return
@@ -1059,7 +1248,7 @@ def export(live: list[dict[str, Any]], offline: list[dict[str, Any]], report: di
             lines.append('#EXTVLCOPT:http-referrer=' + ch['referrer'])
         lines.append(ch['url'])
     payload = {
-        'updated_at': report['updated_at'], 'generator': 'BharatTV SmartBot v3.1',
+        'updated_at': report['updated_at'], 'generator': 'BharatTV SmartBot v3.3',
         'total_channels': len(live), 'fta_channels': sum(c['tier']=='FTA' for c in live),
         'paid_channels': sum(c['tier']=='PAID' for c in live), 'channels': live,
     }
