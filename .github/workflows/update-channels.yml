@@ -1,44 +1,85 @@
-name: Auto Update Bharat TV Channels
+name: Bharat TV Smart Channel Bot v3
 
 on:
   schedule:
-    # 3 Times Daily (IST Schedule):
-    # 1. 00:30 UTC = 06:00 AM IST (Morning Refresh)
-    # 2. 08:30 UTC = 02:00 PM IST (Mid-Day Refresh)
-    # 3. 14:30 UTC = 08:00 PM IST (Prime-Time Peak Refresh)
-    - cron: '30 0 * * *'
-    - cron: '30 8 * * *'
-    - cron: '30 14 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+    # India Standard Time: 05:17, 06:17 ... 23:17 daily (19 runs/day).
+    - cron: '17 5-23 * * *'
+      timezone: 'Asia/Kolkata'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: bharattv-smartbot-publishing
+  cancel-in-progress: false
+
 jobs:
-  update-channels:
+  verify-and-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SCAN_WORKERS: '24'
+      # Activate ONLY after checking internet rebroadcast rights for all community FTA sources.
+      ALLOW_COMMUNITY_FTA: ${{ vars.ALLOW_COMMUNITY_FTA || '0' }}
+      # Optional PRIVATE config. Never place signed/private premium URLs in a public repo.
+      LICENSED_SOURCES_JSON: ${{ secrets.LICENSED_SOURCES_JSON }}
 
     steps:
-      - name: Checkout Repository
+      - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Run Channel Discovery & Health Check
-        run: |
-          python channel_updater.py
+      - name: Run offline unit tests
+        run: python -m unittest discover -s tests -v
 
-      - name: Commit and Push Updated Channels
+      - name: Discover authorized Indian channels and verify HLS segments
+        run: python channel_updater.py
+
+      - name: Validate published catalogue and prevent foreign channel leaks
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "BharatTV Channel Bot"
-          git add channels.json channels.m3u
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from channel_updater import safe_https, contains_foreign_hint
+          report = json.loads(Path('scan_report.json').read_text(encoding='utf-8'))
+          path = Path('channels.json')
+          if report.get('counts', {}).get('live_channels', 0) == 0:
+              print('No newly verified streams; pre-existing catalogue retained, must be reviewed manually')
+          elif not path.exists():
+              print('No previous playlist exists (0 live channels); report-only run')
+          else:
+              payload = json.loads(path.read_text(encoding='utf-8'))
+              channels = payload.get('channels', [])
+              assert len(channels) == payload.get('total_channels'), 'Incorrect channel count'
+              owners = {}
+              for ch in channels:
+                  assert ch.get('country', 'IN') == 'IN', f'Foreign country: {ch.get("name")}'
+                  assert safe_https(ch.get('url', '')), f'Bad URL for {ch.get("name")}'
+                  assert not contains_foreign_hint(ch.get('name', ''), ch.get('url', '')), 'Foreign feed hint'
+                  assert ch.get('tier') in ('FTA', 'PAID'), 'Missing tier'
+                  assert ch.get('id') and ch.get('name'), 'Missing channel identity'
+                  prev = owners.setdefault(ch['url'], ch['id'])
+                  assert prev == ch['id'], 'Same URL assigned to unrelated channels'
+              print(f'Validated {len(channels)} published Indian channel entries')
+          PY
+
+      - name: Commit new playlist and diagnostics
+        run: |
+          git config user.name 'BharatTV SmartBot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add channels.json channels.m3u offline_channels.json scan_report.json
           if git diff --staged --quiet; then
-            echo "No changes in channels. Everything is up to date."
+            echo 'No changes to publish'
           else
-            git commit -m "Auto-update verified channels (3x daily) [skip ci]"
-            git push
+            git commit -m 'Bharat TV: refresh verified India streams [skip ci]'
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
