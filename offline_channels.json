@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T16:24:25Z",
+  "updated_at": "2026-11-14T18:32:33Z",
   "total_channels": 879,
   "channels": [
     {
@@ -624,6 +624,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "AwaazIndiaTV.in",
+      "name": "Awaaz India TV",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://i.imgur.com/eKQs51V.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "AyushNextCommunicationNetwork.in",
       "name": "Ayush Next Communication Network",
       "tier": "FTA",
@@ -820,6 +829,15 @@
       "logo_url": "https://i.imgur.com/0r8moK8.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "BHIChannel.in",
+      "name": "BHI Channel",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/BHI.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "BhojpuriJunction.in",
@@ -1170,7 +1188,7 @@
       "category": "Business",
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/CNBCBajar.png",
       "status": "OFFLINE",
-      "reason": "probe_IncompleteRead"
+      "reason": "media_verified"
     },
     {
       "id": "CNBCTV18.in",
@@ -1189,6 +1207,15 @@
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/CNBCTV18Prime.png",
       "status": "OFFLINE",
       "reason": "media_verified"
+    },
+    {
+      "id": "CnewsBharat.in",
+      "name": "Cnews Bharat",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/C_News_Bharat.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "CNNNews18.in",
@@ -2187,7 +2214,7 @@
       "category": "Entertainment",
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/ETV_Josh.png",
       "status": "OFFLINE",
-      "reason": "probe_IncompleteRead"
+      "reason": "media_verified"
     },
     {
       "id": "ETVLife.in",
@@ -2241,7 +2268,7 @@
       "category": "Sports",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002E9LQS.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "media_verified"
     },
     {
       "id": "ExpressNews.in",
@@ -2676,15 +2703,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "HeadlinesTripura.in",
-      "name": "Headlines Tripura",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Headlines_Tripura.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
-    },
-    {
       "id": "HeraldTV.in",
       "name": "Herald TV",
       "tier": "FTA",
@@ -2926,6 +2944,15 @@
       "logo_url": "https://dtil.tmsimg.com/assets/s143215_ld_h15_aa.png?lock=720x540",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "JalshaMovies.in",
+      "name": "Jalsha Movies",
+      "tier": "FTA",
+      "category": "Movies",
+      "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/1445/1782291521445-h.jpg",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "JanSetuNews.in",
@@ -4278,15 +4305,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "News18Urdu.in",
-      "name": "News18 Urdu",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://i.imgur.com/8xnwMRR.png",
-      "status": "OFFLINE",
-      "reason": "probe_IncompleteRead"
-    },
-    {
       "id": "NewsTimeBangla.in",
       "name": "NewsTime Bangla",
       "tier": "FTA",
@@ -4537,15 +4555,6 @@
       "logo_url": "https://i.imgur.com/zJXKaXw.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "PocketFilms.in",
-      "name": "Pocket Films",
-      "tier": "FTA",
-      "category": "Movies",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/p_pktflm.png",
-      "status": "OFFLINE",
-      "reason": "http_403"
     },
     {
       "id": "Pogo.in",
@@ -6102,7 +6111,7 @@
       "category": "Entertainment",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/2384/1782291852384-h.jpg",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "http_404"
     },
     {
       "id": "StudioOneYuva.in",
@@ -6886,15 +6895,6 @@
       "logo_url": "https://d3jnkp3lrs2hd5.cloudfront.net/images/100x100/5308151b-7854-43a5-ab18-9095bcf8e63d.jpg",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "ThendralTV.in",
-      "name": "Thendral TV",
-      "tier": "FTA",
-      "category": "Entertainment",
-      "logo_url": "https://i.imgur.com/kQK80gB.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "TimeTV.in",
