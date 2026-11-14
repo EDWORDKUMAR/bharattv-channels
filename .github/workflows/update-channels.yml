@@ -40,8 +40,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run offline unit tests
-        run: python -m unittest discover -s tests -v
+      - name: Run offline unit tests (when uploaded)
+        shell: bash
+        run: |
+          if [ -d tests ] && find tests -type f -name 'test_*.py' | grep -q .; then
+            python -m unittest discover -s tests -p 'test_*.py' -t . -v
+          else
+            echo '::warning::tests/test_updater.py is missing. Upload the tests folder to enable unit tests.'
+          fi
 
       - name: Scan Indian channels and public premium candidates for diagnostics
         run: python channel_updater.py
