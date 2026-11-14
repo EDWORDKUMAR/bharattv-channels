@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Bharat TV Smart Bot v3 — India-first, rights-aware IPTV availability monitor.
+"""Bharat TV Smart Bot v3.1 — India-first IPTV and premium sports discovery diagnostics.
 
 Python 3.11+; only stdlib. GitHub Actions friendly. Preserves the existing
 channels.json / channels.m3u *live channel* interface. Offline channels are
 written to a separate report to avoid breaking Android player integrations.
 
 Important: public community IPTV metadata does not confer redistribution rights.
-Subscription feeds may only be published from explicit licensed integrations.
+Public premium candidates can be PROBED for diagnostics, not automatically republished.
 The bot does not bypass authentication, DRM, tokens or geographic restrictions.
 """
 from __future__ import annotations
@@ -46,13 +46,18 @@ M3U_SOURCES = [
           ('Urdu','urd')
       ]]
 ]
-USER_AGENT = 'BharatTV-SmartBot/3.0 (+Indian feed identity and manifest verification)'
+USER_AGENT = 'BharatTV-SmartBot/3.1 (+India feeds, sports diagnostics)'
 WORKERS = max(4, min(40, int(os.getenv('SCAN_WORKERS', '24'))))
 ALLOW_COMMUNITY_FTA = os.getenv('ALLOW_COMMUNITY_FTA', '0') == '1'
+SPORTS_DISCOVERY = os.getenv('SPORTS_DISCOVERY', '1') == '1'
+PREMIUM_DISCOVERY = os.getenv('PREMIUM_DISCOVERY', '1') == '1'
+SPORTS_MAX_CANDIDATES = max(1, min(400, int(os.getenv('SPORTS_MAX_CANDIDATES', '160'))))
 OUTPUT_JSON = Path('channels.json')
 OUTPUT_M3U = Path('channels.m3u')
 OFFLINE_JSON = Path('offline_channels.json')
 REPORT_JSON = Path('scan_report.json')
+SPORTS_REPORT_JSON = Path('sports_discovery.json')
+SPORTS_TARGETS_JSON = Path(__file__).with_name('sports_targets.json')
 MAX_TEXT = 1_000_000
 MAX_PLAYLIST = 256_000
 LANGUAGE_CODES = {name: code for code, name in [
@@ -470,6 +475,57 @@ def parse_m3u(text: str) -> list[dict[str, str]]:
     return result
 
 
+def sports_identity(name: str) -> tuple[str, str, bool]:
+    """Normalize broadcaster + number + regional language, *never* confuse 1/2 or Hindi/Tamil.
+
+    Resolution is returned separately: SD/HD variants may share IPTV-org channel ID.
+    """
+    raw = (name or '').lower()
+    raw = re.sub(r'\bsony\s+sports\s+ten\b', 'sony ten', raw)
+    raw = re.sub(r'\bstar\s+sports\s+hd\s*(\d+)\b', r'star sports \1 hd', raw)
+    raw = re.sub(r'\bsony\s+ten\s+hd\s*(\d+)\b', r'sony ten \1 hd', raw)
+    tokens = re.findall(r'[a-z]+|\d+', raw)
+    hd = 'hd' in tokens or 'fhd' in tokens
+    remove = {'hd', 'sd', 'fhd', 'uhd', 'live', 'india', 'channel', 'tv', 'stream'}
+    compact = ''.join(t for t in tokens if t not in remove)
+    return (compact, 'HD' if hd else 'unspecified', bool(compact))
+
+
+def load_sports_targets() -> list[dict[str, Any]]:
+    """Targets are an index of Indian channels, NOT playable stream URLs."""
+    if not SPORTS_TARGETS_JSON.exists():
+        return []
+    obj = json.loads(SPORTS_TARGETS_JSON.read_text('utf-8'))
+    if not isinstance(obj, dict) or not isinstance(obj.get('targets'), list):
+        raise ValueError('sports_targets.json must have {"targets": [...]}')
+    results = []
+    for entry in obj['targets']:
+        if isinstance(entry, dict) and entry.get('name'):
+            results.append(entry)
+    return results
+
+
+def sports_matches(name: str, target: dict[str, Any], feed_id: str = '') -> bool:
+    observed, _, nonempty = sports_identity(name)
+    if not nonempty:
+        return False
+    # Do not equate Pakistani TEN Sports with Sony's Indian TEN network.
+    for alias in [target['name'], *(target.get('aliases') or [])]:
+        wanted, wanted_quality, _ = sports_identity(alias)
+        if observed != wanted:
+            continue
+        if target.get('quality') == 'HD' and wanted_quality == 'HD':
+            seen = sports_identity(name)[1] == 'HD' or bool(re.search(r'(^|\W)HD($|\W)', feed_id, re.I))
+            if not seen:
+                continue
+        return True
+    return False
+
+
+def is_sports_channel(name: str, raw_group: str = '') -> bool:
+    return classify_category(raw_group, name) == 'Sports'
+
+
 def feed_is_indian(feed: dict[str, Any] | None, channel_country: str = 'IN') -> bool:
     if channel_country != 'IN':
         return False
@@ -634,8 +690,8 @@ def _load_authorized_sources() -> list[dict[str, Any]]:
 def catalogue_sources() -> tuple[dict[str, dict[str, Any]], list[Candidate], Counter[str]]:
     """Collect verified *Indian identities*, then potential stream candidates.
 
-    Community paid URLs are discarded, not used for public rebroadcast. Community
-    FTA URLs require explicit rights review before enabling ALLOW_COMMUNITY_FTA=1.
+    Public paid sports candidates are probe-only (never returned as public URLs).
+    Community FTA URLs require separate publication approval.
     """
     stats: Counter[str] = Counter()
     api: dict[str, list[dict[str, Any]]] = {}
@@ -699,7 +755,14 @@ def catalogue_sources() -> tuple[dict[str, dict[str, Any]], list[Candidate], Cou
             continue
         tier = classify_tier(chname)
         if tier == 'PAID':
-            stats['community_paid_metadata_only'] += 1
+            if PREMIUM_DISCOVERY or (SPORTS_DISCOVERY and is_sports_channel(chname, ' '.join(channels[cid].get('categories') or []))):
+                candidates.append(Candidate(cid, url, 'IPTV-org sports diagnostic', 'PAID', 95, False,
+                                            str(st.get('user_agent') or ''), str(st.get('referrer') or ''),
+                                            feed_id, str(st.get('quality') or ''), False,
+                                            INDIAN_LANG_CODES.get(next(iter((known_feed or {}).get('languages') or []), ''), '')))
+                stats['public_paid_sports_candidates'] += 1
+            else:
+                stats['community_paid_metadata_only'] += 1
             continue
         if not ALLOW_COMMUNITY_FTA:
             stats['community_fta_permission_required'] += 1
@@ -710,7 +773,7 @@ def catalogue_sources() -> tuple[dict[str, dict[str, Any]], list[Candidate], Cou
                                     INDIAN_LANG_CODES.get(next(iter((known_feed or {}).get('languages') or []), ''), '')))
 
     # Country/language M3U collection: strict metadata IDs (avoid Pakistan feed pollution).
-    if ALLOW_COMMUNITY_FTA:
+    if ALLOW_COMMUNITY_FTA or SPORTS_DISCOVERY or PREMIUM_DISCOVERY:
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
             futs = {pool.submit(fetch, uri, timeout=12, max_bytes=3_000_000): (label, uri)
                     for label, uri in M3U_SOURCES}
@@ -744,11 +807,24 @@ def catalogue_sources() -> tuple[dict[str, dict[str, Any]], list[Candidate], Cou
                     if entry.get('tvg-country','').upper() not in ('', 'IN'):
                         stats['rejected_non_india_country_tag'] += 1
                         continue
-                    if classify_tier(channels[cid].get('name') or '') == 'PAID':
-                        stats['community_paid_metadata_only'] += 1
-                        continue
                     if is_cross_channel_mismatch(channels[cid].get('name') or '', url):
                         stats['rejected_channel_url_mismatch'] += 1
+                        continue
+                    tier = classify_tier(channels[cid].get('name') or '')
+                    if tier == 'PAID':
+                        if PREMIUM_DISCOVERY or (SPORTS_DISCOVERY and is_sports_channel(channels[cid].get('name') or '',
+                                                                   ' '.join(channels[cid].get('categories') or []))):
+                            candidates.append(Candidate(cid, url, label + ' (sports diagnostic)', 'PAID',
+                                                        90 if entry.get('tvg-id') else 70,
+                                                        False, entry.get('user_agent',''), entry.get('referrer',''), fid,
+                                                        entry.get('quality',''), False,
+                                                        INDIAN_LANG_CODES.get(entry.get('tvg-language','').lower(),
+                                                                              entry.get('tvg-language',''))))
+                            stats['public_paid_sports_candidates'] += 1
+                        else:
+                            stats['community_paid_metadata_only'] += 1
+                        continue
+                    if not ALLOW_COMMUNITY_FTA:
                         continue
                     candidates.append(Candidate(cid, url, label, 'FTA', 90 if entry.get('tvg-id') else 70,
                                                 False, entry.get('user_agent',''), entry.get('referrer',''), fid,
@@ -812,6 +888,45 @@ def atomic_json(path: Path, obj: dict[str, Any]) -> None:
     os.replace(tmp, path)
 
 
+def sports_diagnostics(meta: dict[str, dict[str, Any]], candidates: list[Candidate],
+                       health: dict[tuple[str, str, str], Result]) -> dict[str, Any]:
+    """Detailed India sports testing. Never expose unlicensed streaming links in public reports."""
+    targets = load_sports_targets()
+    records = []
+    all_sports = [(cid, ch) for cid, ch in meta.items()
+                  if is_sports_channel(ch.get('name') or '', ' '.join(ch.get('categories') or []))]
+    for target in targets:
+        target_candidates = [c for c in candidates
+                             if c.channel_id in meta
+                             and sports_matches(meta[c.channel_id].get('name') or '', target, c.feed_id)]
+        ids = {c.channel_id for c in target_candidates}
+        matched = [(cid, ch) for cid, ch in all_sports
+                   if cid in ids or sports_matches(ch.get('name') or '', target)]
+        probes = [health.get((c.url, c.user_agent, c.referrer), Result(False, 'not_tested'))
+                  for c in target_candidates]
+        reasons = dict(Counter(r.reason for r in probes))
+        records.append({
+            'name': target['name'], 'network': target.get('network', ''),
+            'tier': target.get('tier', 'PAID'), 'quality': target.get('quality', 'unspecified'),
+            'matched_indian_channels': [ch.get('name') for _, ch in matched],
+            'candidate_count': len(target_candidates),
+            'responding_candidates': sum(r.ok for r in probes),
+            'drm_indicated': sum(r.has_drm for r in probes),
+            'probe_results': reasons,
+            'status': ('CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST' if any(r.ok for r in probes)
+                       else 'NO_PLAYABLE_CANDIDATE_CONFIRMED'),
+        })
+    return {
+        'generated_at': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'mode': 'public_sports_diagnostics_not_rebroadcast',
+        'warning': 'Responding HLS segment does not prove channel identity, India geo playback, or rights.',
+        'target_count': len(records),
+        'targets_with_candidates': sum(x['candidate_count'] > 0 for x in records),
+        'targets_with_responses': sum(x['responding_candidates'] > 0 for x in records),
+        'targets': records,
+    }
+
+
 def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     meta, candidates, stats = catalogue_sources()
     previous = load_previous()
@@ -828,6 +943,15 @@ def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[
         if key not in distinct or c.identity_score > distinct[key].identity_score:
             distinct[key] = c
     candidates = list(distinct.values())
+    if SPORTS_DISCOVERY or PREMIUM_DISCOVERY:
+        # Bound scan cost even when public playlists contain thousands of entries.
+        premium = sorted((c for c in candidates if c.tier == 'PAID' and not c.publish_url),
+                         key=lambda c: (0 if is_sports_channel(c.channel_id, ' '.join((meta.get(c.channel_id) or {}).get('categories') or [])) else 1,
+                                        -c.identity_score, c.channel_id, c.url))
+        allowed_paid_urls = {(c.channel_id, c.url) for c in premium[:SPORTS_MAX_CANDIDATES]}
+        stats['sports_candidates_deferred_by_budget'] = max(0, len(premium) - SPORTS_MAX_CANDIDATES)
+        candidates = [c for c in candidates if c.publish_url or c.tier != 'PAID'
+                      or (c.channel_id, c.url) in allowed_paid_urls]
     stats['unique_candidates'] = len(candidates)
     urls: dict[tuple[str,str,str], list[Candidate]] = defaultdict(list)
     for c in candidates:
@@ -902,14 +1026,21 @@ def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[
     stats['offline_indian_channels'] = len(offline)
     stats['live_fta_channels'] = sum(c['tier']=='FTA' for c in live)
     stats['live_paid_licensed_channels'] = sum(c['tier']=='PAID' for c in live)
-    report = {'updated_at': now, 'engine': 'Bharat TV SmartBot v3.0',
-              'policy': 'India identities only; licensed paid public streams only',
-              'settings': {'allow_community_fta': ALLOW_COMMUNITY_FTA, 'scan_workers': WORKERS},
-              'counts': dict(sorted(stats.items()))}
+    report = {'updated_at': now, 'engine': 'Bharat TV SmartBot v3.1',
+              'policy': 'India identities only; public premium sports discovery diagnostic-only',
+              'settings': {'allow_community_fta': ALLOW_COMMUNITY_FTA,
+                           'sports_discovery': SPORTS_DISCOVERY,
+                           'premium_discovery': PREMIUM_DISCOVERY,
+                           'sports_max_candidates': SPORTS_MAX_CANDIDATES,
+                           'scan_workers': WORKERS},
+              'counts': dict(sorted(stats.items())),
+              'sports': sports_diagnostics(meta, candidates, health)}
     return live, offline, report
 
 
 def export(live: list[dict[str, Any]], offline: list[dict[str, Any]], report: dict[str, Any]) -> None:
+    # Write public-safe sports probe summary with no extracted premium stream URLs.
+    atomic_json(SPORTS_REPORT_JSON, report.get('sports', {}))
     if not live:
         # Never destroy an existing working playlist when API or sources go down.
         print('[Warning] 0 verified channels. Existing published playlist unchanged.', file=sys.stderr)
@@ -928,7 +1059,7 @@ def export(live: list[dict[str, Any]], offline: list[dict[str, Any]], report: di
             lines.append('#EXTVLCOPT:http-referrer=' + ch['referrer'])
         lines.append(ch['url'])
     payload = {
-        'updated_at': report['updated_at'], 'generator': 'BharatTV SmartBot v3.0',
+        'updated_at': report['updated_at'], 'generator': 'BharatTV SmartBot v3.1',
         'total_channels': len(live), 'fta_channels': sum(c['tier']=='FTA' for c in live),
         'paid_channels': sum(c['tier']=='PAID' for c in live), 'channels': live,
     }

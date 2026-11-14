@@ -1,0 +1,303 @@
+{
+  "description": "India sports watchlist. Channel metadata, not streaming endpoints.",
+  "targets": [
+    {
+      "name": "Star Sports 1",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Star Sports HD1",
+        "Star Sports HD 1"
+      ]
+    },
+    {
+      "name": "Star Sports 1 Hindi",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Hindi HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Tamil",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Tamil HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Telugu",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Telugu HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 1 Kannada",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Star Sports HD2",
+        "Star Sports HD 2"
+      ]
+    },
+    {
+      "name": "Star Sports 2 Hindi",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Hindi HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Telugu",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Telugu HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Tamil",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Tamil HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 2 Kannada",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports 3",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports Select 1",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports Select 1 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Star Sports Select HD1"
+      ]
+    },
+    {
+      "name": "Star Sports Select 2",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Star Sports Select 2 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Star Sports Select HD2"
+      ]
+    },
+    {
+      "name": "Star Sports Khel",
+      "network": "JioStar",
+      "tier": "UNKNOWN",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Sony Ten 1",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 1"
+      ]
+    },
+    {
+      "name": "Sony Ten 1 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Sony Sports Ten 1 HD"
+      ]
+    },
+    {
+      "name": "Sony Ten 2",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 2"
+      ]
+    },
+    {
+      "name": "Sony Ten 2 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Sony Sports Ten 2 HD"
+      ]
+    },
+    {
+      "name": "Sony Ten 3 Hindi",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 3 Hindi"
+      ]
+    },
+    {
+      "name": "Sony Ten 3 Hindi HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Sony Sports Ten 3 Hindi HD"
+      ]
+    },
+    {
+      "name": "Sony Ten 4 Tamil",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 4 Tamil"
+      ]
+    },
+    {
+      "name": "Sony Ten 4 Telugu",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 4 Telugu"
+      ]
+    },
+    {
+      "name": "Sony Ten 4 Kannada",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 4 Kannada"
+      ]
+    },
+    {
+      "name": "Sony Ten 5",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": [
+        "Sony Sports Ten 5"
+      ]
+    },
+    {
+      "name": "Sony Ten 5 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": [
+        "Sony Sports Ten 5 HD"
+      ]
+    },
+    {
+      "name": "Eurosport India",
+      "network": "Warner Bros. Discovery",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "aliases": []
+    },
+    {
+      "name": "Eurosport India HD",
+      "network": "Warner Bros. Discovery",
+      "tier": "PAID",
+      "quality": "HD",
+      "aliases": []
+    },
+    {
+      "name": "DD Sports",
+      "network": "Prasar Bharati",
+      "tier": "FTA",
+      "quality": "unspecified",
+      "aliases": []
+    }
+  ]
+}
