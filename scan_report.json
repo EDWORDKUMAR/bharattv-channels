@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T12:38:36Z",
+  "updated_at": "2026-11-14T12:41:14Z",
   "engine": "Bharat TV SmartBot v3.1",
   "policy": "India identities only; public premium sports discovery diagnostic-only",
   "settings": {
@@ -18,12 +18,13 @@
     "offline_indian_channels": 1504,
     "probe_http_400": 1,
     "probe_http_403": 7,
-    "probe_http_404": 10,
+    "probe_http_404": 9,
+    "probe_http_416": 1,
     "probe_http_451": 1,
     "probe_invalid_hls_manifest": 3,
-    "probe_media_verified": 50,
+    "probe_media_verified": 44,
     "probe_network_error": 5,
-    "probe_timeout": 1,
+    "probe_timeout": 7,
     "public_paid_sports_candidates": 179,
     "rejected_channel_url_mismatch": 11,
     "rejected_foreign_or_unknown_m3u_id": 219,
@@ -34,12 +35,12 @@
     "unique_candidates": 78
   },
   "sports": {
-    "generated_at": "2026-11-14T12:38:36Z",
+    "generated_at": "2026-11-14T12:41:14Z",
     "mode": "public_sports_diagnostics_not_rebroadcast",
     "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
     "target_count": 38,
     "targets_with_candidates": 2,
-    "targets_with_responses": 2,
+    "targets_with_responses": 0,
     "targets": [
       {
         "name": "Star Sports 1",
@@ -506,12 +507,12 @@
           "Eurosport"
         ],
         "candidate_count": 1,
-        "responding_candidates": 1,
+        "responding_candidates": 0,
         "drm_indicated": 0,
         "probe_results": {
-          "media_verified": 1
+          "timeout": 1
         },
-        "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+        "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
       },
       {
         "name": "Eurosport India HD",
@@ -522,12 +523,12 @@
           "Eurosport"
         ],
         "candidate_count": 1,
-        "responding_candidates": 1,
+        "responding_candidates": 0,
         "drm_indicated": 0,
         "probe_results": {
-          "media_verified": 1
+          "timeout": 1
         },
-        "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+        "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
       },
       {
         "name": "DD Sports",

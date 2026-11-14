@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-14T12:38:36Z",
+  "generated_at": "2026-11-14T12:41:14Z",
   "mode": "public_sports_diagnostics_not_rebroadcast",
   "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
   "target_count": 38,
   "targets_with_candidates": 2,
-  "targets_with_responses": 2,
+  "targets_with_responses": 0,
   "targets": [
     {
       "name": "Star Sports 1",
@@ -471,12 +471,12 @@
         "Eurosport"
       ],
       "candidate_count": 1,
-      "responding_candidates": 1,
+      "responding_candidates": 0,
       "drm_indicated": 0,
       "probe_results": {
-        "media_verified": 1
+        "timeout": 1
       },
-      "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
     },
     {
       "name": "Eurosport India HD",
@@ -487,12 +487,12 @@
         "Eurosport"
       ],
       "candidate_count": 1,
-      "responding_candidates": 1,
+      "responding_candidates": 0,
       "drm_indicated": 0,
       "probe_results": {
-        "media_verified": 1
+        "timeout": 1
       },
-      "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
     },
     {
       "name": "DD Sports",

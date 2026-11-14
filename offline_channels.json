@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T12:38:36Z",
+  "updated_at": "2026-11-14T12:41:14Z",
   "channels": [
     {
       "id": "Andpictures.in",
@@ -2096,7 +2096,7 @@
       "category": "Entertainment",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/108/1782291760108-h.jpg",
       "status": "OFFLINE",
-      "reason": "http_404"
+      "reason": "timeout"
     },
     {
       "id": "ColorsAsiaPacific.in",
@@ -2114,7 +2114,7 @@
       "category": "Regional",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/8049/1782291598049-h.jpg",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "timeout"
     },
     {
       "id": "ColorsBanglaCinema.in",
@@ -2123,7 +2123,7 @@
       "category": "Movies",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/4599/1782289524599-h.jpg",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "timeout"
     },
     {
       "id": "ColorsCineplex.in",
@@ -2249,7 +2249,7 @@
       "category": "Entertainment",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/6181/1782290986181-h.jpg",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "http_416"
     },
     {
       "id": "ColorsTamil.in",
@@ -3743,7 +3743,7 @@
       "category": "Sports",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002E9LQS.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "timeout"
     },
     {
       "id": "ExpressNews.in",
@@ -10178,7 +10178,7 @@
       "category": "Entertainment",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002YP08L.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "timeout"
     },
     {
       "id": "SonyBBCEarth.in",
