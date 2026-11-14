@@ -1,1 +1,1 @@
-# Bharat TV unit tests
+# BharatTV SmartBot automated tests package
