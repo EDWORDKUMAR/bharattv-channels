@@ -1,0 +1,512 @@
+{
+  "generated_at": "2026-11-14T12:38:36Z",
+  "mode": "public_sports_diagnostics_not_rebroadcast",
+  "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
+  "target_count": 38,
+  "targets_with_candidates": 2,
+  "targets_with_responses": 2,
+  "targets": [
+    {
+      "name": "Star Sports 1",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 1"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Hindi",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 1 Hindi"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Hindi HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Tamil",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 1 Tamil"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Tamil HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Telugu",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 1 Telugu"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Telugu HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 1 Kannada",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 1 Kannada"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 2"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Hindi",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 2 Hindi"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Hindi HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Telugu",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 2 Telugu"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Telugu HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Tamil",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 2 Tamil"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Tamil HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 2 Kannada",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 2 Kannada"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports 3",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports 3"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports Select 1",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports Select 1"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports Select 1 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports Select 2",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports Select 2"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports Select 2 HD",
+      "network": "JioStar",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Star Sports Khel",
+      "network": "JioStar",
+      "tier": "UNKNOWN",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Star Sports Khel"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 1",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Sony Sports Ten 1"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 1 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 2",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Sony Sports Ten 2"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 2 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 3 Hindi",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Sony Sports Ten 3 Hindi"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 3 Hindi HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 4 Tamil",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 4 Telugu",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 4 Kannada",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 5",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Sony Sports Ten 5"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Sony Ten 5 HD",
+      "network": "Sony Pictures Networks",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    },
+    {
+      "name": "Eurosport India",
+      "network": "Warner Bros. Discovery",
+      "tier": "PAID",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "Eurosport"
+      ],
+      "candidate_count": 1,
+      "responding_candidates": 1,
+      "drm_indicated": 0,
+      "probe_results": {
+        "media_verified": 1
+      },
+      "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+    },
+    {
+      "name": "Eurosport India HD",
+      "network": "Warner Bros. Discovery",
+      "tier": "PAID",
+      "quality": "HD",
+      "matched_indian_channels": [
+        "Eurosport"
+      ],
+      "candidate_count": 1,
+      "responding_candidates": 1,
+      "drm_indicated": 0,
+      "probe_results": {
+        "media_verified": 1
+      },
+      "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+    },
+    {
+      "name": "DD Sports",
+      "network": "Prasar Bharati",
+      "tier": "FTA",
+      "quality": "unspecified",
+      "matched_indian_channels": [
+        "DD Sports"
+      ],
+      "candidate_count": 0,
+      "responding_candidates": 0,
+      "drm_indicated": 0,
+      "probe_results": {},
+      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+    }
+  ]
+}
