@@ -43,7 +43,8 @@ https://cdn.pishow.tv/ott/live/273/master.m3u8
 #EXTINF:-1 tvg-id="TV7National.in@SD" tvg-chno="52" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://d3jnkp3lrs2hd5.cloudfront.net/images/100x100/52ac91e7-2c9d-415b-a63f-fb41413105ff.jpg" group-title="News",TV7 National
 https://vglivessai.akamaized.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/05ceedc9-7ebd-4417-ba99-654f805a6b9a/index.m3u8
 #EXTINF:-1 tvg-id="VistaarNews.in@SD" tvg-chno="53" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSENaovfkLYBJSYXeQwImkwXOorLvGyRcF3ZbCQshsWNEshT7aOJlQqEdnqzhjRusmztSo&usqp=CAU" group-title="News",Vistaar News
-https://stream.ottlive.co.in/vistaartv/index.m3u8
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36
+https://fta.ektv.in/live/734/master.m3u8
 #EXTINF:-1 tvg-id="PrimeNews.in@SD" tvg-chno="55" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://i.imgur.com/RQoDzpN.png" group-title="News",Prime News
 https://stream.ottlive.co.in/primenews/index.m3u8
 #EXTINF:-1 tvg-id="Bharat24.in@SD" tvg-chno="56" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s142710_ld_h15_aa.png?lock=720x540" group-title="News",Bharat24
@@ -193,7 +194,7 @@ https://d1msejlow1t3l4.cloudfront.net/fta/sharanamtv/playlist.m3u8
 #EXTINF:-1 tvg-id="7XMusic.in@SD" tvg-chno="155" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/7X_Music.png" group-title="Music",7X Music
 https://7xshreeshyam.akamaized.net/7XPunjabi/index.m3u8
 #EXTINF:-1 tvg-id="TV7Bharat.in@SD" tvg-chno="156" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://tv7bharat.tv/wp-content/uploads/2023/07/Logo-Bharat.jpg" group-title="News",TV7 Bharat
-https://stream.ottlive.co.in/tv7bharat/index.m3u8
+https://vglivessai.akamaized.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/797fcff8-10d6-4c9c-a409-8d0c4fa5c8dd/index.m3u8
 #EXTINF:-1 tvg-id="AajKiKhabar.in@SD" tvg-chno="157" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://m.media-amazon.com/images/I/71q8sOMPwHL.png" group-title="News",Aaj Ki Khabar
 https://mumt04.tangotv.in/m18aqlK4AAJKIKHABAR/index.m3u8
 #EXTINF:-1 tvg-id="IndiaDailyLive.in@SD" tvg-chno="160" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/India_Daily_24x7.png" group-title="News",India Daily Live
@@ -205,7 +206,8 @@ https://d1rc86nwwc9fag.cloudfront.net/vglive-sk-472500/abpnews/master.m3u8
 #EXTINF:-1 tvg-id="TotalBhakti.in@SD" tvg-chno="163" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://i.imgur.com/LPwRdmF.png" group-title="Devotional",Total Bhakti
 https://d34z4embz0hjf6.cloudfront.net/out/v1/d55b3323a9f142638f897378f0b526fe/index.m3u8
 #EXTINF:-1 tvg-id="JantaTV.in@SD" tvg-chno="164" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://i.imgur.com/0nKfwhV.png" group-title="News",Janta TV
-https://live.jswk.online/IK_RTPM/live/index.m3u8
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36
+https://fta.ektv.in/live/106/106_0.m3u8
 #EXTINF:-1 tvg-id="MediBizTV.in@SD" tvg-chno="165" tvg-language="English" tvg-tier="FTA" tvg-logo="https://www.medibiztv.com/assets/logo-E76jcvP9.png" group-title="Education",MediBizTV
 https://43wrzjnpqoxe-hls-live.wmncdn.net/marinebiztvlive/marinebiztvlive/playlist.m3u8
 #EXTINF:-1 tvg-id="YRFMusic.in@SD" tvg-chno="167" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://i.imgur.com/mxx05Z9.png" group-title="Music",YRF Music
@@ -370,8 +372,6 @@ https://mumt05.tangotv.in/87NeALx2BVG/index.m3u8
 #EXTINF:-1 tvg-id="IndiaNewsHaryana.in@SD" tvg-chno="257" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143192_ld_h15_aa.png?lock=720x540" group-title="News",India News Haryana
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36
 https://fta.ektv.in/live/590/master.m3u8
-#EXTINF:-1 tvg-id="Kabaddi24x7.in@SD" tvg-chno="258" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://papaji.freetvindia.com/media/kabaddi_24x7.png" group-title="Sports",Kabaddi 24x7
-https://samitaorigin.tangotv.in/KABADDI24X7/SAMITAORIGIN/index.m3u8
 #EXTINF:-1 tvg-id="News18India.in@SD" tvg-chno="259" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/GNLZZGG002Z2RTM.png?lock=720x540" group-title="News",News18 India
 https://n18syndication.akamaized.net/bpk-tv/News18_India_NW18_MOB/output01/master.m3u8
 #EXTINF:-1 tvg-id="AwaazIndiaTV.in@SD" tvg-chno="260" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://i.imgur.com/eKQs51V.png" group-title="News",Awaaz India TV
@@ -581,7 +581,7 @@ https://stream.ottlive.co.in/spokesman/index.m3u8
 #EXTINF:-1 tvg-id="4SiDESTV.in@SD" tvg-chno="413" tvg-language="Telugu" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/4sites.png" group-title="News",4 SiDES TV
 https://stream.ottlive.co.in/4sidestv/index.m3u8
 #EXTINF:-1 tvg-id="BharatExpress.in@SD" tvg-chno="414" tvg-language="Urdu" tvg-tier="FTA" tvg-logo="https://bharatexpress.com/wp-content/themes/newstrackcms/images/bharat-express-new-logo.png" group-title="News",Bharat Express
-https://stream.ottlive.co.in/bharatexpress/index.m3u8
+https://stream1.livebox.co.in/VCAREhls/live.m3u8
 #EXTINF:-1 tvg-id="Prime9News.in@SD" tvg-chno="415" tvg-language="Telugu" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Prime_9_News.png" group-title="News",Prime9 News
 https://stream.ottlive.co.in/prime9news/index.m3u8
 #EXTINF:-1 tvg-id="DDTripura.in@SD" tvg-chno="417" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://i.imgur.com/ctlcdOw.png" group-title="Entertainment",DD Tripura
@@ -776,8 +776,8 @@ https://amg01448-samsungin-enterr10bangla-samsungin-ad-gg.amagi.tv/playlist/amg0
 https://cdn.ottlive.co.in/mahuakhabar/index.m3u8
 #EXTINF:-1 tvg-id="DailyPostTV.in@SD" tvg-chno="543" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://papaji.freetvindia.com/media/Daily_post.png" group-title="News",Daily Post TV
 https://vglivessai.akamaized.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/103b8dd3-a888-4d1d-89a5-8a4bc25e48c1/index.m3u8
-#EXTINF:-1 tvg-id="GTCPunjabi.in@US" tvg-chno="544" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://media.thegtcnetwork.com/uploads/gtc-pujabin-s.jpg" group-title="Regional",GTC Punjabi
-https://neotv.ottlive.co.in/gtcpunjabiusa/index.m3u8
+#EXTINF:-1 tvg-id="GTCPunjabi.in@UK" tvg-chno="544" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://media.thegtcnetwork.com/uploads/gtc-pujabin-s.jpg" group-title="Regional",GTC Punjabi
+https://neotv.ottlive.co.in/gtcpunjabiuk/index.m3u8
 #EXTINF:-1 tvg-id="NDTVMarathi.in@SD" tvg-chno="545" tvg-language="Marathi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s166276_ld_h15_aa.png?lock=720x540" group-title="News",NDTV Marathi
 #EXTVLCOPT:http-referrer=https://marathi.ndtv.com/
 https://web-ndtv-marathi.akamaized.net/hls/live/2110470/ndtvmarathi/master_1.m3u8
@@ -841,8 +841,6 @@ https://livetv.tarangplus.in/otv-origin/live/playlist.m3u8
 https://livetv.tarangplus.in/alankar-origin/live/playlist.m3u8
 #EXTINF:-1 tvg-id="BhojpuriCinema.in@SD" tvg-chno="590" tvg-language="Bhojpuri" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s142713_ld_h15_aa.png?lock=720x540" group-title="Movies",Bhojpuri Cinema
 https://live-bhojpuri.akamaized.net/liveabr/playlist.m3u8
-#EXTINF:-1 tvg-id="KCLTV.in@SD" tvg-chno="591" tvg-language="Malayalam" tvg-tier="FTA" tvg-logo="https://i.imgur.com/bkp9dIm.png" group-title="Entertainment",KCL TV
-https://kcltv.livebox.co.in/kclhls/live.m3u8
 #EXTINF:-1 tvg-id="PrarthanaLife.in@SD" tvg-chno="592" tvg-language="Odia" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Prarthana_Life.png" group-title="Devotional",Prarthana Life
 https://livetv.tarangplus.in/prarthana-origin/live/playlist.m3u8
 #EXTINF:-1 tvg-id="RPlusGold.in@SD" tvg-chno="593" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://i.imgur.com/dpI7XPC.png" group-title="Entertainment",R Plus Gold
@@ -1012,13 +1010,11 @@ https://n18syndication.akamaized.net/bpk-tv/News18_Bihar_Jharkhand_NW18_MOB/outp
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36
 https://fta.ektv.in/live/239/master.m3u8
 #EXTINF:-1 tvg-id="GSTV.in@SD" tvg-chno="681" tvg-language="Gujarati" tvg-tier="FTA" tvg-logo="https://i.imgur.com/VCKeGFj.png" group-title="News",GS TV
-https://cdnplay.peanutsquare.com/560828843292539228453915.m3u8
+https://mumt05.tangotv.in/87NeALx2GSTV/index.m3u8
 #EXTINF:-1 tvg-id="GuaranteeNews.in@SD" tvg-chno="682" tvg-language="Kannada" tvg-tier="FTA" tvg-logo="https://media.licdn.com/dms/image/v2/D560BAQHYZzbGJ7ViZA/company-logo_200_200/company-logo_200_200/0/1728031377890?e=2147483647&v=beta&t=bIsZgNUCcg0M_-Zqeu5wKYgBt_1-pI798X9lP5CxhTM" group-title="News",Guarantee News
 https://guaranteenews.in:8443/live/gnews/index.m3u8
 #EXTINF:-1 tvg-id="TarangTV.in@SD" tvg-chno="683" tvg-language="Odia" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143927_ld_h15_aa.png?lock=720x540" group-title="Entertainment",Tarang TV
 https://livetv.tarangplus.in/tarangtv-origin/live/playlist.m3u8
-#EXTINF:-1 tvg-id="News18Urdu.in@SD" tvg-chno="684" tvg-language="Urdu" tvg-tier="FTA" tvg-logo="https://i.imgur.com/8xnwMRR.png" group-title="News",News18 Urdu
-https://n18syndication.akamaized.net/bpk-tv/News18_Urdu_NW18_MOB/output01/master.m3u8
 #EXTINF:-1 tvg-id="ZeeKannadaNews.in@SD" tvg-chno="685" tvg-language="Kannada" tvg-tier="FTA" tvg-logo="https://english.cdn.zeenews.com/images/logo/zee-kannada-logo-20.svg" group-title="News",Zee Kannada News
 https://d3vzwoqcbpfm8p.cloudfront.net/index_4.m3u8
 #EXTINF:-1 tvg-id="NewsOnly.in@SD" tvg-chno="686" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/News_Only.png" group-title="News",News Only
@@ -1060,7 +1056,7 @@ https://mumbai-edge.smartplaytv.in/PMC/index.m3u8
 #EXTINF:-1 tvg-id="SITI24x7.in@SD" tvg-chno="705" tvg-language="Telugu" tvg-tier="FTA" tvg-logo="https://yt3.googleusercontent.com/cSsxzVa-2j7DQ7ZLaRSS5oV4RVtkfiwIZoccMKSyitWXf5g1UyYcwavRI2rr-9JaBO52e_6T=s176-c-k-c0x00ffffff-no-rj-mo" group-title="News",SITI 24x7
 https://www.schannels.in/SITI24X7_1/index.m3u8
 #EXTINF:-1 tvg-id="PowervisionTV.in@SD" tvg-chno="706" tvg-language="Malayalam" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143670_ld_h15_aa.png?lock=720x540" group-title="Devotional",Powervision TV
-https://mumbai-edge.smartplaytv.in/PowerVision/index.m3u8
+https://mumt07.tangotv.in/zHjX9OFlPOWERVISION/index.m3u8
 #EXTINF:-1 tvg-id="PTCNews.in@SD" tvg-chno="707" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143683_ld_h15_aa.png?lock=720x540" group-title="News",PTC News
 https://cdn.pishow.tv/ott/live/1502/master.m3u8
 #EXTINF:-1 tvg-id="Zee24Taas.in@SD" tvg-chno="708" tvg-language="Marathi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/GNLZZGG00230LKE.png?lock=720x540" group-title="News",Zee 24 Taas
@@ -1147,7 +1143,7 @@ https://n18syndication.akamaized.net/bpk-tv/News18_Odia_NW18_MOB/output01/master
 #EXTINF:-1 tvg-id="News18Rajasthan.in@SD" tvg-chno="756" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143618_ld_h9_aa.png?lock=720x540" group-title="News",News18 Rajasthan
 https://n18syndication.akamaized.net/bpk-tv/News18_Rajasthan_NW18_MOB/output01/master.m3u8
 #EXTINF:-1 tvg-id="KTVBangla.in@SD" tvg-chno="757" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/channel/2f8e3b371c660faa2f43a7f0942948a4.png" group-title="Regional",KTV Bangla
-https://server.livelegitpro.in:9899/tribetv/tribetv/index.m3u8
+https://stream.ottlive.co.in/ktvbangla/index.m3u8
 #EXTINF:-1 tvg-id="PuthuyugamTV.in@SD" tvg-chno="759" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143693_ld_h15_aa.png?lock=720x540" group-title="Entertainment",Puthuyugam TV
 https://mumt04.tangotv.in/m18aqlK4PUTHUYUGAMTV/index.m3u8
 #EXTINF:-1 tvg-id="SathiyamTV.in@SD" tvg-chno="760" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/s143765_ld_h15_aa.png?lock=720x540" group-title="News",Sathiyam TV
@@ -1207,7 +1203,7 @@ https://server.thelegitpro.in/sadvidya/sadvidya/index.m3u8
 #EXTINF:-1 tvg-id="ZodiakTV.in@SD" tvg-chno="798" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://i.imgur.com/gE166hZ.jpeg" group-title="Regional",Zodiak TV
 https://ranacable.duckdns.org/ZodiakTv/index.m3u8
 #EXTINF:-1 tvg-id="VillageTV.in@SD" tvg-chno="799" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/VillageTV.png" group-title="Devotional",Village TV
-https://live.villagetv.net/villagetv/hd/index.m3u8
+https://villagetv.applelive.in/villagetv/villagetv/index.m3u8
 #EXTINF:-1 tvg-id="VRLive.in@SD" tvg-chno="800" tvg-language="Gujarati" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/VRLive.png" group-title="News",VR Live
 https://channel.vrlivegujarat.com/hls/vrchannel.m3u8
 #EXTINF:-1 tvg-id="ZeePunjabHaryanaHimachal.in@SD" tvg-chno="801" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://dtil.tmsimg.com/assets/GNLZZGG0022KHKS.png?lock=720x540" group-title="News",Zee Punjab Haryana Himachal
@@ -1221,7 +1217,7 @@ https://mumt01.tangotv.in/O5aw8Zn3JANAMTVTAMIL/index.m3u8
 #EXTINF:-1 tvg-id="CVRNews.in@SD" tvg-chno="806" tvg-language="Telugu" tvg-tier="FTA" tvg-logo="https://i.imgur.com/UVLWX8B.png" group-title="News",CVR News
 https://mumt04.tangotv.in/m18aqlK4CVRNEWS/index.m3u8
 #EXTINF:-1 tvg-id="SubinTV.in@SD" tvg-chno="807" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/subintvtamil.png" group-title="Entertainment",Subin TV
-https://stream.galaxyott.live/live/subintv/index.m3u8
+https://stream.ottlive.co.in/subintvtamil/index.m3u8
 #EXTINF:-1 tvg-id="LifeTV.in@SD" tvg-chno="808" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://i.ibb.co/v1C0bdR/logo-1.png" group-title="Devotional",Life TV
 https://lifetv.livebox.co.in/lifetvhls/lifetv.m3u8
 #EXTINF:-1 tvg-id="Pradesh24Gujarati.in@SD" tvg-chno="809" tvg-language="Gujarati" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Pradesh24_Gujarati.png" group-title="News",Pradesh24 Gujarati
@@ -1254,14 +1250,10 @@ https://vglivessai.akamaized.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453
 https://player.mslivestream.net/tamil/ac206e74d75b285755ee4924df87d951.sdp/playlist.m3u8
 #EXTINF:-1 tvg-id="BanglaJago.in@SD" tvg-chno="826" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Bangla_Jago.png" group-title="News",Bangla Jago
 https://banglajagotv.livebox.co.in/banglajagohls/24x7.m3u8
-#EXTINF:-1 tvg-id="Tunes6.in@SD" tvg-chno="827" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://i.imgur.com/VUzMQ9S.png" group-title="Music",Tunes 6
-https://stream.d6-pro.com/Tunes6music/live/video.m3u8
 #EXTINF:-1 tvg-id="ZBMusic.in@HD" tvg-chno="829" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://i.imgur.com/k1nb8u1.jpeg" group-title="Music",ZB Music
 https://server.zillarbarta.com/zbmusic/index.m3u8
 #EXTINF:-1 tvg-id="MNaduTV.in@SD" tvg-chno="831" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/M_Nadu.png" group-title="News",M Nadu TV
 https://cloudcdnplayer.mslivestream.net/mslivecdn/mnadu/index.m3u8
-#EXTINF:-1 tvg-id="SuriyanTV.in@SD" tvg-chno="832" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/shows/2025-11-06/2511063356010.jpg" group-title="Movies",Suriyan TV
-https://hlslive.olidigital.in/suriyantv/suriyantv/index.m3u8
 #EXTINF:-1 tvg-id="UBangla.in@SD" tvg-chno="833" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/U_Bangla.png" group-title="Regional",U Bangla
 https://stream.ottlive.co.in/ubangla/index.m3u8
 #EXTINF:-1 tvg-id="AkhonKolkata.in@SD" tvg-chno="834" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/ekhonkolkata.png" group-title="News",Akhon Kolkata
@@ -1298,3 +1290,25 @@ https://stream.ottlive.co.in/punjabihits/index.m3u8
 https://mumt05.tangotv.in/87NeALx2SADHNATV/index.m3u8
 #EXTINF:-1 tvg-id="TTN24.in@SD" tvg-chno="856" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/TTN24.png" group-title="News",TTN24
 https://stream.joytvindia.com/stream/hls/ttn24/index.m3u8
+#EXTINF:-1 tvg-id="ChintpurniLive.in@SD" tvg-chno="857" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://papaji.freetvindia.com/media/Chintpurni_Live.png" group-title="Devotional",Chintpurni Live
+https://samitaorigin.tangotv.in/CHINTPURNILIVE/SAMITAORIGIN/index.m3u8
+#EXTINF:-1 tvg-id="Chithiram.in@SD" tvg-chno="858" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/CHITHIRAM_Transparent_0a0a1cd6-cba5-4899-b22d-ce53fa1236dd.png" group-title="Kids",Chithiram
+https://cdn.pishow.tv/ott/live/1243/master.m3u8
+#EXTINF:-1 tvg-id="GTCNews.in@SD" tvg-chno="859" tvg-language="Punjabi" tvg-tier="FTA" tvg-logo="https://www.thegtcnetwork.com/gtc-news.png" group-title="News",GTC News
+https://vglivessai.akamaized.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/921cca59-daee-4f89-8c38-7ffe8de44f4c/index.m3u8
+#EXTINF:-1 tvg-id="HarvestUSA.in@SD" tvg-chno="860" tvg-language="English" tvg-tier="FTA" tvg-logo="" group-title="Devotional",Harvest USA
+https://7mbd4ogkr3gx-hls-live.wmncdn.net/harvestusa/d57ffba6564caea2fee3f4085f19a098.sdp/playlist.m3u8
+#EXTINF:-1 tvg-id="JalshaMovies.in@SD" tvg-chno="861" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/1445/1782291521445-h.jpg" group-title="Movies",Jalsha Movies
+https://box.bbaria.net:8083/Jalsha_Movie/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-id="MahuaPlay.in@SD" tvg-chno="862" tvg-language="Bhojpuri" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/Mahua_Play.png" group-title="Movies",Mahua Play
+https://cdn.ottlive.co.in/mahuaplay/index.m3u8
+#EXTINF:-1 tvg-id="NewsLeader.in@SD" tvg-chno="863" tvg-language="Hindi" tvg-tier="FTA" tvg-logo="https://img-cdn.publive.online/fit-in/360x280/filters:format(webp)/newsleaderlive/media/agency_attachments/2026/04/15/2026-04-15t100517555z-news-leader-640-480-1-sarvajeet-singh-chauhan-2026-04-15-15-35-17.png" group-title="News",News Leader
+https://stream.ottlive.co.in/newsleader/index.m3u8
+#EXTINF:-1 tvg-id="OnkarNews.in@SD" tvg-chno="864" tvg-language="Bengali" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/onkarnews.png" group-title="News",Onkar News
+https://stream.ottlive.co.in/onkarnews/index.m3u8
+#EXTINF:-1 tvg-id="SuriyaTV.in@SD" tvg-chno="865" tvg-language="Tamil" tvg-tier="FTA" tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/suryatvtamil.png" group-title="Entertainment",Suriya TV
+https://stream.ottlive.co.in/suryatvtamil/index.m3u8
+#EXTINF:-1 tvg-id="TVBRICSEnglish.in@SD" tvg-chno="866" tvg-language="English" tvg-tier="FTA" tvg-logo="https://i.imgur.com/8rKNuS6.png" group-title="Entertainment",TV BRICS English
+https://engbrics.mediacdn.ru/cdn/brics/english/playlist.m3u8
+#EXTINF:-1 tvg-id="TV13Gujarati.in@SD" tvg-chno="867" tvg-language="Gujarati" tvg-tier="FTA" tvg-logo="https://www.tv13gujarati.com/assets/front/img/footer-logo.jpg" group-title="News",TV13 Gujarati
+https://live.wrencdn.in/wrencdn/hls/tv13_web/index.m3u8

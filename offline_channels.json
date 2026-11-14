@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-14T12:51:28Z",
-  "total_channels": 885,
+  "updated_at": "2026-11-14T16:24:25Z",
+  "total_channels": 879,
   "channels": [
     {
       "id": "Andpictures.in",
@@ -1146,24 +1146,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "ChintpurniLive.in",
-      "name": "Chintpurni Live",
-      "tier": "FTA",
-      "category": "Devotional",
-      "logo_url": "https://papaji.freetvindia.com/media/Chintpurni_Live.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
-    },
-    {
-      "id": "Chithiram.in",
-      "name": "Chithiram",
-      "tier": "FTA",
-      "category": "Kids",
-      "logo_url": "https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/CHITHIRAM_Transparent_0a0a1cd6-cba5-4899-b22d-ce53fa1236dd.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
-    },
-    {
       "id": "Cine21.in",
       "name": "Cine 21",
       "tier": "FTA",
@@ -1188,7 +1170,7 @@
       "category": "Business",
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/CNBCBajar.png",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "probe_IncompleteRead"
     },
     {
       "id": "CNBCTV18.in",
@@ -1224,7 +1206,7 @@
       "category": "Entertainment",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/108/1782291760108-h.jpg",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "http_404"
     },
     {
       "id": "ColorsAsiaPacific.in",
@@ -1242,7 +1224,7 @@
       "category": "Regional",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/8049/1782291598049-h.jpg",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "http_404"
     },
     {
       "id": "ColorsBanglaCinema.in",
@@ -1251,7 +1233,7 @@
       "category": "Movies",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/4599/1782289524599-h.jpg",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "media_verified"
     },
     {
       "id": "ColorsCineplex.in",
@@ -1368,7 +1350,7 @@
       "category": "Entertainment",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/6181/1782290986181-h.jpg",
       "status": "OFFLINE",
-      "reason": "http_416"
+      "reason": "media_verified"
     },
     {
       "id": "ColorsTamil.in",
@@ -2205,7 +2187,7 @@
       "category": "Entertainment",
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/ETV_Josh.png",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "probe_IncompleteRead"
     },
     {
       "id": "ETVLife.in",
@@ -2613,15 +2595,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "GTCNews.in",
-      "name": "GTC News",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://www.thegtcnetwork.com/gtc-news.png",
-      "status": "OFFLINE",
-      "reason": "timeout"
-    },
-    {
       "id": "GurbaniTV.in",
       "name": "Gurbani TV",
       "tier": "FTA",
@@ -2674,15 +2647,6 @@
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Hare_Krsna_Pravachan.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "HarvestUSA.in",
-      "name": "Harvest USA",
-      "tier": "FTA",
-      "category": "Devotional",
-      "logo_url": "",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "HarvestWorshipTV.in",
@@ -2964,15 +2928,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "JalshaMovies.in",
-      "name": "Jalsha Movies",
-      "tier": "FTA",
-      "category": "Movies",
-      "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/1445/1782291521445-h.jpg",
-      "status": "OFFLINE",
-      "reason": "timeout"
-    },
-    {
       "id": "JanSetuNews.in",
       "name": "Jan Setu News",
       "tier": "FTA",
@@ -3153,6 +3108,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "Kabaddi24x7.in",
+      "name": "Kabaddi 24x7",
+      "tier": "FTA",
+      "category": "Sports",
+      "logo_url": "https://papaji.freetvindia.com/media/kabaddi_24x7.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "KadakHits.in",
       "name": "Kadak Hits",
       "tier": "FTA",
@@ -3241,6 +3205,15 @@
       "logo_url": "https://i.imgur.com/zDwIsO3.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "KCLTV.in",
+      "name": "KCL TV",
+      "tier": "FTA",
+      "category": "Entertainment",
+      "logo_url": "https://i.imgur.com/bkp9dIm.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "KCV.in",
@@ -3466,15 +3439,6 @@
       "logo_url": "https://mahimaitv.com/images/mahimaitamil.png",
       "status": "OFFLINE",
       "reason": "http_400"
-    },
-    {
-      "id": "MahuaPlay.in",
-      "name": "Mahua Play",
-      "tier": "FTA",
-      "category": "Movies",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Mahua_Play.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "MahuaaTV.in",
@@ -4269,15 +4233,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "NewsLeader.in",
-      "name": "News Leader",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://img-cdn.publive.online/fit-in/360x280/filters:format(webp)/newsleaderlive/media/agency_attachments/2026/04/15/2026-04-15t100517555z-news-leader-640-480-1-sarvajeet-singh-chauhan-2026-04-15-15-35-17.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
-    },
-    {
       "id": "NewsPlus.in",
       "name": "News Plus",
       "tier": "FTA",
@@ -4321,6 +4276,15 @@
       "logo_url": "https://i.imgur.com/VJCQAiW.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "News18Urdu.in",
+      "name": "News18 Urdu",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://i.imgur.com/8xnwMRR.png",
+      "status": "OFFLINE",
+      "reason": "probe_IncompleteRead"
     },
     {
       "id": "NewsTimeBangla.in",
@@ -4474,15 +4438,6 @@
       "logo_url": "https://i.imgur.com/6Jh8LRI.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "OnkarNews.in",
-      "name": "Onkar News",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/onkarnews.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "OnkarOnlyTruthTV.in",
@@ -5571,7 +5526,7 @@
       "category": "Entertainment",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002YP08L.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "http_404"
     },
     {
       "id": "SonyBBCEarth.in",
@@ -6366,13 +6321,13 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "SuriyaTV.in",
-      "name": "Suriya TV",
+      "id": "SuriyanTV.in",
+      "name": "Suriyan TV",
       "tier": "FTA",
-      "category": "Entertainment",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/suryatvtamil.png",
+      "category": "Movies",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/shows/2025-11-06/2511063356010.jpg",
       "status": "OFFLINE",
-      "reason": "timeout"
+      "reason": "http_503"
     },
     {
       "id": "SuryaBhojpuri.in",
@@ -7104,6 +7059,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "Tunes6.in",
+      "name": "Tunes 6",
+      "tier": "FTA",
+      "category": "Music",
+      "logo_url": "https://i.imgur.com/VUzMQ9S.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "TV100National.in",
       "name": "TV 100 National",
       "tier": "FTA",
@@ -7122,15 +7086,6 @@
       "reason": "no_authorized_source"
     },
     {
-      "id": "TVBRICSEnglish.in",
-      "name": "TV BRICS English",
-      "tier": "FTA",
-      "category": "Entertainment",
-      "logo_url": "https://i.imgur.com/8rKNuS6.png",
-      "status": "OFFLINE",
-      "reason": "invalid_hls_manifest"
-    },
-    {
       "id": "TVNXTMarathi.in",
       "name": "TV NXT Marathi",
       "tier": "FTA",
@@ -7138,15 +7093,6 @@
       "logo_url": "https://yt3.googleusercontent.com/kMt-Pr7YNNd5pfssPa1K4HdmQDoLmt0IM_VVLHzfbw7yAauwfU4H75ET1kxjZpF9gNcwB3zFeo4=s900-c-k-c0x00ffffff-no-rj",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "TV13Gujarati.in",
-      "name": "TV13 Gujarati",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://www.tv13gujarati.com/assets/front/img/footer-logo.jpg",
-      "status": "OFFLINE",
-      "reason": "media_without_segments"
     },
     {
       "id": "TV9PunjabHimachalPradesh.in",
