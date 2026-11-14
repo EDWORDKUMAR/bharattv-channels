@@ -1,4 +1,4 @@
-name: Bharat TV Smart Channel Bot v3
+name: Bharat TV Smart Channel Bot v3.1
 
 on:
   schedule:
@@ -21,6 +21,9 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       SCAN_WORKERS: '24'
+      SPORTS_DISCOVERY: '1'
+      PREMIUM_DISCOVERY: '1'
+      SPORTS_MAX_CANDIDATES: '160'
       # Activate ONLY after checking internet rebroadcast rights for all community FTA sources.
       ALLOW_COMMUNITY_FTA: ${{ vars.ALLOW_COMMUNITY_FTA || '0' }}
       # Optional PRIVATE config. Never place signed/private premium URLs in a public repo.
@@ -40,7 +43,7 @@ jobs:
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
 
-      - name: Discover authorized Indian channels and verify HLS segments
+      - name: Scan Indian channels and public premium candidates for diagnostics
         run: python channel_updater.py
 
       - name: Validate published catalogue and prevent foreign channel leaks
@@ -75,7 +78,9 @@ jobs:
         run: |
           git config user.name 'BharatTV SmartBot'
           git config user.email 'actions@users.noreply.github.com'
-          git add channels.json channels.m3u offline_channels.json scan_report.json
+          for file in channels.json channels.m3u offline_channels.json scan_report.json sports_discovery.json; do
+            if [ -f "$file" ]; then git add -- "$file"; fi
+          done
           if git diff --staged --quiet; then
             echo 'No changes to publish'
           else
