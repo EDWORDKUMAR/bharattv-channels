@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-14T12:41:14Z",
+  "generated_at": "2026-11-14T12:51:28Z",
   "mode": "public_sports_diagnostics_not_rebroadcast",
   "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
   "target_count": 38,
-  "targets_with_candidates": 2,
-  "targets_with_responses": 0,
+  "targets_with_candidates": 3,
+  "targets_with_responses": 1,
   "targets": [
     {
       "name": "Star Sports 1",
@@ -502,11 +502,13 @@
       "matched_indian_channels": [
         "DD Sports"
       ],
-      "candidate_count": 0,
-      "responding_candidates": 0,
+      "candidate_count": 8,
+      "responding_candidates": 8,
       "drm_indicated": 0,
-      "probe_results": {},
-      "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+      "probe_results": {
+        "media_verified": 8
+      },
+      "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
     }
   ]
 }

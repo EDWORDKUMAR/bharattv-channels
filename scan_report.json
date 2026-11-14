@@ -1,30 +1,34 @@
 {
-  "updated_at": "2026-11-14T12:41:14Z",
+  "updated_at": "2026-11-14T12:51:28Z",
   "engine": "Bharat TV SmartBot v3.1",
   "policy": "India identities only; public premium sports discovery diagnostic-only",
   "settings": {
-    "allow_community_fta": false,
+    "allow_community_fta": true,
     "sports_discovery": true,
     "premium_discovery": true,
     "sports_max_candidates": 160,
     "scan_workers": 24
   },
   "counts": {
-    "community_fta_permission_required": 1762,
     "indian_metadata_channels": 1504,
-    "live_channels": 0,
-    "live_fta_channels": 0,
+    "live_channels": 619,
+    "live_fta_channels": 619,
     "live_paid_licensed_channels": 0,
-    "offline_indian_channels": 1504,
-    "probe_http_400": 1,
-    "probe_http_403": 7,
-    "probe_http_404": 9,
-    "probe_http_416": 1,
-    "probe_http_451": 1,
-    "probe_invalid_hls_manifest": 3,
-    "probe_media_verified": 44,
-    "probe_network_error": 5,
-    "probe_timeout": 7,
+    "offline_indian_channels": 885,
+    "probe_http_400": 2,
+    "probe_http_401": 2,
+    "probe_http_403": 87,
+    "probe_http_404": 147,
+    "probe_http_416": 7,
+    "probe_http_451": 2,
+    "probe_http_502": 1,
+    "probe_http_503": 1,
+    "probe_http_504": 1,
+    "probe_invalid_hls_manifest": 8,
+    "probe_media_verified": 1518,
+    "probe_media_without_segments": 1,
+    "probe_network_error": 18,
+    "probe_timeout": 45,
     "public_paid_sports_candidates": 179,
     "rejected_channel_url_mismatch": 11,
     "rejected_foreign_or_unknown_m3u_id": 219,
@@ -32,15 +36,15 @@
     "rejected_unknown_feed": 3,
     "rejected_url_or_foreign_hint": 212,
     "sports_candidates_deferred_by_budget": 0,
-    "unique_candidates": 78
+    "unique_candidates": 1840
   },
   "sports": {
-    "generated_at": "2026-11-14T12:41:14Z",
+    "generated_at": "2026-11-14T12:51:28Z",
     "mode": "public_sports_diagnostics_not_rebroadcast",
     "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
     "target_count": 38,
-    "targets_with_candidates": 2,
-    "targets_with_responses": 0,
+    "targets_with_candidates": 3,
+    "targets_with_responses": 1,
     "targets": [
       {
         "name": "Star Sports 1",
@@ -538,11 +542,13 @@
         "matched_indian_channels": [
           "DD Sports"
         ],
-        "candidate_count": 0,
-        "responding_candidates": 0,
+        "candidate_count": 8,
+        "responding_candidates": 8,
         "drm_indicated": 0,
-        "probe_results": {},
-        "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
+        "probe_results": {
+          "media_verified": 8
+        },
+        "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
       }
     ]
   }
