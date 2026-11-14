@@ -1,33 +1,20 @@
 #!/usr/bin/env python3
-"""
-Bharat TV — Next-Gen Indian IPTV Channel Discovery, Identity Verification & Health Engine
-=========================================================================================
-Runs 5x daily via GitHub Actions (`update-channels.yml`) to build `channels.json` and `channels.m3u`.
+"""Bharat TV Smart Bot v3 — India-first, rights-aware IPTV availability monitor.
 
-Key Capabilities:
-1. Multi-Source Discovery:
-   - Official IPTV-org JSON API (`channels.json`, `streams.json`, `feeds.json`, `logos.json`)
-   - Official Country & Language M3U Playlists (India + 15 Indian languages: Hindi, Tamil,
-     Telugu, Punjabi, Marathi, Bengali, Gujarati, Kannada, Malayalam, Odia, Assamese, Bhojpuri, Urdu)
-   - Curated Public Indian IPTV M3U Repositories
-2. Zero Cross-Channel Stream Contamination:
-   - Blocks known cross-mapped streams (e.g., Zee Cinema on SET Max, generic sports feeds on
-     Star Sports 1, Colors on Sony SAB, Colors Cineplex on Star Gold, Animax on Cartoon Network).
-   - Rejects any generic stream URL claimed by 3+ distinct channel identities across networks.
-   - Preserves channel numbers (1, 2, Plus), variants (Movies, Music, Gold), and language tags
-     during normalization so Hindi and regional feeds never collide.
-3. FTA (Free-to-Air) vs PAID (Subscription) Classification:
-   - Classifies every Indian channel into FTA (DD FreeDish / Prasar Bharati / Public News) or
-     PAID (Star/JioStar, Sony/Culver Max, Zee, Colors/Viacom18, Sun Network, Discovery, Warner).
-4. Concurrent Deep HLS Health Check:
-   - Verifies HTTP status, `#EXTM3U` playlist headers, and master/media chunklists concurrently,
-     sorting mirrors by fastest response latency and promoting HTTPS streams as primary.
-"""
+Python 3.11+; only stdlib. GitHub Actions friendly. Preserves the existing
+channels.json / channels.m3u *live channel* interface. Offline channels are
+written to a separate report to avoid breaking Android player integrations.
 
+Important: public community IPTV metadata does not confer redistribution rights.
+Subscription feeds may only be published from explicit licensed integrations.
+The bot does not bypass authentication, DRM, tokens or geographic restrictions.
+"""
 from __future__ import annotations
 
 import concurrent.futures
 import datetime as dt
+import ipaddress
+import hashlib
 import json
 import os
 import re
@@ -36,39 +23,44 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections import Counter, defaultdict
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-# ---------------------------------------------------------------------------
-# 1. Upstream Sources (IPTV-org API + Indian Language & Regional Playlists)
-# ---------------------------------------------------------------------------
-
-IPTV_API_CHANNELS = "https://iptv-org.github.io/api/channels.json"
-IPTV_API_STREAMS = "https://iptv-org.github.io/api/streams.json"
-IPTV_API_LOGOS = "https://iptv-org.github.io/api/logos.json"
-IPTV_API_FEEDS = "https://iptv-org.github.io/api/feeds.json"
-
-M3U_SOURCES: list[tuple[str, str, str]] = [
-    # (Source Label, Default Language, M3U URL)
-    ("IPTV-org India Master", "Hindi", "https://iptv-org.github.io/iptv/countries/in.m3u"),
-    ("IPTV-org Hindi", "Hindi", "https://iptv-org.github.io/iptv/languages/hin.m3u"),
-    ("IPTV-org Punjabi", "Punjabi", "https://iptv-org.github.io/iptv/languages/pan.m3u"),
-    ("IPTV-org Marathi", "Marathi", "https://iptv-org.github.io/iptv/languages/mar.m3u"),
-    ("IPTV-org Gujarati", "Gujarati", "https://iptv-org.github.io/iptv/languages/guj.m3u"),
-    ("IPTV-org Bengali", "Bengali", "https://iptv-org.github.io/iptv/languages/ben.m3u"),
-    ("IPTV-org Tamil", "Tamil", "https://iptv-org.github.io/iptv/languages/tam.m3u"),
-    ("IPTV-org Telugu", "Telugu", "https://iptv-org.github.io/iptv/languages/tel.m3u"),
-    ("IPTV-org Kannada", "Kannada", "https://iptv-org.github.io/iptv/languages/kan.m3u"),
-    ("IPTV-org Malayalam", "Malayalam", "https://iptv-org.github.io/iptv/languages/mal.m3u"),
-    ("IPTV-org Odia", "Odia", "https://iptv-org.github.io/iptv/languages/ori.m3u"),
-    ("IPTV-org Assamese", "Assamese", "https://iptv-org.github.io/iptv/languages/asm.m3u"),
-    ("IPTV-org Bhojpuri", "Bhojpuri", "https://iptv-org.github.io/iptv/languages/bho.m3u"),
-    ("IPTV-org Urdu", "Urdu", "https://iptv-org.github.io/iptv/languages/urd.m3u"),
-    ("IPTV-org Konkani", "Konkani", "https://iptv-org.github.io/iptv/languages/kok.m3u"),
-    ("IPTV-org Nepali", "Nepali", "https://iptv-org.github.io/iptv/languages/nep.m3u"),
-    ("Hindi-Punjabi Community", "Hindi", "https://raw.githubusercontent.com/deep2772/Hindi_Punjabi-iptv-playlist/refs/heads/main/Hindi_Punjabi_Merged.m3u"),
-    ("TangoTV India", "Hindi", "https://raw.githubusercontent.com/amazeyourself/m3u/main/tangotv.m3u"),
+API_BASE = 'https://iptv-org.github.io/api'
+API_ENDPOINTS = {
+    'channels': f'{API_BASE}/channels.json',
+    'streams': f'{API_BASE}/streams.json',
+    'feeds': f'{API_BASE}/feeds.json',
+    'logos': f'{API_BASE}/logos.json',
+    'blocklist': f'{API_BASE}/blocklist.json',
+}
+M3U_SOURCES = [
+    ('IPTV-org India', 'https://iptv-org.github.io/iptv/countries/in.m3u'),
+    *[(f'IPTV-org {language}', f'https://iptv-org.github.io/iptv/languages/{code}.m3u')
+      for language, code in [
+          ('Hindi','hin'), ('Tamil','tam'), ('Telugu','tel'), ('Malayalam','mal'),
+          ('Kannada','kan'), ('Marathi','mar'), ('Bengali','ben'), ('Gujarati','guj'),
+          ('Punjabi','pan'), ('Odia','ori'), ('Assamese','asm'), ('Bhojpuri','bho'),
+          ('Urdu','urd')
+      ]]
 ]
+USER_AGENT = 'BharatTV-SmartBot/3.0 (+Indian feed identity and manifest verification)'
+WORKERS = max(4, min(40, int(os.getenv('SCAN_WORKERS', '24'))))
+ALLOW_COMMUNITY_FTA = os.getenv('ALLOW_COMMUNITY_FTA', '0') == '1'
+OUTPUT_JSON = Path('channels.json')
+OUTPUT_M3U = Path('channels.m3u')
+OFFLINE_JSON = Path('offline_channels.json')
+REPORT_JSON = Path('scan_report.json')
+MAX_TEXT = 1_000_000
+MAX_PLAYLIST = 256_000
+LANGUAGE_CODES = {name: code for code, name in [
+    ('hin', 'Hindi'), ('eng', 'English'), ('tam', 'Tamil'), ('tel', 'Telugu'),
+    ('mal', 'Malayalam'), ('kan', 'Kannada'), ('mar', 'Marathi'), ('ben', 'Bengali'),
+    ('guj', 'Gujarati'), ('pan', 'Punjabi'), ('ori', 'Odia'), ('asm', 'Assamese'),
+    ('bho', 'Bhojpuri'), ('urd', 'Urdu'),
+]}
 
 INDIAN_LANG_CODES: dict[str, str] = {
     "hin": "Hindi",
@@ -390,451 +382,570 @@ def classify_zone_and_region(language: str, name: str) -> tuple[str, str, bool]:
 
 
 # ---------------------------------------------------------------------------
-# 4. Network Fetching & M3U / API Parsing
+# Network safety and source parsing
 # ---------------------------------------------------------------------------
 
-USER_AGENT = (
-    "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/126.0.0.0 Mobile Safari/537.36"
-)
-
-
-def fetch_text(url: str, timeout: float = 15.0, retries: int = 3) -> str:
-    last_exc: Exception | None = None
-    for attempt in range(1, max(1, retries) + 1):
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": USER_AGENT,
-                "Accept": "*/*",
-                "Connection": "close",
-            },
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw = resp.read()
-                return raw.decode("utf-8", errors="replace")
-        except Exception as exc:
-            last_exc = exc
-            if attempt < retries:
-                time.sleep(1.0 * attempt)
-    print(f"[Warn] Failed to fetch {url} after {retries} attempts: {last_exc}", file=sys.stderr)
-    return ""
-
-
-def parse_m3u_entries(m3u_text: str, default_lang: str = "Hindi") -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    if not m3u_text:
-        return entries
-
-    lines = m3u_text.splitlines()
-    cur_meta: dict[str, str] | None = None
-    user_agent_opt = ""
-    referrer_opt = ""
-
-    for raw_line in lines:
-        line = raw_line.strip()
-        if not line:
-            continue
-
-        if line.startswith("#EXTINF:"):
-            id_m = re.search(r'tvg-id="([^"]*)"', line, re.I) or re.search(r"tvg-id=([^\s,]+)", line, re.I)
-            name_m = re.search(r'tvg-name="([^"]*)"', line, re.I)
-            logo_m = re.search(r'tvg-logo="([^"]*)"', line, re.I)
-            group_m = re.search(r'group-title="([^"]*)"', line, re.I)
-            lang_m = re.search(r'tvg-language="([^"]*)"', line, re.I)
-
-            comma_idx = line.rfind(",")
-            display_name = line[comma_idx + 1 :].strip() if comma_idx != -1 else ""
-            if not display_name and name_m:
-                display_name = name_m.group(1).strip()
-
-            # Clean display_name of noisy tags like (1080p) (1080i) [Not 24/7] while keeping language/variant tags
-            clean_display = re.sub(r"\s*[\(\[](\d{3,4}[pi]|not\s*24/7|geo[-\s]*blocked|backup)[\)\]]", "", display_name, flags=re.I).strip()
-            res_m = re.search(r"(\d{3,4}[pi])", display_name, re.I)
-
-            cur_meta = {
-                "tvg_id": id_m.group(1).strip() if id_m else "",
-                "name": clean_display or display_name,
-                "raw_name": display_name,
-                "logo": logo_m.group(1).strip() if logo_m else "",
-                "group": group_m.group(1).strip() if group_m else "",
-                "language": lang_m.group(1).strip() if lang_m and lang_m.group(1).strip() else default_lang,
-                "quality": res_m.group(1) if res_m else "1080p",
-            }
-            user_agent_opt = ""
-            referrer_opt = ""
-
-        elif line.startswith("#EXTVLCOPT:"):
-            if "http-user-agent=" in line.lower():
-                user_agent_opt = line.split("=", 1)[1].strip()
-            elif "http-referrer=" in line.lower() or "http-referer=" in line.lower():
-                referrer_opt = line.split("=", 1)[1].strip()
-
-        elif line.startswith(("http://", "https://")):
-            stream_url = line.split("|")[0].strip()
-            if cur_meta and cur_meta.get("name"):
-                entries.append({
-                    **cur_meta,
-                    "url": stream_url,
-                    "user_agent": user_agent_opt,
-                    "referrer": referrer_opt,
-                })
-            cur_meta = None
-            user_agent_opt = ""
-            referrer_opt = ""
-
-    return entries
-
-
-def discover_from_iptv_org_api() -> list[dict[str, Any]]:
-    """
-    Fetches official IPTV-org JSON API (`channels.json`, `streams.json`, `logos.json`, `feeds.json`)
-    and extracts all Indian channels (country == 'IN' or Indian broadcast languages) with exact channel IDs.
-    """
-    print("[Discovery] Fetching official IPTV-org JSON API...")
-    channels_raw = fetch_text(IPTV_API_CHANNELS, timeout=25.0, retries=3)
-    streams_raw = fetch_text(IPTV_API_STREAMS, timeout=30.0, retries=3)
-    logos_raw = fetch_text(IPTV_API_LOGOS, timeout=25.0, retries=3)
-    feeds_raw = fetch_text(IPTV_API_FEEDS, timeout=25.0, retries=3)
-
-    if not channels_raw or not streams_raw:
-        return []
-
+def safe_https(url: str) -> bool:
+    """Never fetch non-HTTPS or obviously private/internal/untrusted URL schemes."""
     try:
-        channels_data = json.loads(channels_raw)
-        streams_data = json.loads(streams_raw)
-        logos_data = json.loads(logos_raw) if logos_raw else []
-        feeds_data = json.loads(feeds_raw) if feeds_raw else []
+        parts = urllib.parse.urlsplit(url.strip())
+        if parts.scheme.lower() != 'https' or not parts.hostname or parts.username or parts.password:
+            return False
+        hostname = parts.hostname.lower().rstrip('.')
+        if hostname in {'localhost', 'metadata.google.internal'} or hostname.endswith(('.local', '.internal', '.localhost')):
+            return False
+        try:
+            if not ipaddress.ip_address(hostname).is_global:
+                return False
+        except ValueError:
+            pass
+        return True
+    except (ValueError, AttributeError):
+        return False
+
+
+class SafeHTTPSRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not safe_https(newurl):
+            raise ValueError('unsafe_http_redirect')
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_HTTP_OPENER = urllib.request.build_opener(SafeHTTPSRedirectHandler())
+
+
+def fetch(url: str, *, timeout: float = 12.0, max_bytes: int = MAX_TEXT,
+          headers: dict[str, str] | None = None) -> tuple[bytes, int, str]:
+    if not safe_https(url):
+        raise ValueError('unsafe_or_insecure_url')
+    h = {'User-Agent': USER_AGENT, 'Accept': '*/*'}
+    if headers:
+        h.update({k: v for k, v in headers.items() if isinstance(k, str) and isinstance(v, str)
+                  and '\r' not in v and '\n' not in v})
+    req = urllib.request.Request(url, headers=h)
+    # urllib follows redirects automatically; re-validate final URL afterwards.
+    with _HTTP_OPENER.open(req, timeout=timeout) as resp:
+        if not safe_https(resp.geturl()):
+            raise ValueError('redirected_to_unsafe_url')
+        status = getattr(resp, 'status', 200)
+        data = resp.read(max_bytes)
+        ctype = (resp.headers.get('Content-Type') or '').lower()
+        return data, status, ctype
+
+
+def fetch_json(url: str) -> list[dict[str, Any]]:
+    for attempt in range(2):
+        try:
+            body, status, _ = fetch(url, timeout=20.0, max_bytes=15_000_000)
+            parsed = json.loads(body.decode('utf-8'))
+            if status == 200 and isinstance(parsed, list):
+                return [x for x in parsed if isinstance(x, dict)]
+        except Exception as exc:
+            if attempt == 1:
+                print(f'[Fetch] {url}: {type(exc).__name__}: {exc}', file=sys.stderr)
+            else:
+                time.sleep(0.5)
+    return []
+
+
+def parse_m3u(text: str) -> list[dict[str, str]]:
+    """Tolerate M3U metadata but NEVER infer a country's identity from language."""
+    result: list[dict[str, str]] = []
+    current: dict[str, str] | None = None
+    for raw in text.splitlines():
+        line = raw.strip()
+        if line.startswith('#EXTINF:'):
+            attrs = dict((k.lower(), v) for k, v in re.findall(r'([\w-]+)="([^"]*)"', line))
+            attrs['name'] = line.rsplit(',', 1)[-1].strip() if ',' in line else attrs.get('tvg-name', '')
+            current = attrs
+        elif current is not None and line.startswith('#EXTVLCOPT:'):
+            if 'http-referrer=' in line or 'http-referer=' in line:
+                current['referrer'] = line.split('=', 1)[-1].strip()
+            elif 'http-user-agent=' in line:
+                current['user_agent'] = line.split('=', 1)[-1].strip()
+        elif current is not None and line.startswith(('https://', 'http://')):
+            current['url'] = line.split('|', 1)[0]
+            result.append(current)
+            current = None
+    return result
+
+
+def feed_is_indian(feed: dict[str, Any] | None, channel_country: str = 'IN') -> bool:
+    if channel_country != 'IN':
+        return False
+    if not feed:
+        return True  # Indian broadcast channel; feed unspecified
+    areas = feed.get('broadcast_area') or []
+    # Explicitly non-India regional feeds must not be used for an India-first app.
+    country_codes = {a.upper()[2:] for a in areas if isinstance(a, str) and a.lower().startswith('c/')}
+    if country_codes and 'IN' not in country_codes:
+        return False
+    return True
+
+
+def contains_foreign_hint(*values: str) -> bool:
+    text = ' '.join(x or '' for x in values).lower()
+    if re.search(r'\b(pakistan|pakistani|bangladesh|nepal|sri lanka)\b', text):
+        return True
+    # Catch country-specific domains/path hints, but not arbitrary occurrences of "pk" in tokens.
+    if re.search(r'https?://[^/\s]+\.pk(?::\d+)?(?:/|$)', text):
+        return True
+    return bool(re.search(r'[/_-](?:pakistan|pak-feed)(?:[/_.-]|$)', text))
+
+
+def parse_channel_id(tvg_id: str) -> tuple[str, str]:
+    base, _, feed = (tvg_id or '').strip().partition('@')
+    return (base, feed)
+
+
+def load_previous(path: Path = OUTPUT_JSON) -> dict[str, dict[str, Any]]:
+    try:
+        payload = json.loads(path.read_text('utf-8'))
+        return {str(x['id']).split('@')[0]: x for x in payload.get('channels', []) if x.get('id')}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+@dataclass
+class Candidate:
+    channel_id: str
+    url: str
+    source: str
+    tier: str
+    identity_score: int = 0
+    rights_confirmed: bool = False
+    user_agent: str = ''
+    referrer: str = ''
+    feed_id: str = ''
+    quality: str = ''
+    publish_url: bool = False
+    language: str = ''
+
+
+@dataclass
+class Result:
+    ok: bool
+    reason: str
+    latency_ms: int = 99999
+    content_type: str = ''
+    has_drm: bool = False
+
+
+def _probe(url: str, user_agent: str = '', referrer: str = '', timeout: float = 5.5) -> Result:
+    """Prove manifest + media playlist + first segment availability; no DRM circumvention."""
+    if not safe_https(url):
+        return Result(False, 'unsafe_or_http_url')
+    if any(bad in url.lower() for bad in DEAD_HOST_SUBSTRINGS):
+        return Result(False, 'known_dead_host')
+    headers = {'Accept': 'application/vnd.apple.mpegurl,application/x-mpegurl,*/*',
+               'User-Agent': user_agent or USER_AGENT}
+    if referrer:
+        headers['Referer'] = referrer
+    started = time.monotonic()
+    visited: set[str] = set()
+    current = url
+    try:
+        for _ in range(4):
+            if current in visited or not safe_https(current):
+                return Result(False, 'playlist_loop_or_unsafe_uri')
+            visited.add(current)
+            raw, status, ctype = fetch(current, timeout=timeout, max_bytes=MAX_PLAYLIST, headers=headers)
+            if status not in (200, 206):
+                return Result(False, f'http_{status}')
+            content = raw.decode('utf-8', errors='replace').lstrip('\ufeff\n\r\t ')
+            if not content.startswith('#EXTM3U'):
+                # Direct binary MPEG-TS streams are allowed only for explicit TS MIME types.
+                if 'video/mp2t' in ctype and raw:
+                    return Result(True, 'direct_ts', int((time.monotonic()-started)*1000), ctype)
+                return Result(False, 'invalid_hls_manifest')
+            if re.search(r'#EXT-X-(?:SESSION-KEY|KEY):[^\n]*KEYFORMAT="(?!identity)', content, re.I) or re.search(r'#EXT-X-KEY:[^\n]*METHOD=SAMPLE-AES', content, re.I):
+                return Result(False, 'drm_protected', has_drm=True)
+            if '#EXT-X-STREAM-INF:' in content:
+                lines = [s.strip() for s in content.splitlines() if s.strip()]
+                variants = []
+                for i, line in enumerate(lines):
+                    if line.startswith('#EXT-X-STREAM-INF:') and i+1 < len(lines):
+                        uri = lines[i+1]
+                        if uri and not uri.startswith('#'):
+                            bw = re.search(r'BANDWIDTH=(\d+)', line)
+                            variants.append((int(bw.group(1)) if bw else 10000000, uri))
+                if not variants:
+                    return Result(False, 'master_without_variants')
+                # Prefer a modest bitrate to reduce probe load; actual app can use master URL.
+                next_uri = sorted(variants, key=lambda x: x[0])[0][1]
+                current = urllib.parse.urljoin(current, next_uri)
+                continue
+            if '#EXTINF:' not in content and '#EXT-X-PART:' not in content:
+                return Result(False, 'media_without_segments')
+            segs = [s.strip() for s in content.splitlines() if s.strip() and not s.startswith('#')]
+            if not segs:
+                # LL-HLS: segment URL can be in a PART tag.
+                part = re.search(r'#EXT-X-PART:[^\n]*URI="([^"]+)"', content)
+                if part:
+                    segs = [part.group(1)]
+            if not segs:
+                return Result(False, 'media_without_segments')
+            segment = urllib.parse.urljoin(current, segs[0])
+            if not safe_https(segment):
+                return Result(False, 'unsafe_segment_uri')
+            seg_headers = dict(headers)
+            seg_headers['Range'] = 'bytes=0-255'
+            chunk, seg_status, seg_type = fetch(segment, timeout=timeout, max_bytes=256, headers=seg_headers)
+            if seg_status not in (200, 206) or len(chunk) < 16:
+                return Result(False, f'unavailable_media_segment_{seg_status}')
+            return Result(True, 'media_verified', int((time.monotonic()-started)*1000), seg_type)
+        return Result(False, 'too_many_nested_playlists')
+    except urllib.error.HTTPError as exc:
+        return Result(False, f'http_{exc.code}')
+    except urllib.error.URLError as exc:
+        reason = str(exc.reason).lower()
+        return Result(False, 'timeout' if 'timed out' in reason else 'network_error')
+    except TimeoutError:
+        return Result(False, 'timeout')
+    except ValueError as exc:
+        return Result(False, str(exc))
     except Exception as exc:
-        print(f"[Warn] JSON API parse error: {exc}", file=sys.stderr)
-        return []
+        return Result(False, f'probe_{type(exc).__name__}')
 
-    # Map logos by channel ID
-    logo_map: dict[str, str] = {}
-    for lg in logos_data:
-        cid = lg.get("channel")
-        lurl = lg.get("url")
-        if cid and lurl and lurl.startswith("http") and cid not in logo_map:
-            logo_map[cid] = lurl
 
-    # Map feed languages & broadcast areas by (channel, feed_id) and channel
-    feed_lang_map: dict[str, str] = {}
-    indian_feed_channels: set[str] = set()
-    for fd in feeds_data:
-        cid = fd.get("channel")
+def _load_authorized_sources() -> list[dict[str, Any]]:
+    """Sources provided by the channel distributor under a public-redistribution licence.
+
+    Optionally supplied through GitHub secret LICENSED_SOURCES_JSON.
+    The JSON can store candidates; final output is PUBLIC, so never publish signed
+    URLs/tokens unless the provider explicitly permits publishing these URLs.
+    """
+    raw = os.getenv('LICENSED_SOURCES_JSON', '').strip()
+    if raw:
+        try:
+            obj = json.loads(raw)
+        except ValueError as exc:
+            raise RuntimeError(f'Invalid LICENSED_SOURCES_JSON: {exc}') from exc
+    else:
+        config = Path('authorized_sources.json')
+        obj = json.loads(config.read_text('utf-8')) if config.exists() else {'sources': []}
+    if isinstance(obj, list):
+        return obj
+    if isinstance(obj, dict) and isinstance(obj.get('sources'), list):
+        return obj['sources']
+    raise ValueError('authorized sources: expected {"sources": [...]}')
+
+
+def catalogue_sources() -> tuple[dict[str, dict[str, Any]], list[Candidate], Counter[str]]:
+    """Collect verified *Indian identities*, then potential stream candidates.
+
+    Community paid URLs are discarded, not used for public rebroadcast. Community
+    FTA URLs require explicit rights review before enabling ALLOW_COMMUNITY_FTA=1.
+    """
+    stats: Counter[str] = Counter()
+    api: dict[str, list[dict[str, Any]]] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+        futures = {pool.submit(fetch_json, url): name for name, url in API_ENDPOINTS.items()}
+        for fut in concurrent.futures.as_completed(futures):
+            api[futures[fut]] = fut.result()
+    if not api.get('channels'):
+        raise RuntimeError('IPTV-org Indian channel metadata unavailable; retaining last catalogue')
+    blocked = {e.get('channel') for e in api.get('blocklist', []) if e.get('channel')}
+    channels: dict[str, dict[str, Any]] = {}
+    for ch in api['channels']:
+        cid = ch.get('id') or ''
+        if (ch.get('country') or '').upper() != 'IN' or cid in blocked or ch.get('is_nsfw') or ch.get('closed'):
+            continue
+        channels[cid] = ch
+    stats['indian_metadata_channels'] = len(channels)
+    if not channels:
+        raise RuntimeError('No Indian channel IDs returned by metadata source')
+
+    feeds: dict[tuple[str,str], dict[str, Any]] = {}
+    by_ch: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for feed in api.get('feeds', []):
+        if feed.get('channel') in channels:
+            feeds[(feed.get('channel',''), str(feed.get('id') or ''))] = feed
+            by_ch[feed['channel']].append(feed)
+    logos: dict[str,str] = {}
+    for logo in api.get('logos', []):
+        cid = logo.get('channel')
+        if cid in channels and logo.get('in_use') is not False and safe_https(logo.get('url') or ''):
+            logos.setdefault(cid, logo['url'])
+
+    # Known Indian channel aliases can match nameless M3U entries ONLY on India master.
+    names: dict[str, set[str]] = defaultdict(set)
+    for cid, ch in channels.items():
+        for name in [ch.get('name') or '', *(ch.get('alt_names') or [])]:
+            key = canonical_channel_key(name)
+            if key:
+                names[key].add(cid)
+
+    candidates: list[Candidate] = []
+    for st in api.get('streams', []):
+        cid = st.get('channel')
+        if cid not in channels:
+            continue
+        feed_id = str(st.get('feed') or '')
+        known_feed = feeds.get((cid, feed_id))
+        if feed_id and by_ch[cid] and not known_feed:
+            stats['rejected_unknown_feed'] += 1
+            continue
+        if not feed_is_indian(known_feed):
+            stats['rejected_non_india_feed'] += 1
+            continue
+        url = str(st.get('url') or '').strip()
+        if not safe_https(url) or contains_foreign_hint(st.get('title') or '', url):
+            stats['rejected_url_or_foreign_hint'] += 1
+            continue
+        chname = str(channels[cid].get('name') or '')
+        if is_cross_channel_mismatch(chname, url):
+            stats['rejected_channel_url_mismatch'] += 1
+            continue
+        tier = classify_tier(chname)
+        if tier == 'PAID':
+            stats['community_paid_metadata_only'] += 1
+            continue
+        if not ALLOW_COMMUNITY_FTA:
+            stats['community_fta_permission_required'] += 1
+            continue
+        candidates.append(Candidate(cid, url, 'IPTV-org API', tier, 95, False,
+                                    str(st.get('user_agent') or ''), str(st.get('referrer') or ''),
+                                    feed_id, str(st.get('quality') or ''), True,
+                                    INDIAN_LANG_CODES.get(next(iter((known_feed or {}).get('languages') or []), ''), '')))
+
+    # Country/language M3U collection: strict metadata IDs (avoid Pakistan feed pollution).
+    if ALLOW_COMMUNITY_FTA:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+            futs = {pool.submit(fetch, uri, timeout=12, max_bytes=3_000_000): (label, uri)
+                    for label, uri in M3U_SOURCES}
+            for fut in concurrent.futures.as_completed(futs):
+                label, _ = futs[fut]
+                try:
+                    body, _, _ = fut.result()
+                    entries = parse_m3u(body.decode('utf-8', errors='replace'))
+                except Exception as exc:
+                    print(f'[M3U] {label}: {type(exc).__name__}')
+                    continue
+                for entry in entries:
+                    cid, fid = parse_channel_id(entry.get('tvg-id', ''))
+                    # Language list never infers India by language; exact ID required.
+                    if not cid and label == 'IPTV-org India':
+                        possible = names.get(canonical_channel_key(entry.get('name', '')), set())
+                        cid = next(iter(possible)) if len(possible) == 1 else ''
+                    if cid not in channels:
+                        stats['rejected_foreign_or_unknown_m3u_id'] += 1
+                        continue
+                    if fid and by_ch[cid] and (cid, fid) not in feeds:
+                        stats['rejected_unknown_feed'] += 1
+                        continue
+                    if not feed_is_indian(feeds.get((cid, fid))):
+                        stats['rejected_non_india_feed'] += 1
+                        continue
+                    url = entry.get('url', '')
+                    if not safe_https(url) or contains_foreign_hint(entry.get('name', ''), entry.get('group-title',''), entry.get('tvg-country',''), url):
+                        stats['rejected_url_or_foreign_hint'] += 1
+                        continue
+                    if entry.get('tvg-country','').upper() not in ('', 'IN'):
+                        stats['rejected_non_india_country_tag'] += 1
+                        continue
+                    if classify_tier(channels[cid].get('name') or '') == 'PAID':
+                        stats['community_paid_metadata_only'] += 1
+                        continue
+                    if is_cross_channel_mismatch(channels[cid].get('name') or '', url):
+                        stats['rejected_channel_url_mismatch'] += 1
+                        continue
+                    candidates.append(Candidate(cid, url, label, 'FTA', 90 if entry.get('tvg-id') else 70,
+                                                False, entry.get('user_agent',''), entry.get('referrer',''), fid,
+                                                entry.get('quality',''), True,
+                                                INDIAN_LANG_CODES.get(entry.get('tvg-language','').lower(), entry.get('tvg-language',''))))
+    # Paid sources: ONLY explicitly licensed and approved public URLs.
+    for obj in _load_authorized_sources():
+        if not isinstance(obj, dict):
+            continue
+        cid = str(obj.get('channel_id') or '')
         if not cid:
             continue
-        langs = fd.get("languages") or []
-        areas = fd.get("broadcast_area") or []
-        if "c/IN" in areas or any(l in INDIAN_FEED_TRIGGER_LANGS for l in langs):
-            indian_feed_channels.add(cid)
-        for lcode in langs:
-            if lcode in INDIAN_LANG_CODES and cid not in feed_lang_map:
-                feed_lang_map[cid] = INDIAN_LANG_CODES[lcode]
-
-    # Filter Indian channels
-    indian_channels: dict[str, dict[str, Any]] = {}
-    for ch in channels_data:
-        if ch.get("is_nsfw"):
+        # Supplement metadata for legally licensed channels not yet listed by IPTV-org.
+        if cid not in channels:
+            name = str(obj.get('name') or '').strip()
+            if not name or (obj.get('country') or '').upper() != 'IN':
+                stats['invalid_licensed_identity'] += 1
+                continue
+            channels[cid] = {'id': cid, 'name': name, 'country': 'IN', 'network': obj.get('network') or '',
+                             'categories': [obj.get('category') or 'general'], 'website': obj.get('website') or ''}
+        allowed = obj.get('rights_confirmed') is True and obj.get('redistribution_scope') == 'public' and obj.get('publish_url') is True
+        if not allowed:
+            stats['licensed_permission_or_publication_missing'] += 1
             continue
-        cid = ch.get("id") or ""
-        country = (ch.get("country") or "").upper()
-        if country == "IN" or cid.endswith(".in") or cid in indian_feed_channels:
-            indian_channels[cid] = ch
+        source_urls = obj.get('urls') or []
+        for u in source_urls:
+            url = str(u.get('url') or '') if isinstance(u, dict) else str(u)
+            if not safe_https(url):
+                stats['licensed_url_invalid'] += 1
+                continue
+            headers = u if isinstance(u, dict) else {}
+            candidates.append(Candidate(cid, url, 'licensed:' + str(obj.get('provider') or 'partner'),
+                                        classify_tier(channels[cid].get('name', '')), 100, True,
+                                        str(headers.get('user_agent') or ''), str(headers.get('referrer') or ''),
+                                        str(obj.get('feed') or ''), str(obj.get('quality') or ''), True,
+                                        str(obj.get('language') or '')))
+            stats['licensed_candidates'] += 1
+    for cid,ch in channels.items():
+        ch['logo_url'] = logos.get(cid, '')
+    return channels, candidates, stats
 
-    # Match streams to Indian channels
-    discovered: list[dict[str, Any]] = []
-    for st in streams_data:
-        cid = st.get("channel")
-        surl = (st.get("url") or "").strip()
-        if not cid or not surl or cid not in indian_channels:
+
+def _rank(c: Candidate, result: Result, previous_url: str) -> tuple[int, int]:
+    # Eligibility first; prefer identity and licensed origin, but do not switch
+    # a known good URL for tiny latency differences on every scan.
+    score = c.identity_score + (40 if c.rights_confirmed else 0)
+    if c.url == previous_url:
+        score += 18
+    score += 5 if c.url.startswith('https://') else 0
+    return (-score, result.latency_ms)
+
+
+def _m3u_quote(value: str) -> str:
+    return (value or '').replace('"', "'").replace('\r',' ').replace('\n',' ')
+
+
+def atomic_json(path: Path, obj: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + '.tmp')
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n', 'utf-8')
+    os.replace(tmp, path)
+
+
+def build_catalogue() -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    meta, candidates, stats = catalogue_sources()
+    previous = load_previous()
+    distinct: dict[tuple[str,str],Candidate] = {}
+    url_owners: dict[str,set[str]] = defaultdict(set)
+    for c in candidates:
+        url_owners[c.url].add(c.channel_id)
+    for c in candidates:
+        # Prevent a single placeholder from being assigned to different channels.
+        if len(url_owners[c.url]) >= 2:
+            stats['rejected_shared_channel_url'] += 1
             continue
-        ch_meta = indian_channels[cid]
-        name = ch_meta.get("name") or cid.split(".")[0]
-        cats = ch_meta.get("categories") or []
-        raw_group = cats[0] if cats else ""
-        lang = feed_lang_map.get(cid, "Hindi")
-        feed_id = st.get("feed") or "HD"
-        quality = st.get("quality") or "1080p"
-
-        discovered.append({
-            "tvg_id": f"{cid}@{feed_id}" if feed_id else cid,
-            "name": name,
-            "raw_name": st.get("title") or name,
-            "logo": logo_map.get(cid, ""),
-            "group": raw_group,
-            "language": lang,
-            "quality": quality,
-            "url": surl,
-            "user_agent": st.get("user_agent") or "",
-            "referrer": st.get("referrer") or "",
-            "website": ch_meta.get("website") or "",
-            "network": ch_meta.get("network") or "",
-        })
-
-    print(f"[Discovery] Found {len(discovered)} Indian stream records from IPTV-org API.")
-    return discovered
-
-
-# ---------------------------------------------------------------------------
-# 5. Stream Health Probing (Concurrent HLS Manifest Verification)
-# ---------------------------------------------------------------------------
-
-def probe_hls_stream(
-    url: str,
-    timeout: float = 6.5,
-    user_agent: str = "",
-    referrer: str = "",
-) -> tuple[bool, int]:
-    """
-    Checks if a stream URL is alive and returns a valid HLS playlist or media stream.
-    Returns (is_alive, latency_ms).
-    """
-    if not url or not url.startswith("https://"):
-        # Note: GitHub workflow validation requires primary & fallback URLs in channels.json to be https://
-        return (False, 99999)
-    if any(dead in url.lower() for dead in DEAD_HOST_SUBSTRINGS):
-        return (False, 99999)
-
-    ua = (user_agent or "").replace("\r", "").replace("\n", "").strip() or USER_AGENT
-    ref = (referrer or "").replace("\r", "").replace("\n", "").strip()
-    headers = {
-        "User-Agent": ua,
-        "Accept": "application/vnd.apple.mpegurl,application/x-mpegurl,*/*",
-        "Connection": "close",
-    }
-    if ref:
-        headers["Referer"] = ref
-
-    start_ts = time.monotonic()
-    req = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            status = getattr(resp, "status", 200)
-            if status < 200 or status >= 400:
-                return (False, 99999)
-            chunk = resp.read(2048).decode("utf-8", errors="ignore")
-            latency = int((time.monotonic() - start_ts) * 1000)
-            if "#EXTM3U" in chunk or "#EXT-X-" in chunk:
-                return (True, latency)
-            ctype = (resp.headers.get("Content-Type") or "").lower()
-            if any(k in ctype for k in ("mpegurl", "mp2t", "octet-stream", "video/")):
-                return (True, latency)
-            return (False, 99999)
-    except Exception:
-        return (False, 99999)
-
-
-# ---------------------------------------------------------------------------
-# 6. Catalogue Aggregation, Deduplication & Export
-# ---------------------------------------------------------------------------
-
-def build_catalogue() -> tuple[list[dict[str, Any]], str]:
-    raw_records: list[dict[str, Any]] = []
-
-    # 1. Pull from IPTV-org JSON API
-    raw_records.extend(discover_from_iptv_org_api())
-
-    # 2. Pull from all Indian M3U playlists concurrently
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        future_map = {
-            pool.submit(fetch_text, url, 15.0): (label, lang, url)
-            for label, lang, url in M3U_SOURCES
-        }
-        for fut in concurrent.futures.as_completed(future_map):
-            label, lang, _ = future_map[fut]
-            content = fut.result()
-            parsed = parse_m3u_entries(content, default_lang=lang)
-            print(f"[Discovery] {label}: {len(parsed)} entries")
-            raw_records.extend(parsed)
-
-    # 3. Detect generic/placeholder stream URLs claimed by 3+ distinct channel keys
-    url_to_channel_keys: dict[str, set[str]] = {}
-    for rec in raw_records:
-        u = (rec.get("url") or "").strip()
-        ck = canonical_channel_key(rec.get("name", ""), rec.get("tvg_id", ""))
-        if u and ck:
-            url_to_channel_keys.setdefault(u, set()).add(ck)
-
-    overused_urls: set[str] = {
-        u for u, keys in url_to_channel_keys.items() if len(keys) >= 3
-    }
-    if overused_urls:
-        print(f"[Guard] Blocked {len(overused_urls)} generic/overused URLs shared across 3+ unrelated channels.")
-
-    # 4. Group by canonical channel identity
-    grouped: dict[str, dict[str, Any]] = {}
-    candidate_urls: set[str] = set()
-    url_headers: dict[str, tuple[str, str]] = {}
-
-    for rec in raw_records:
-        name = (rec.get("name") or "").strip()
-        url = (rec.get("url") or "").strip()
-        tvg_id = (rec.get("tvg_id") or "").strip()
-        raw_name = (rec.get("raw_name") or "").strip()
-
-        if not name or not url or not url.startswith("https://"):
-            continue
-        if url in overused_urls:
-            continue
-        if is_cross_channel_mismatch(name, url, raw_name):
-            continue
-
-        ck = canonical_channel_key(name, tvg_id)
-        if not ck:
-            continue
-
-        if ck not in grouped:
-            lang = rec.get("language") or "Hindi"
-            cat = classify_category(rec.get("group", ""), name)
-            zone, region, is_reg = classify_zone_and_region(lang, name)
-            tier = classify_tier(name, rec.get("group", ""))
-            grouped[ck] = {
-                "id": tvg_id or f"{ck}.in@HD",
-                "name": name,
-                "network": rec.get("network") or cat,
-                "category": cat,
-                "language": lang,
-                "lang_code": lang[:3].lower(),
-                "zone": zone,
-                "region": region,
-                "tier": tier,
-                "logo_url": rec.get("logo") or "",
-                "website": rec.get("website") or "",
-                "is_regional": is_reg or (cat == "Regional"),
-                "quality": rec.get("quality") or "1080p",
-                "urls": [],
-            }
-
-        entry = grouped[ck]
-        if not entry["logo_url"] and rec.get("logo", "").startswith("http"):
-            entry["logo_url"] = rec["logo"]
-        if url not in entry["urls"]:
-            entry["urls"].append(url)
-            candidate_urls.add(url)
-        ua = (rec.get("user_agent") or "").strip()
-        ref = (rec.get("referrer") or "").strip()
-        if (ua or ref) and url not in url_headers:
-            url_headers[url] = (ua, ref)
-
-    print(f"[Verify] Probing {len(candidate_urls)} unique HTTPS stream URLs across {len(grouped)} channels...")
-
-    # 5. Concurrent health check of all candidate URLs
-    url_health: dict[str, tuple[bool, int]] = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=40) as pool:
-        fut_to_url = {
-            pool.submit(
-                probe_hls_stream,
-                u,
-                6.5,
-                url_headers.get(u, ("", ""))[0],
-                url_headers.get(u, ("", ""))[1],
-            ): u
-            for u in candidate_urls
-        }
-        for fut in concurrent.futures.as_completed(fut_to_url):
-            u = fut_to_url[fut]
+        key = (c.channel_id,c.url)
+        if key not in distinct or c.identity_score > distinct[key].identity_score:
+            distinct[key] = c
+    candidates = list(distinct.values())
+    stats['unique_candidates'] = len(candidates)
+    urls: dict[tuple[str,str,str], list[Candidate]] = defaultdict(list)
+    for c in candidates:
+        urls[(c.url, c.user_agent, c.referrer)].append(c)
+    health: dict[tuple[str,str,str], Result] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        futures = {pool.submit(_probe, url, agent, referrer): (url,agent,referrer)
+                   for (url,agent,referrer) in urls}
+        for fut in concurrent.futures.as_completed(futures):
+            key = futures[fut]
             try:
-                url_health[u] = fut.result()
-            except Exception:
-                url_health[u] = (False, 99999)
-
-    alive_count = sum(1 for ok, _ in url_health.values() if ok)
-    print(f"[Verify] {alive_count}/{len(candidate_urls)} HTTPS streams verified responsive.")
-
-    # 6. Build final verified channel list sorted by priority & latency
-    final_channels: list[dict[str, Any]] = []
-    for ck, item in grouped.items():
-        verified_urls = [
-            (u, url_health.get(u, (False, 99999))[1])
-            for u in item["urls"]
-            if url_health.get(u, (False, 99999))[0]
-        ]
-        if not verified_urls:
+                health[key] = fut.result()
+            except Exception as exc:
+                health[key] = Result(False, 'worker_' + type(exc).__name__)
+            stats['probe_' + health[key].reason] += 1
+    groups: dict[str, list[tuple[Candidate,Result]]] = defaultdict(list)
+    for c in candidates:
+        r = health[(c.url,c.user_agent,c.referrer)]
+        if r.ok and c.publish_url:
+            groups[c.channel_id].append((c,r))
+    live: list[dict[str, Any]] = []
+    offline: list[dict[str, Any]] = []
+    now = dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    for cid,ch in sorted(meta.items(), key=lambda v: v[1].get('name','').casefold()):
+        name = ch.get('name') or cid
+        tier = classify_tier(name)
+        category = classify_category(' '.join(ch.get('categories') or []), name)
+        values = groups.get(cid, [])
+        if not values:
+            reasons = [health[(c.url,c.user_agent,c.referrer)].reason for c in candidates if c.channel_id == cid]
+            offline.append({'id': cid, 'name': name, 'tier': tier, 'category': category,
+                            'logo_url': ch.get('logo_url',''), 'status': 'OFFLINE',
+                            'reason': Counter(reasons).most_common(1)[0][0] if reasons else
+                            ('licensed_source_required' if tier=='PAID' else 'no_authorized_source')})
             continue
-
-        # Sort by fastest response latency
-        verified_urls.sort(key=lambda pair: pair[1])
-        primary_url = verified_urls[0][0]
-        fallbacks = [u for u, _ in verified_urls[1:] if u != primary_url][:6]
-
-        final_channels.append({
-            "id": item["id"],
-            "name": item["name"],
-            "network": item["network"],
-            "category": item["category"],
-            "language": item["language"],
-            "lang_code": item["lang_code"],
-            "zone": item["zone"],
-            "region": item["region"],
-            "tier": item["tier"],
-            "logo_url": item["logo_url"],
-            "url": primary_url,
-            "fallback_urls": fallbacks,
-            "website": item["website"],
-            "is_regional": item["is_regional"],
-            "quality": item["quality"],
-            "latency_ms": verified_urls[0][1],
+        prev = previous.get(cid, {})
+        values.sort(key=lambda cr: _rank(cr[0],cr[1],str(prev.get('url') or '')))
+        selected, res = values[0]
+        language = selected.language or next((lg for lg in LANGUAGE_CODES if lg.lower() in name.lower()), 'Hindi')
+        zone, region, is_regional = classify_zone_and_region(language, name)
+        alternates = list(dict.fromkeys(c.url for c,_ in values[1:] if c.url != selected.url))[:6]
+        cid_out = str(prev.get('id') or cid)
+        # Avoid keeping a stale @feed variant from the previous scan.
+        if selected.feed_id:
+            cid_out = cid + '@' + selected.feed_id
+        live.append({
+            'id': cid_out, 'name': name, 'network': ch.get('network') or category,
+            'category': category, 'language': language, 'lang_code': LANGUAGE_CODES.get(language, 'und'),
+            'zone': zone, 'region': region, 'tier': tier,
+            'logo_url': ch.get('logo_url',''), 'url': selected.url,
+            'fallback_urls': alternates, 'website': ch.get('website') or '',
+            'is_regional': is_regional or category=='Regional',
+            'quality': selected.quality or 'unknown',
+            'source': selected.source, 'country': 'IN', 'status': 'ONLINE',
+            'last_checked': now,
+            # Player needs these headers when the distributor specifically uses them.
+            **({'user_agent': selected.user_agent} if selected.user_agent else {}),
+            **({'referrer': selected.referrer} if selected.referrer else {}),
         })
+    # Stable numbering; preserve existing channel numbers wherever possible.
+    numbers = {x.get('ch_no') for x in previous.values() if isinstance(x.get('ch_no'), int) and x.get('ch_no') > 0}
+    next_num = max(numbers or {0}) + 1
+    live.sort(key=lambda c: (0 if c['id'].split('@')[0] in previous else 1,
+                             previous.get(c['id'].split('@')[0], {}).get('ch_no', 10**9),
+                             c['name'].lower()))
+    for ch in live:
+        old = previous.get(ch['id'].split('@')[0], {}).get('ch_no')
+        ch['ch_no'] = old if isinstance(old, int) and old > 0 else next_num
+        if ch['ch_no'] == next_num:
+            next_num += 1
+    stats['live_channels'] = len(live)
+    stats['offline_indian_channels'] = len(offline)
+    stats['live_fta_channels'] = sum(c['tier']=='FTA' for c in live)
+    stats['live_paid_licensed_channels'] = sum(c['tier']=='PAID' for c in live)
+    report = {'updated_at': now, 'engine': 'Bharat TV SmartBot v3.0',
+              'policy': 'India identities only; licensed paid public streams only',
+              'settings': {'allow_community_fta': ALLOW_COMMUNITY_FTA, 'scan_workers': WORKERS},
+              'counts': dict(sorted(stats.items()))}
+    return live, offline, report
 
-    # Sort national & popular channels first, regional alphabetically after
-    final_channels.sort(
-        key=lambda c: (
-            1 if c["is_regional"] else 0,
-            0 if c["tier"] == "PAID" else 1,
-            c["latency_ms"],
-            c["name"].lower(),
-        )
-    )
 
-    # Assign sequential channel numbers
-    m3u_lines = ['#EXTM3U url-tvg="https://iptv-org.github.io/epg/guides/in.xml"']
-    for idx, ch in enumerate(final_channels, start=1):
-        ch["ch_no"] = idx
-        ch.pop("latency_ms", None)
-        logo_attr = f' tvg-logo="{ch["logo_url"]}"' if ch.get("logo_url") else ""
-        m3u_lines.append(
-            f'#EXTINF:-1 tvg-id="{ch["id"]}" tvg-chno="{idx}" tvg-language="{ch["language"]}" '
-            f'tvg-tier="{ch["tier"]}"{logo_attr} group-title="{ch["category"]}",{ch["name"]}'
-        )
-        m3u_lines.append(ch["url"])
-
-    return final_channels, "\n".join(m3u_lines) + "\n"
+def export(live: list[dict[str, Any]], offline: list[dict[str, Any]], report: dict[str, Any]) -> None:
+    if not live:
+        # Never destroy an existing working playlist when API or sources go down.
+        print('[Warning] 0 verified channels. Existing published playlist unchanged.', file=sys.stderr)
+        atomic_json(REPORT_JSON, report)
+        atomic_json(OFFLINE_JSON, {'updated_at': report['updated_at'], 'channels': offline})
+        return
+    lines = ['#EXTM3U url-tvg="https://iptv-org.github.io/epg/guides/in.xml"']
+    for ch in live:
+        lines.append(f'#EXTINF:-1 tvg-id="{_m3u_quote(ch["id"])}" tvg-chno="{ch["ch_no"]}" '
+                     f'tvg-language="{_m3u_quote(ch["language"])}" tvg-tier="{ch["tier"]}" '
+                     f'tvg-logo="{_m3u_quote(ch["logo_url"])}" '
+                     f'group-title="{_m3u_quote(ch["category"])}",{ch["name"]}')
+        if ch.get('user_agent'):
+            lines.append('#EXTVLCOPT:http-user-agent=' + ch['user_agent'])
+        if ch.get('referrer'):
+            lines.append('#EXTVLCOPT:http-referrer=' + ch['referrer'])
+        lines.append(ch['url'])
+    payload = {
+        'updated_at': report['updated_at'], 'generator': 'BharatTV SmartBot v3.0',
+        'total_channels': len(live), 'fta_channels': sum(c['tier']=='FTA' for c in live),
+        'paid_channels': sum(c['tier']=='PAID' for c in live), 'channels': live,
+    }
+    atomic_json(OUTPUT_JSON, payload)
+    tmp = OUTPUT_M3U.with_name(OUTPUT_M3U.name + '.tmp')
+    tmp.write_text('\n'.join(lines)+'\n', 'utf-8')
+    os.replace(tmp, OUTPUT_M3U)
+    atomic_json(OFFLINE_JSON, {'updated_at': report['updated_at'], 'total_channels': len(offline), 'channels': offline})
+    atomic_json(REPORT_JSON, report)
+    print(f'[Done] {len(live)} online channels, {len(offline)} offline Indian channels; '
+          f'{payload["fta_channels"]} FTA / {payload["paid_channels"]} licensed PAID')
 
 
 def main() -> None:
-    channels, m3u_text = build_catalogue()
-    if not channels:
-        print("[Error] No channels were verified! Aborting write to protect existing catalogue.", file=sys.stderr)
-        sys.exit(1)
-
-    now_iso = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    payload = {
-        "updated_at": now_iso,
-        "generator": "BharatTV Next-Gen Channel Discovery & Identity Engine v2.0",
-        "total_channels": len(channels),
-        "fta_channels": sum(1 for c in channels if c.get("tier") == "FTA"),
-        "paid_channels": sum(1 for c in channels if c.get("tier") == "PAID"),
-        "channels": channels,
-    }
-
-    json_tmp = Path("channels.json.tmp")
-    m3u_tmp = Path("channels.m3u.tmp")
-    json_tmp.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    m3u_tmp.write_text(m3u_text, encoding="utf-8")
-    os.replace(json_tmp, Path("channels.json"))
-    os.replace(m3u_tmp, Path("channels.m3u"))
-    print(
-        f"[Success] Wrote {len(channels)} verified channels "
-        f"(FTA: {payload['fta_channels']}, PAID: {payload['paid_channels']}) "
-        f"to channels.json and channels.m3u"
-    )
+    live, offline, report = build_catalogue()
+    export(live, offline, report)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
