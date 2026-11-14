@@ -163,6 +163,57 @@ class TestLiveCatalogue(unittest.TestCase):
         self.assertEqual(report['counts']['live_channels'], 1)
 
 
+class TestRetentionAndRecovery(unittest.TestCase):
+    def test_previous_fta_recovers_only_after_fresh_media_probe(self):
+        old = {'DDNews.in': {'id': 'DDNews.in@India', 'name': 'DD News', 'tier': 'FTA',
+                             'language':'Hindi','url':'https://cdn.example.com/dd.m3u8',
+                             'fallback_urls':[], 'country':'IN', 'ch_no':9}}
+        meta = {'DDNews.in': {'name':'DD News', 'country':'IN'}}
+        with patch.object(bot, 'ALLOW_COMMUNITY_FTA', True), \
+             patch.object(bot, '_probe', return_value=bot.Result(True, 'media_verified', 50)):
+            result = bot.rescue_previous_fta(old, [], meta, '2026-11-14T00:00:00Z', bot.Counter())
+        self.assertEqual(result[0]['name'], 'DD News')
+        self.assertEqual(result[0]['source'], 'reverified_previous_fta')
+
+    def test_previous_paid_never_auto_rescued(self):
+        old = {'ZeeCinema.in': {'id': 'ZeeCinema.in', 'name': 'Zee Cinema', 'tier': 'PAID',
+                                'url': 'https://cdn.example.com/zee.m3u8', 'country':'IN'}}
+        meta = {'ZeeCinema.in': {'name':'Zee Cinema', 'country':'IN'}}
+        with patch.object(bot, 'ALLOW_COMMUNITY_FTA', True), \
+             patch.object(bot, '_probe') as probe:
+            result = bot.rescue_previous_fta(old, [], meta, 'now', bot.Counter())
+        self.assertEqual(result, [])
+        probe.assert_not_called()
+
+    def test_foreign_feed_not_restored(self):
+        old = {'CartoonNetworkIndia.in': {'id': 'CartoonNetworkIndia.in', 'name': 'Cartoon Network Pakistan',
+                                         'tier': 'FTA', 'url':'https://cdn.example.pk/cn.m3u8', 'country':'IN'}}
+        meta = {'CartoonNetworkIndia.in': {'name':'Cartoon Network India', 'country':'IN'}}
+        with patch.object(bot, 'ALLOW_COMMUNITY_FTA', True):
+            result = bot.rescue_previous_fta(old, [], meta, 'now', bot.Counter())
+        self.assertEqual(result, [])
+
+    def test_mass_drop_guard_preserves_published_json_and_m3u(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            original = {'channels': [{'id':f'DD{i}.in','name':f'DD {i}', 'tier':'FTA', 'url':f'https://cdn.example.com/{i}.m3u8'} for i in range(100)]}
+            (root/'channels.json').write_text(json.dumps(original), encoding='utf-8')
+            (root/'channels.m3u').write_text('ORIGINAL', encoding='utf-8')
+            now = '2026-11-14T00:00:00Z'
+            report={'updated_at':now, 'counts':{}, 'sports':{}}
+            fresh = list(original['channels'])[:30]
+            with patch.object(bot, 'OUTPUT_JSON', root/'channels.json'), \
+                 patch.object(bot, 'OUTPUT_M3U', root/'channels.m3u'), \
+                 patch.object(bot, 'REPORT_JSON', root/'scan_report.json'), \
+                 patch.object(bot, 'OFFLINE_JSON', root/'offline_channels.json'), \
+                 patch.object(bot, 'SPORTS_REPORT_JSON', root/'sports_discovery.json'):
+                bot.export(fresh, [], report)
+            self.assertEqual(json.loads((root/'channels.json').read_text()), original)
+            self.assertEqual((root/'channels.m3u').read_text(), 'ORIGINAL')
+            self.assertEqual(report['counts']['publish_prevented_due_to_large_fta_drop'], 1)
+
+
 class TestPremiumDiagnosticMode(unittest.TestCase):
     @staticmethod
     def mock_api():
