@@ -526,6 +526,14 @@ def norm_key(name):
     clean = re.sub(r'\(.*?\)|\[.*?\]', '', name).lower()
     return re.sub(r'[^a-z0-9]', '', clean)
 
+def canonical_channel_key(name: str, tvg_id: str = "") -> str:
+    """Produces an identity-safe key that preserves channel identity."""
+    raw = (name or "").strip().lower()
+    if not raw and tvg_id:
+        raw = tvg_id.split("@")[0].replace(".in", "").lower()
+    cleaned = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", raw)
+    return re.sub(r"[^a-z0-9]+", "", cleaned)
+
 def known_channel_mismatch(name, url):
     """Reject confirmed cross-channel URLs; never guess a replacement feed."""
     n = norm_key(name)

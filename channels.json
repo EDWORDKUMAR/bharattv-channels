@@ -15690,5 +15690,7 @@
       "ch_no": 815
     }
   ],
-  "last_updated": "2026-11-15T20:25:00+05:30"
+  "last_updated": "2026-11-15T20:25:00+05:30",
+  "fta_channels": 791,
+  "paid_channels": 24
 }
