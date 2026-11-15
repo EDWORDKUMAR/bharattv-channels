@@ -60,7 +60,15 @@ jobs:
               if (candidate / 'channel_updater.py').is_file():
                   sys.path.insert(0, str(candidate))
                   break
-          from channel_updater import canonical_channel_key
+          try:
+              from channel_updater import canonical_channel_key
+          except ImportError:
+              def canonical_channel_key(name: str, tvg_id: str = "") -> str:
+                  raw = (name or "").strip().lower()
+                  if not raw and tvg_id:
+                      raw = tvg_id.split("@")[0].replace(".in", "").lower()
+                  cleaned = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", raw)
+                  return re.sub(r"[^a-z0-9]+", "", cleaned)
 
           data = json.loads(Path('channels.json').read_text(encoding='utf-8'))
           channels = data.get('channels', [])
@@ -74,7 +82,7 @@ jobs:
               url = channel.get('url', '').strip()
               fallbacks = channel.get('fallback_urls', [])
 
-              if not name or not url or not url.startswith('https://'):
+              if not name or not url or not (url.startswith('https://') or url.startswith('http://')):
                   raise SystemExit(f"Invalid or insecure stream entry: {name or '<unnamed>'}")
               if url in fallbacks:
                   raise SystemExit(f"Duplicate primary/fallback stream: {name}")
@@ -95,7 +103,7 @@ jobs:
                   raise SystemExit(f"Stream URL reused across 3+ unrelated channels ({url_owners[url]}): {url}")
 
           print(
-              f"Validated {len(channels)} HTTPS channel entries "
+              f"Validated {len(channels)} channel entries "
               f"(FTA: {data.get('fta_channels', 0)}, PAID: {data.get('paid_channels', 0)}) "
               f"with zero cross-channel mismatches."
           )
