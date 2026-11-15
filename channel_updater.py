@@ -45,6 +45,7 @@ BAD_DOMAINS = [
     'dinesh29.com.np'
 ]
 
+# Verified premium and live channels that pass real-time ping testing
 CORE_SEEDS = [
     {
         "name": "Goldmines",
@@ -105,113 +106,11 @@ CORE_SEEDS = [
         "name": "Star Sports 1 HD",
         "category": "Sports",
         "language": "Hindi",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_1/images/LOGO_HD/image.png",
-        "urls": [
-            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
-            "https://real-vk.proxy.nellaiiptv.com/SDMEDIA/index.m3u8",
-            "https://cdn.pishow.tv/ott/live/1161/master.m3u8"
-        ]
-    },
-    {
-        "name": "Star Sports 2 HD",
-        "category": "Sports",
-        "language": "Hindi",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_2/images/LOGO_HD/image.png",
-        "urls": [
-            "https://real-vk.proxy.nellaiiptv.com/SDMEDIA/index.m3u8",
-            "http://38.96.178.205/STARSPORTS2/index.m3u8",
-            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"
-        ]
-    },
-    {
-        "name": "Sony Max HD (SET Max)",
-        "category": "Movies",
-        "language": "Hindi",
-        "logo_url": "https://dtil.tmsimg.com/assets/s157590_ld_h15_aa.png?lock=720x540",
-        "urls": [
-            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:zeecinemaapachd.smil/chunklist_b2628000.m3u8",
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/sg/YuppTV/ZeeCinemaAPAC.m3u8",
-            "https://fta.ektv.in/live/53/53_0.m3u8"
-        ]
-    },
-    {
-        "name": "Sony SAB HD",
-        "category": "Entertainment",
-        "language": "Hindi",
-        "logo_url": "https://dtil.tmsimg.com/assets/s159099_ld_h15_ab.png?lock=720x540",
-        "urls": [
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/sg/YuppTV/ColorsAPAC.m3u8",
-            "http://38.96.178.205/SONYHD/index.m3u8",
-            "https://live-dangal.akamaized.net/liveabr/playlist.m3u8",
-            "https://airtelapp.shemaroo.com/shemarootv/smil:shemarootvadp.smil/playlist.m3u8"
-        ]
-    },
-    {
-        "name": "Star Gold HD",
-        "category": "Movies",
-        "language": "Hindi",
-        "logo_url": "https://i.imgur.com/xC460sj.png",
-        "urls": [
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/ColorsCineplexUK.m3u8",
-            "https://fta.ektv.in/live/52/52_0.m3u8",
-            "https://fta.ektv.in/live/47/47_0.m3u8"
-        ]
-    },
-    {
-        "name": "Star Plus HD",
-        "category": "Entertainment",
-        "language": "Hindi",
-        "logo_url": "https://i.imgur.com/xWxNy3L.png",
-        "urls": [
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8",
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavBharat.m3u8"
-        ]
-    },
-    {
-        "name": "Zee TV HD",
-        "category": "Entertainment",
-        "language": "Hindi",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_ZEE_TV/images/LOGO_HD/LOGO_HD_image.png",
-        "urls": [
-            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/sg/YuppTV/ZeeTVHDAPAC.m3u8",
-            "https://live.legitpro.co.in/anandtv/index.m3u8"
-        ]
-    },
-    {
-        "name": "Cartoon Network (India)",
-        "category": "Kids",
-        "language": "Hindi",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_CARTOON_NETWORK/images/LOGO_HD/image.png",
-        "urls": [
-            "https://amg02159-kcglobal-amg02159c1-samsung-in-521.playouts.now.amagi.tv/playlist/amg02159-kcglobal-animax-samsungin/playlist.m3u8",
-            "https://server.zillarbarta.com/zbcatun/video.m3u8",
-            "https://cdn.pishow.tv/ott/live/32/master.m3u8"
-        ]
-    },
-    {
-        "name": "Pogo",
-        "category": "Kids",
-        "language": "Hindi",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_POGO/images/LOGO_HD/image.png",
-        "urls": [
-            "https://cc-szrmqvu8zkg16.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-szrmqvu8zkg16/greengold/stream/grngld/playlist.m3u8",
-            "https://cc-t8lqe1o99pszu.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-t8lqe1o99pszu/playlist.m3u8",
-            "https://cdn.pishow.tv/ott/live/32/master.m3u8"
-        ]
-    }
-]
-
-# Verified premium and live channels that pass real-time ping testing
-CORE_SEEDS = [
-    {
-        "name": "Star Sports 1 HD",
-        "category": "Sports",
-        "language": "Hindi",
         "tier": "PAID",
         "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_1/images/LOGO_HD/image.png",
         "urls": [
-            "http://103.151.60.162:2122/play/a01a/index.m3u8?hls",
-            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"
+            "https://real-vk.proxy.nellaiiptv.com/SDMEDIA/index.m3u8",
+            "http://103.151.60.162:2122/play/a01a/index.m3u8?hls"
         ]
     },
     {
@@ -541,6 +440,8 @@ def known_channel_mismatch(name, url):
     if ('sonymax' in n or 'setmax' in n) and ('zeecinema' in u or '/live/53/' in u):
         return True
     if 'stargold' in n and ('colorscineplex' in u or '/live/52/' in u or '/live/47/' in u):
+        return True
+    if 'starsports' in n and ('b17adfe543354fdd8d189b110617cddd' in u or '/live/1161/' in u):
         return True
     return False
 

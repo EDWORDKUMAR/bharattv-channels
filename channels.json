@@ -133,17 +133,11 @@
       "tier": "PAID",
       "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_1/images/LOGO_HD/image.png",
       "url": "http://103.151.60.162:2122/play/a01a/index.m3u8?hls",
-      "fallback_urls": [
-        "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"
-      ],
+      "fallback_urls": [],
       "streams": [
         {
           "name": "Server 1",
           "url": "http://103.151.60.162:2122/play/a01a/index.m3u8?hls"
-        },
-        {
-          "name": "Server 2 (Backup)",
-          "url": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"
         }
       ],
       "quality": "1080p FHD"
