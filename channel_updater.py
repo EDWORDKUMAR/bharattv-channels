@@ -149,90 +149,314 @@ CORE_SEEDS = [
 # Verified premium and live channels that pass real-time ping testing
 CORE_SEEDS = [
     {
-        "name": "Zee Cinema HD",
+        "name": "Star Sports 1 HD",
+        "category": "Sports",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_1/images/LOGO_HD/image.png",
+        "urls": [
+            "http://103.151.60.162:2122/play/a01a/index.m3u8?hls",
+            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"
+        ]
+    },
+    {
+        "name": "Star Sports 2 HD",
+        "category": "Sports",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_2/images/LOGO_HD/image.png",
+        "urls": [
+            "http://tvsen5.aynascope.net/cXPB2LKkErN9/index.m3u8",
+            "https://real-vk.proxy.nellaiiptv.com/SDMEDIA/index.m3u8"
+        ]
+    },
+    {
+        "name": "Star Sports 2 Telugu HD",
+        "category": "Sports",
+        "language": "Telugu",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/m7DvvqF.png",
+        "urls": [
+            "https://real-vk.proxy.nellaiiptv.com/SDMEDIA/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Max HD (SET Max)",
         "category": "Movies",
         "language": "Hindi",
         "tier": "PAID",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_ZEE_CINEMA/images/LOGO_HD/LOGO_HD_image.png",
+        "logo_url": "https://dtil.tmsimg.com/assets/s157590_ld_h15_aa.png?lock=720x540",
         "urls": [
-            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:zeecinemaapachd.smil/chunklist_b2628000.m3u8",
-            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:zeecinemaapachd.smil/chunklist_b896000.m3u8"
+            "http://103.185.24.134:3001/SonyMAX/index.m3u8",
+            "https://bdix.ottking.top:8082/Sony-Max-1/video.m3u8?token=Sami-TV"
         ]
     },
     {
-        "name": "Colors Cineplex",
+        "name": "Star Gold HD",
         "category": "Movies",
         "language": "Hindi",
         "tier": "PAID",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_COLORS_CINEPLEX/images/LOGO_HD/image.png",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_GOLD/images/LOGO_HD/image.png",
         "urls": [
-            "https://d1rc86nwwc9fag.cloudfront.net/260723/smil:rishteycineplexukdev.smil/chunklist_b1928000.m3u8",
-            "https://d1rc86nwwc9fag.cloudfront.net/260723/smil:rishteycineplexukdev.smil/chunklist_b696000.m3u8"
+            "http://103.185.24.134:3001/Star-Gold/index.m3u8",
+            "https://fta.ektv.in/live/52/52_0.m3u8"
         ]
     },
     {
-        "name": "Cricket Gold",
+        "name": "Sony SAB HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s159099_ld_h15_ab.png?lock=720x540",
+        "urls": [
+            "http://38.96.178.205/SONYHD/index.m3u8",
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/sg/YuppTV/ColorsAPAC.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Entertainment Television HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_ENTERTAINMENT_TELEVISION/images/LOGO_HD/image.png",
+        "urls": [
+            "http://38.96.178.205/SONYHD/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony KAL Hindi",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s157590_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://wurlsonypicturestv.global.transmit.live/hls/68deeb1c0238cda82df543dd/v1/spt_sonykal_1/lg_us/latest/main/hls/playlist.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Wah",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_WAH/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/1743466790?profile=pass"
+        ]
+    },
+    {
+        "name": "Star Bharat HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_BHARAT/images/LOGO_HD/image.png",
+        "urls": [
+            "https://d1taaads3ztvmu.cloudfront.net/120723/smil:lifeokuk.smil/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b",
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavBharat.m3u8"
+        ]
+    },
+    {
+        "name": "Star Maa HD",
+        "category": "Entertainment",
+        "language": "Telugu",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_MAA/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:starmaa1.smil/chunklist_b2628000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Maa Movies HD",
+        "category": "Movies",
+        "language": "Telugu",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_MAA_MOVIES/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:maamovies.smil/chunklist_b2628000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Pravah HD",
+        "category": "Entertainment",
+        "language": "Marathi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_PRAVAH/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:starpravah.smil/chunklist_b1928000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Utsav",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_UTSAV/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/894286890?profile=pass"
+        ]
+    },
+    {
+        "name": "Star Utsav Movies",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_UTSAV_MOVIES/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/1225596390?profile=pass"
+        ]
+    },
+    {
+        "name": "Starnet",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/J3jB7Kr.png",
+        "urls": [
+            "https://5a1178b42cc03.streamlock.net/8220/8220/playlist.m3u8"
+        ]
+    },
+    {
+        "name": "Star Plus HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_PLUS/images/LOGO_HD/image.png",
+        "urls": [
+            "https://d1rc86nwwc9fag.cloudfront.net/260723/starplusuk_2500/chunks.m3u8",
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8"
+        ]
+    },
+    {
+        "name": "Utsav Bharat",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/IQ2n0WY.png",
+        "urls": [
+            "https://d1taaads3ztvmu.cloudfront.net/120723/smil:lifeokuk.smil/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b"
+        ]
+    },
+    {
+        "name": "Utsav Plus",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/TERVtWT.png",
+        "urls": [
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Pal",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_PAL/images/LOGO_HD/image.png",
+        "urls": [
+            "https://fta.ektv.in/live/53/53_0.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Max 2",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143801_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "http://107.167.16.138/sonymax2/index.m3u8?token=test"
+        ]
+    },
+    {
+        "name": "Sony Pix HD",
+        "category": "Movies",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_PIX/images/LOGO_HD/image.png",
+        "urls": [
+            "http://103.151.60.162:2122/play/a020/index.m3u8?hls"
+        ]
+    },
+    {
+        "name": "Star Gold 2",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s158297_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "http://103.151.60.162:2122/play/a01v/index.m3u8?hls",
+            "https://fta.ektv.in/live/47/47_0.m3u8"
+        ]
+    },
+    {
+        "name": "Star Sports 1 Hindi HD",
         "category": "Sports",
         "language": "Hindi",
         "tier": "PAID",
-        "logo_url": "https://imgur.com/79g2kMA.png",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_SPORTS_1_HINDI/images/LOGO_HD/image.png",
         "urls": [
-            "https://tvsen6.aynaott.com/M2W2UR49dmeKbZnmdRzN/index.m3u8"
+            "https://tvsen5.aynaott.com/cXPB2LKkErN9/index.m3u8"
         ]
     },
     {
-        "name": "FIFA+ Sports",
+        "name": "Star Sports Select 1 HD",
         "category": "Sports",
-        "language": "Hindi",
-        "tier": "FTA",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_FIFA_PLUS/images/LOGO_HD/image.png",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143849_ld_h15_aa.png?lock=720x540",
         "urls": [
-            "https://4397879b.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWRlX0ZJRkFQbHVzR2VybWFuX0hMUw/playlist.m3u8"
+            "http://103.151.60.162:2122/play/a026/index.m3u8?hls"
         ]
     },
     {
-        "name": "Sports First HD",
+        "name": "Star Sports Select 2 HD",
         "category": "Sports",
-        "language": "Hindi",
-        "tier": "FTA",
-        "logo_url": "https://imgur.com/79g2kMA.png",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143851_ld_h15_aa.png?lock=720x540",
         "urls": [
-            "https://d4ddgdmj1cvnm.cloudfront.net/scheduler/scheduleMaster/409.m3u8"
+            "http://tvsen7.aynascope.net/ssport2hd/index.m3u8"
         ]
     },
     {
-        "name": "Goal TV Football",
+        "name": "Sony Sports Ten 1 HD",
         "category": "Sports",
-        "language": "Hindi",
-        "tier": "FTA",
-        "logo_url": "https://imgur.com/79g2kMA.png",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_TEN_1/images/LOGO_HD/image.png",
         "urls": [
-            "https://streams2.sofast.tv/sofastplayout/WiseM3U8_1/master.m3u8"
+            "http://103.151.60.162:2122/play/a015/index.m3u8?hls"
         ]
     },
     {
-        "name": "Eurosport HD",
+        "name": "Sony Sports Ten 2 HD",
+        "category": "Sports",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_TEN_2/images/LOGO_HD/image.png",
+        "urls": [
+            "http://103.151.60.162:2122/play/a016/index.m3u8?hls"
+        ]
+    },
+    {
+        "name": "Sony Sports Ten 3 HD",
         "category": "Sports",
         "language": "Hindi",
         "tier": "PAID",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_EUROSPORT_HD/images/LOGO_HD/image.png",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_TEN_3/images/LOGO_HD/image.png",
         "urls": [
-            "https://livetv.shamon-cable.net:8443/Eurosport-HD/index.m3u8"
+            "http://103.151.60.162:2122/play/a017/index.m3u8?hls"
         ]
     },
     {
-        "name": "DD Sports HD",
+        "name": "Sony Sports Ten 5 HD",
         "category": "Sports",
-        "language": "Hindi",
-        "tier": "FTA",
-        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_DD_SPORTS/images/LOGO_HD/image.png",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_SIX/images/LOGO_HD/image.png",
         "urls": [
-            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
-            "https://cdn.pishow.tv/ott/live/1161/master.m3u8"
+            "http://103.151.60.162:2122/play/a018/index.m3u8?hls"
         ]
     }
 ]
-
 
 TOP_PRIORITY_CHANNELS = [
     "goldmines", "star sports", "sony max", "zee cinema", "star gold",
