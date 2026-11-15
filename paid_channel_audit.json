@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T18:32:37Z",
+  "generated_at": "2026-11-15T03:10:01Z",
   "scope": "Indian paid channel identity and stream status diagnostic",
   "note": "No unlicensed stream links included. Metadata/watchlist does not prove availability; technical responses do not confer rebroadcast rights.",
   "metadata_paid_identities": 163,
@@ -7,8 +7,8 @@
   "status_counts": {
     "NOT_FOUND_IN_CURRENT_METADATA": 17,
     "NO_VERIFIED_SOURCE": 113,
-    "SOURCES_CHECKED_NO_PLAYABLE_STREAM": 15,
-    "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH": 35
+    "SOURCES_CHECKED_NO_PLAYABLE_STREAM": 14,
+    "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH": 36
   },
   "channels": [
     {
@@ -18,12 +18,12 @@
       "category": "Sports",
       "country": "IN",
       "listing": "IPTV-org Indian channel metadata",
-      "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
+      "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
       "candidate_count": 1,
-      "responding_candidates": 1,
+      "responding_candidates": 0,
       "drm_indicated": 0,
       "probe_reasons": {
-        "media_verified": 1
+        "http_404": 1
       }
     },
     {
@@ -857,12 +857,12 @@
       "category": "Entertainment",
       "country": "IN",
       "listing": "IPTV-org Indian channel metadata",
-      "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
+      "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
       "candidate_count": 1,
-      "responding_candidates": 0,
+      "responding_candidates": 1,
       "drm_indicated": 0,
       "probe_reasons": {
-        "http_404": 1
+        "media_verified": 1
       }
     },
     {
@@ -2267,12 +2267,12 @@
       "category": "Regional",
       "country": "IN",
       "listing": "IPTV-org Indian channel metadata",
-      "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
+      "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
       "candidate_count": 1,
-      "responding_candidates": 0,
+      "responding_candidates": 1,
       "drm_indicated": 0,
       "probe_reasons": {
-        "http_404": 1
+        "media_verified": 1
       }
     },
     {

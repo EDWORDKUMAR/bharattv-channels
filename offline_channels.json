@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-14T18:32:33Z",
-  "total_channels": 879,
+  "updated_at": "2026-11-15T03:09:56Z",
+  "total_channels": 884,
   "channels": [
     {
       "id": "Andpictures.in",
@@ -360,7 +360,7 @@
       "category": "News",
       "logo_url": "https://i.imgur.com/ndQ8LZp.png",
       "status": "OFFLINE",
-      "reason": "http_404"
+      "reason": "no_authorized_source"
     },
     {
       "id": "AMNTV.in",
@@ -594,7 +594,7 @@
       "category": "Devotional",
       "logo_url": "https://papaji.freetvindia.com/media/channels/asom_live_24x7.png",
       "status": "OFFLINE",
-      "reason": "http_404"
+      "reason": "no_authorized_source"
     },
     {
       "id": "AteTV.in",
@@ -622,15 +622,6 @@
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/ATV_INDIA_NEWS.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "AwaazIndiaTV.in",
-      "name": "Awaaz India TV",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://i.imgur.com/eKQs51V.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "AyushNextCommunicationNetwork.in",
@@ -829,15 +820,6 @@
       "logo_url": "https://i.imgur.com/0r8moK8.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "BHIChannel.in",
-      "name": "BHI Channel",
-      "tier": "FTA",
-      "category": "News",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/BHI.png",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "BhojpuriJunction.in",
@@ -1251,7 +1233,7 @@
       "category": "Regional",
       "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/8049/1782291598049-h.jpg",
       "status": "OFFLINE",
-      "reason": "http_404"
+      "reason": "media_verified"
     },
     {
       "id": "ColorsBanglaCinema.in",
@@ -2268,7 +2250,7 @@
       "category": "Sports",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002E9LQS.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "media_verified"
+      "reason": "http_404"
     },
     {
       "id": "ExpressNews.in",
@@ -2676,6 +2658,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "HarvestUSA.in",
+      "name": "Harvest USA",
+      "tier": "FTA",
+      "category": "Devotional",
+      "logo_url": "",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "HarvestWorshipTV.in",
       "name": "Harvest Worship TV",
       "tier": "FTA",
@@ -2728,6 +2719,15 @@
       "logo_url": "https://i.imgur.com/O0XJXWk.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "HSTV.in",
+      "name": "HSTV",
+      "tier": "FTA",
+      "category": "Entertainment",
+      "logo_url": "https://ibb.co/Ng5nkX6F",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "HungamaTV.in",
@@ -2944,15 +2944,6 @@
       "logo_url": "https://dtil.tmsimg.com/assets/s143215_ld_h15_aa.png?lock=720x540",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "JalshaMovies.in",
-      "name": "Jalsha Movies",
-      "tier": "FTA",
-      "category": "Movies",
-      "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/1445/1782291521445-h.jpg",
-      "status": "OFFLINE",
-      "reason": "http_404"
     },
     {
       "id": "JanSetuNews.in",
@@ -3234,6 +3225,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "KBPTimes.in",
+      "name": "KBP Times",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/KBPTimes.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "KCLTV.in",
       "name": "KCL TV",
       "tier": "FTA",
@@ -3466,6 +3466,15 @@
       "logo_url": "https://mahimaitv.com/images/mahimaitamil.png",
       "status": "OFFLINE",
       "reason": "http_400"
+    },
+    {
+      "id": "MahuaKhabar.in",
+      "name": "Mahua Khabar",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/mahuakhabar.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "MahuaaTV.in",
@@ -4260,6 +4269,15 @@
       "reason": "no_authorized_source"
     },
     {
+      "id": "NewsLeader.in",
+      "name": "News Leader",
+      "tier": "FTA",
+      "category": "News",
+      "logo_url": "https://img-cdn.publive.online/fit-in/360x280/filters:format(webp)/newsleaderlive/media/agency_attachments/2026/04/15/2026-04-15t100517555z-news-leader-640-480-1-sarvajeet-singh-chauhan-2026-04-15-15-35-17.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
       "id": "NewsPlus.in",
       "name": "News Plus",
       "tier": "FTA",
@@ -4555,6 +4573,15 @@
       "logo_url": "https://i.imgur.com/zJXKaXw.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "PocketFilms.in",
+      "name": "Pocket Films",
+      "tier": "FTA",
+      "category": "Movies",
+      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/p_pktflm.png",
+      "status": "OFFLINE",
+      "reason": "http_403"
     },
     {
       "id": "Pogo.in",
@@ -5535,7 +5562,7 @@
       "category": "Entertainment",
       "logo_url": "https://dtil.tmsimg.com/assets/GNLZZGG002YP08L.png?lock=720x540",
       "status": "OFFLINE",
-      "reason": "http_404"
+      "reason": "media_verified"
     },
     {
       "id": "SonyBBCEarth.in",
@@ -6105,11 +6132,11 @@
       "reason": "http_404"
     },
     {
-      "id": "StarPlus.in",
-      "name": "StarPlus",
+      "id": "SteelbirdMusic.in",
+      "name": "Steelbird Music",
       "tier": "FTA",
-      "category": "Entertainment",
-      "logo_url": "https://img10.hotstar.com/image/upload/f_auto/sources/r1/cms/prod/2384/1782291852384-h.jpg",
+      "category": "Music",
+      "logo_url": "https://i.imgur.com/Egijzx3.png",
       "status": "OFFLINE",
       "reason": "http_404"
     },
@@ -6328,15 +6355,6 @@
       "logo_url": "https://i.imgur.com/aRNBvTU.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
-    },
-    {
-      "id": "SuriyanTV.in",
-      "name": "Suriyan TV",
-      "tier": "FTA",
-      "category": "Movies",
-      "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/shows/2025-11-06/2511063356010.jpg",
-      "status": "OFFLINE",
-      "reason": "http_503"
     },
     {
       "id": "SuryaBhojpuri.in",
@@ -6895,6 +6913,15 @@
       "logo_url": "https://d3jnkp3lrs2hd5.cloudfront.net/images/100x100/5308151b-7854-43a5-ab18-9095bcf8e63d.jpg",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "ThendralTV.in",
+      "name": "Thendral TV",
+      "tier": "FTA",
+      "category": "Entertainment",
+      "logo_url": "https://i.imgur.com/kQK80gB.png",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "TimeTV.in",
@@ -7597,6 +7624,24 @@
       "logo_url": "https://jiotvimages.cdn.jio.com/dare_images/images/Harpal_TV.png",
       "status": "OFFLINE",
       "reason": "no_authorized_source"
+    },
+    {
+      "id": "ZBCartoon.in",
+      "name": "ZB Cartoon",
+      "tier": "FTA",
+      "category": "Kids",
+      "logo_url": "https://i.imgur.com/BbFNpMr.jpeg",
+      "status": "OFFLINE",
+      "reason": "http_404"
+    },
+    {
+      "id": "ZBMusic.in",
+      "name": "ZB Music",
+      "tier": "FTA",
+      "category": "Music",
+      "logo_url": "https://i.imgur.com/k1nb8u1.jpeg",
+      "status": "OFFLINE",
+      "reason": "http_404"
     },
     {
       "id": "ZeeAction.in",

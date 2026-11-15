@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T18:32:33Z",
+  "updated_at": "2026-11-15T03:09:56Z",
   "engine": "Bharat TV SmartBot v3.3",
   "policy": "India identities only; public premium sports discovery diagnostic-only",
   "settings": {
@@ -10,45 +10,44 @@
     "scan_workers": 24
   },
   "counts": {
-    "fresh_live_channels": 619,
-    "fta_rescue_candidates": 10,
-    "fta_rescue_failed": 4,
+    "fresh_live_channels": 614,
+    "fta_rescue_candidates": 16,
+    "fta_rescue_failed": 10,
     "fta_rescued": 6,
     "indian_metadata_channels": 1504,
-    "live_channels": 625,
-    "live_fta_channels": 625,
+    "live_channels": 620,
+    "live_fta_channels": 620,
     "live_paid_licensed_channels": 0,
-    "offline_indian_channels": 879,
+    "offline_indian_channels": 884,
     "probe_http_400": 2,
     "probe_http_401": 2,
-    "probe_http_403": 86,
-    "probe_http_404": 137,
+    "probe_http_403": 87,
+    "probe_http_404": 141,
     "probe_http_416": 4,
     "probe_http_451": 2,
     "probe_http_502": 1,
-    "probe_http_503": 2,
+    "probe_http_503": 1,
     "probe_http_504": 1,
     "probe_invalid_hls_manifest": 7,
-    "probe_media_verified": 1548,
+    "probe_media_verified": 1541,
     "probe_network_error": 18,
-    "probe_probe_IncompleteRead": 1,
-    "probe_timeout": 29,
+    "probe_timeout": 30,
     "public_paid_sports_candidates": 221,
     "rejected_channel_url_mismatch": 13,
-    "rejected_foreign_or_unknown_m3u_id": 4139,
+    "rejected_foreign_or_unknown_m3u_id": 4166,
     "rejected_non_india_feed": 22,
     "rejected_unknown_feed": 3,
-    "rejected_url_or_foreign_hint": 250,
+    "rejected_url_or_foreign_hint": 246,
     "sports_candidates_deferred_by_budget": 0,
-    "unique_candidates": 1840
+    "unique_candidates": 1837
   },
   "sports": {
-    "generated_at": "2026-11-14T18:32:37Z",
+    "generated_at": "2026-11-15T03:10:01Z",
     "mode": "public_sports_diagnostics_not_rebroadcast",
     "warning": "Responding HLS segment does not prove channel identity, India geo playback, or rights.",
     "target_count": 38,
     "targets_with_candidates": 3,
-    "targets_with_responses": 3,
+    "targets_with_responses": 1,
     "targets": [
       {
         "name": "Star Sports 1",
@@ -515,12 +514,12 @@
           "Eurosport"
         ],
         "candidate_count": 1,
-        "responding_candidates": 1,
+        "responding_candidates": 0,
         "drm_indicated": 0,
         "probe_results": {
-          "media_verified": 1
+          "http_404": 1
         },
-        "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+        "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
       },
       {
         "name": "Eurosport India HD",
@@ -531,12 +530,12 @@
           "Eurosport"
         ],
         "candidate_count": 1,
-        "responding_candidates": 1,
+        "responding_candidates": 0,
         "drm_indicated": 0,
         "probe_results": {
-          "media_verified": 1
+          "http_404": 1
         },
-        "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
+        "status": "NO_PLAYABLE_CANDIDATE_CONFIRMED"
       },
       {
         "name": "DD Sports",
@@ -547,17 +546,18 @@
           "DD Sports"
         ],
         "candidate_count": 8,
-        "responding_candidates": 8,
+        "responding_candidates": 7,
         "drm_indicated": 0,
         "probe_results": {
-          "media_verified": 8
+          "media_verified": 7,
+          "http_404": 1
         },
         "status": "CANDIDATE_RESPONDED_NOT_AUTHORIZED_FOR_REBROADCAST"
       }
     ]
   },
   "paid": {
-    "generated_at": "2026-11-14T18:32:37Z",
+    "generated_at": "2026-11-15T03:10:01Z",
     "scope": "Indian paid channel identity and stream status diagnostic",
     "note": "No unlicensed stream links included. Metadata/watchlist does not prove availability; technical responses do not confer rebroadcast rights.",
     "metadata_paid_identities": 163,
@@ -565,8 +565,8 @@
     "status_counts": {
       "NOT_FOUND_IN_CURRENT_METADATA": 17,
       "NO_VERIFIED_SOURCE": 113,
-      "SOURCES_CHECKED_NO_PLAYABLE_STREAM": 15,
-      "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH": 35
+      "SOURCES_CHECKED_NO_PLAYABLE_STREAM": 14,
+      "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH": 36
     },
     "channels": [
       {
@@ -576,12 +576,12 @@
         "category": "Sports",
         "country": "IN",
         "listing": "IPTV-org Indian channel metadata",
-        "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
+        "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
         "candidate_count": 1,
-        "responding_candidates": 1,
+        "responding_candidates": 0,
         "drm_indicated": 0,
         "probe_reasons": {
-          "media_verified": 1
+          "http_404": 1
         }
       },
       {
@@ -1415,12 +1415,12 @@
         "category": "Entertainment",
         "country": "IN",
         "listing": "IPTV-org Indian channel metadata",
-        "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
+        "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
         "candidate_count": 1,
-        "responding_candidates": 0,
+        "responding_candidates": 1,
         "drm_indicated": 0,
         "probe_reasons": {
-          "http_404": 1
+          "media_verified": 1
         }
       },
       {
@@ -2825,12 +2825,12 @@
         "category": "Regional",
         "country": "IN",
         "listing": "IPTV-org Indian channel metadata",
-        "status": "SOURCES_CHECKED_NO_PLAYABLE_STREAM",
+        "status": "TECHNICALLY_RESPONDING_NOT_APPROVED_TO_PUBLISH",
         "candidate_count": 1,
-        "responding_candidates": 0,
+        "responding_candidates": 1,
         "drm_indicated": 0,
         "probe_reasons": {
-          "http_404": 1
+          "media_verified": 1
         }
       },
       {
