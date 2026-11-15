@@ -47,6 +47,61 @@ BAD_DOMAINS = [
 
 CORE_SEEDS = [
     {
+        "name": "Goldmines",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_GOLDMINES/images/LOGO_HD/image.png",
+        "urls": [
+            "https://mumt04.tangotv.in/m18aqlK4GOLDMINES/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINES/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines 2",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143087_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINES2/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINES2/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Action",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://yt3.googleusercontent.com/_X6U6bMLF-pTu5wBMFwsSI6aubGrXk2B0kUKdGiLIMqFLyDIne4Ot4ro76BS1S8fX3pWcCwS=s900-c-k-c0x00ffffff-no-rj",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINESACTION/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINESACTION/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Bollywood",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/6mNQ9mM.png",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINESBOLLYWOOD/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINESBOLLYWOOD/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Movies",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/GoldminesMovies_Transparent_9b7db248-999e-4200-a459-6cc594650f3d.png",
+        "urls": [
+            "https://mumt04.tangotv.in/m18aqlK4GOLDMINEMOVIES/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINEMOVIES/ORIGIN/index.m3u8"
+        ]
+    },
+    {
         "name": "Star Sports 1 HD",
         "category": "Sports",
         "language": "Hindi",
