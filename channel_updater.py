@@ -544,6 +544,53 @@ def known_channel_mismatch(name, url):
         return True
     return False
 
+
+PAID_BRAND_PATTERNS = (
+    "star plus", "star gold", "star bharat", "star maa", "star vijay", "star jalsha",
+    "star pravah", "star suvarna", "star kirano", "star sports", "utsav plus", "utsav gold",
+    "utsav bharat", "sony", "set max", "sab tv", "ten sports", "pix", "bbc earth",
+    "zee tv", "zee cinema", "zee cafe", "zee studio", "zee talkies", "zee marathi",
+    "zee bangla", "zee tamil", "zee telugu", "zee kannada", "zee keralam", "zee punjabi",
+    "zee sarthak", "zee picchar", "zee cinemalu", "zee thirai", "zee zest", "&tv", "and tv",
+    "&pictures", "and pictures", "&flix", "and flix", "&privé",
+    "colors", "mtv", "nick", "nickelodeon", "sonic", "vh1", "comedy central", "sports18",
+    "cartoon network", "pogo", "wb channel", "warner", "hbo", "cnn",
+    "disney", "hungama", "super hungama", "national geographic", "nat geo", "fox life",
+    "discovery", "animal planet", "tlc", "eurosport", "investigation discovery",
+    "discovery science", "science channel",
+    "history tv18", "fyi tv18", "cnbc", "et now",
+    "sun tv", "ktv", "adithya", "sun music", "sun life", "gemini", "udaya",
+    "surya tv", "surya movies", "surya comedy", "surya music",
+    "asianet", "mazhavil", "etv", "raj tv", "jaya tv", "polimer"
+)
+
+FTA_BRAND_PATTERNS = (
+    "dd", "doordarshan", "sansad", "lok sabha", "rajya sabha", "all india radio",
+    "star utsav", "zee anmol", "sony pal", "sony wah", "colors rishtey",
+    "dangal", "shemaroo", "goldmines", "b4u", "enterr10", "manoranjan", "dhamaal",
+    "mastiii", "9xm", "9x jalwa", "9x tashan", "9x jhakaas", "zoom", "showbox",
+    "aaj tak", "abp", "india tv", "republic", "tv9", "ndtv", "news18", "zee news",
+    "zee bharat", "zee hindustan", "zee business", "good news today", "gnt", "news 24",
+    "news nation", "india news", "sudarshan", "public tv", "otv", "kanak", "kalinga",
+    "surya samachar", "ktv bangla", "etv bharat",
+    "aastha", "sanskar", "sadhna", "ishwar", "paras", "peace of mind", "mh one",
+    "ptc", "chardikla", "bhojpuri cinema", "fakt marathi", "faktananda"
+)
+
+_PAID_RE = re.compile(rf"(?<!\w)(?:{'|'.join(re.escape(p) for p in PAID_BRAND_PATTERNS)})(?!\w)", re.IGNORECASE)
+_FTA_RE = re.compile(rf"(?<!\w)(?:{'|'.join(re.escape(p) for p in FTA_BRAND_PATTERNS)})(?!\w)", re.IGNORECASE)
+_FTA_REGIONAL_NEWS_RE = re.compile(r"(?<!\w)(?:zee|asianet|polimer|etv|sun)\b.*\b(?:news|samachar|khabar|seithigal)(?!\w)", re.IGNORECASE)
+
+def classify_tier(name: str) -> str:
+    clean = (name or "").strip().lower()
+    if not clean:
+        return "FTA"
+    if _FTA_RE.search(clean) or _FTA_REGIONAL_NEWS_RE.search(clean):
+        return "FTA"
+    if _PAID_RE.search(clean):
+        return "PAID"
+    return "FTA"
+
 def map_category(raw_group, name):
     g = (raw_group or "").lower()
     n = (name or "").lower()
@@ -731,6 +778,7 @@ def build_bharat_tv_channels(verify_streams=True, max_workers=20):
                 "name": item['name'],
                 "category": category,
                 "language": lang,
+                "tier": classify_tier(item['name']),
                 "logo_url": item['logo'],
                 "urls": [item['url']]
             }
@@ -745,18 +793,21 @@ def build_bharat_tv_channels(verify_streams=True, max_workers=20):
     # Inject and prioritize curated premium seed channels
     for seed in CORE_SEEDS:
         sk = norm_key(seed["name"])
+        tier = seed.get("tier") or classify_tier(seed["name"])
         if sk in grouped:
             for u in reversed(seed["urls"]):
                 if u not in grouped[sk]["urls"]:
                     grouped[sk]["urls"].insert(0, u)
             if seed.get("logo_url"):
                 grouped[sk]["logo_url"] = seed["logo_url"]
+            grouped[sk]["tier"] = tier
         else:
             grouped[sk] = {
                 "id": f"ch_{sk}",
                 "name": seed["name"],
                 "category": seed["category"],
                 "language": seed["language"],
+                "tier": tier,
                 "logo_url": seed["logo_url"],
                 "urls": seed["urls"]
             }
@@ -810,7 +861,7 @@ def build_bharat_tv_channels(verify_streams=True, max_workers=20):
                     "name": ch['name'],
                     "category": ch['category'],
                     "language": ch['language'],
-                    "tier": "UNVERIFIED",
+                    "tier": ch.get("tier") or classify_tier(ch["name"]),
                     "logo_url": ch['logo_url'],
                     "url": primary,
                     "fallback_urls": fallbacks,
@@ -826,7 +877,7 @@ def build_bharat_tv_channels(verify_streams=True, max_workers=20):
                 "name": ch['name'],
                 "category": ch['category'],
                 "language": ch['language'],
-                "tier": "UNVERIFIED",
+                "tier": ch.get("tier") or classify_tier(ch["name"]),
                 "logo_url": ch['logo_url'],
                 "url": ch['urls'][0],
                 "fallback_urls": ch['urls'][1:],
@@ -842,6 +893,8 @@ def build_bharat_tv_channels(verify_streams=True, max_workers=20):
         "version": 1,
         "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "total_channels": len(verified_channels),
+        "fta_channels": sum(1 for c in verified_channels if c.get("tier") == "FTA"),
+        "paid_channels": sum(1 for c in verified_channels if c.get("tier") == "PAID"),
         "channels": verified_channels
     }
 
