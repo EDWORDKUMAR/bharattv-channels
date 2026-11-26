@@ -1,273 +1,472 @@
 #!/usr/bin/env python3
 """
-Bharat TV — Next-Gen Indian IPTV Channel Discovery, Identity Verification & Health Engine
-=========================================================================================
-Runs 5x daily via GitHub Actions (`update-channels.yml`) to build `channels.json` and `channels.m3u`.
-
-Key Capabilities:
-1. Multi-Source Discovery:
-   - Official IPTV-org JSON API (`channels.json`, `streams.json`, `feeds.json`, `logos.json`)
-   - Official Country & Language M3U Playlists (India + 15 Indian languages: Hindi, Tamil,
-     Telugu, Punjabi, Marathi, Bengali, Gujarati, Kannada, Malayalam, Odia, Assamese, Bhojpuri, Urdu)
-   - Curated Public Indian IPTV M3U Repositories
-2. Zero Cross-Channel Stream Contamination:
-   - Blocks known cross-mapped streams (e.g., Zee Cinema on SET Max, generic sports feeds on
-     Star Sports 1, Colors on Sony SAB, Colors Cineplex on Star Gold, Animax on Cartoon Network).
-   - Rejects any generic stream URL claimed by 3+ distinct channel identities across networks.
-   - Preserves channel numbers (1, 2, Plus), variants (Movies, Music, Gold), and language tags
-     during normalization so Hindi and regional feeds never collide.
-3. FTA (Free-to-Air) vs PAID (Subscription) Classification:
-   - Classifies every Indian channel into FTA (DD FreeDish / Prasar Bharati / Public News) or
-     PAID (Star/JioStar, Sony/Culver Max, Zee, Colors/Viacom18, Sun Network, Discovery, Warner).
-4. Concurrent Deep HLS Health Check:
-   - Verifies HTTP status, `#EXTM3U` playlist headers, and master/media chunklists concurrently,
-     sorting mirrors by fastest response latency and promoting HTTPS streams as primary.
+Bharat TV - Automated Channel Discovery, Verification & JSON Generator
+Runs hourly via GitHub Actions or locally to discover maximum live Indian & Sports/Movies
+IPTV channels, verify real HLS playback health (including AES-128 & fMP4), and publish
+validated channels.json / channels.m3u catalogues.
 """
 
-from __future__ import annotations
-
-import concurrent.futures
-import datetime as dt
-import json
 import os
 import re
-import sys
+import ssl
+import json
 import time
-import urllib.error
-import urllib.parse
 import urllib.request
-from pathlib import Path
-from typing import Any
+import urllib.error
+from urllib.parse import urljoin
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# ---------------------------------------------------------------------------
-# 1. Upstream Sources (IPTV-org API + Indian Language & Regional Playlists)
-# ---------------------------------------------------------------------------
+SSL_CONTEXT = ssl.create_default_context()
 
-IPTV_API_CHANNELS = "https://iptv-org.github.io/api/channels.json"
-IPTV_API_STREAMS = "https://iptv-org.github.io/api/streams.json"
-IPTV_API_LOGOS = "https://iptv-org.github.io/api/logos.json"
-IPTV_API_FEEDS = "https://iptv-org.github.io/api/feeds.json"
-
-M3U_SOURCES: list[tuple[str, str, str]] = [
-    # (Source Label, Default Language, M3U URL)
-    ("IPTV-org India Master", "Hindi", "https://iptv-org.github.io/iptv/countries/in.m3u"),
-    ("IPTV-org Hindi", "Hindi", "https://iptv-org.github.io/iptv/languages/hin.m3u"),
-    ("IPTV-org Punjabi", "Punjabi", "https://iptv-org.github.io/iptv/languages/pan.m3u"),
-    ("IPTV-org Marathi", "Marathi", "https://iptv-org.github.io/iptv/languages/mar.m3u"),
-    ("IPTV-org Gujarati", "Gujarati", "https://iptv-org.github.io/iptv/languages/guj.m3u"),
-    ("IPTV-org Bengali", "Bengali", "https://iptv-org.github.io/iptv/languages/ben.m3u"),
-    ("IPTV-org Tamil", "Tamil", "https://iptv-org.github.io/iptv/languages/tam.m3u"),
-    ("IPTV-org Telugu", "Telugu", "https://iptv-org.github.io/iptv/languages/tel.m3u"),
-    ("IPTV-org Kannada", "Kannada", "https://iptv-org.github.io/iptv/languages/kan.m3u"),
-    ("IPTV-org Malayalam", "Malayalam", "https://iptv-org.github.io/iptv/languages/mal.m3u"),
-    ("IPTV-org Odia", "Odia", "https://iptv-org.github.io/iptv/languages/ori.m3u"),
-    ("IPTV-org Assamese", "Assamese", "https://iptv-org.github.io/iptv/languages/asm.m3u"),
-    ("IPTV-org Bhojpuri", "Bhojpuri", "https://iptv-org.github.io/iptv/languages/bho.m3u"),
-    ("IPTV-org Urdu", "Urdu", "https://iptv-org.github.io/iptv/languages/urd.m3u"),
-    ("IPTV-org Konkani", "Konkani", "https://iptv-org.github.io/iptv/languages/kok.m3u"),
-    ("IPTV-org Nepali", "Nepali", "https://iptv-org.github.io/iptv/languages/nep.m3u"),
-    ("Hindi-Punjabi Community", "Hindi", "https://raw.githubusercontent.com/deep2772/Hindi_Punjabi-iptv-playlist/refs/heads/main/Hindi_Punjabi_Merged.m3u"),
-    ("TangoTV India", "Hindi", "https://raw.githubusercontent.com/amazeyourself/m3u/main/tangotv.m3u"),
-]
-
-INDIAN_LANG_CODES: dict[str, str] = {
-    "hin": "Hindi",
-    "eng": "English",
-    "tam": "Tamil",
-    "tel": "Telugu",
-    "kan": "Kannada",
-    "mal": "Malayalam",
-    "mar": "Marathi",
-    "ben": "Bengali",
-    "guj": "Gujarati",
-    "pan": "Punjabi",
-    "ori": "Odia",
-    "ory": "Odia",
-    "asm": "Assamese",
-    "urd": "Urdu",
-    "bho": "Bhojpuri",
-    "nep": "Nepali",
-    "kok": "Konkani",
-    "san": "Sanskrit",
-    "mai": "Maithili",
-    "kas": "Kashmiri",
-    "snd": "Sindhi",
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Accept': '*/*'
 }
 
-# Only native regional/national Indian broadcast languages trigger non-.in diaspora discovery.
-# English ("eng") / Urdu ("urd") / Nepali ("nep") are excluded here so global US/UK/EU/PK/NP
-# feeds are not pulled unless the channel's own country/broadcast area is India ("IN" / "c/IN").
-INDIAN_FEED_TRIGGER_LANGS: frozenset[str] = frozenset(INDIAN_LANG_CODES) - {"eng", "urd", "nep"}
+# Indian curated & regional language playlists (all channels kept, PK spoofs excluded)
+INDIAN_PLAYLIST_SOURCES = [
+    ("https://iptv-org.github.io/iptv/countries/in.m3u", "Hindi"),
+    ("https://raw.githubusercontent.com/iptv-org/iptv/master/streams/in.m3u", "Hindi"),
+    ("https://iptv-org.github.io/iptv/languages/hin.m3u", "Hindi"),
+    ("https://iptv-org.github.io/iptv/languages/pan.m3u", "Punjabi"),
+    ("https://iptv-org.github.io/iptv/languages/mar.m3u", "Marathi"),
+    ("https://iptv-org.github.io/iptv/languages/guj.m3u", "Gujarati"),
+    ("https://iptv-org.github.io/iptv/languages/ben.m3u", "Bengali"),
+    ("https://iptv-org.github.io/iptv/languages/tam.m3u", "Tamil"),
+    ("https://iptv-org.github.io/iptv/languages/tel.m3u", "Telugu"),
+    ("https://iptv-org.github.io/iptv/languages/kan.m3u", "Kannada"),
+    ("https://iptv-org.github.io/iptv/languages/mal.m3u", "Malayalam"),
+    ("https://iptv-org.github.io/iptv/languages/ori.m3u", "Odia"),
+    ("https://iptv-org.github.io/iptv/languages/asm.m3u", "Assamese"),
+    ("https://iptv-org.github.io/iptv/languages/bho.m3u", "Bhojpuri"),
+    ("https://iptv-org.github.io/iptv/languages/urd.m3u", "Urdu"),
+    ("https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_india.m3u8", "Hindi"),
+    ("https://raw.githubusercontent.com/amazeyourself/m3u/main/tangotv.m3u", "Hindi"),
+    ("https://raw.githubusercontent.com/deep2772/Hindi_Punjabi-iptv-playlist/refs/heads/main/Hindi_Punjabi_Merged.m3u", "Hindi"),
+    ("https://raw.githubusercontent.com/project9793/hindi-tv/main/sports.m3u", "Hindi"),
+    ("https://raw.githubusercontent.com/project9793/hindi-tv/main/movies.m3u", "Hindi"),
+    ("https://raw.githubusercontent.com/karanjaiswalp-cell/hindi-4k-iptv/main/Hindi-HD-Playable.m3u", "Hindi"),
+]
 
-DEAD_HOST_SUBSTRINGS: tuple[str, ...] = (
-    "d1g8wgjurz8via.cloudfront.net",
-    "103.151.60.162",
-    "103.178.78.151",
-    "103.175.73.12:8080",
-    "103.135.253.32",
-    "gpcdn.net",
-    "dinesh29.com.np",
-    "localhost",
-    "127.0.0.1",
+# Global category playlists to maximize working Sports, Movies, Kids, Music & Doc channels
+GLOBAL_CATEGORY_SOURCES = [
+    ("https://iptv-org.github.io/iptv/categories/sports.m3u", "English"),
+    ("https://iptv-org.github.io/iptv/categories/movies.m3u", "English"),
+    ("https://iptv-org.github.io/iptv/categories/animation.m3u", "English"),
+    ("https://iptv-org.github.io/iptv/categories/kids.m3u", "English"),
+    ("https://iptv-org.github.io/iptv/categories/music.m3u", "English"),
+    ("https://iptv-org.github.io/iptv/categories/documentary.m3u", "English"),
+]
+
+IPTV_ORG_API_CHANNELS = "https://iptv-org.github.io/api/channels.json"
+IPTV_ORG_API_STREAMS = "https://iptv-org.github.io/api/streams.json"
+IPTV_ORG_API_LOGOS = "https://iptv-org.github.io/api/logos.json"
+IPTV_ORG_API_FEEDS = "https://iptv-org.github.io/api/feeds.json"
+
+BAD_DOMAINS = [
+    'd1g8wgjurz8via.cloudfront.net',
+    '103.151.60.162',
+    '103.167.255.18',
+    '103.178.78.151',
+    '103.175.73.12:8080',
+    '103.135.253.32',
+    'gpcdn.net/live/sub_hd_abr',
+    'ml-pull-dvc-myco.io',
+    'dinesh29.com.np'
+]
+
+# Verified curated seeds prioritized first when alive
+CORE_SEEDS = [
+    {
+        "name": "Goldmines",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_GOLDMINES/images/LOGO_HD/image.png",
+        "urls": [
+            "https://mumt04.tangotv.in/m18aqlK4GOLDMINES/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINES/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines 2",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143087_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINES2/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINES2/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Action",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://yt3.googleusercontent.com/_X6U6bMLF-pTu5wBMFwsSI6aubGrXk2B0kUKdGiLIMqFLyDIne4Ot4ro76BS1S8fX3pWcCwS=s900-c-k-c0x00ffffff-no-rj",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINESACTION/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINESACTION/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Bollywood",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/6mNQ9mM.png",
+        "urls": [
+            "https://mumt03.tangotv.in/Dsly5z3HGOLDMINESBOLLYWOOD/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINESBOLLYWOOD/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Goldmines Movies",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/GoldminesMovies_Transparent_9b7db248-999e-4200-a459-6cc594650f3d.png",
+        "urls": [
+            "https://mumt04.tangotv.in/m18aqlK4GOLDMINEMOVIES/index.m3u8",
+            "https://streams.tangotv.in/GOLDMINEMOVIES/ORIGIN/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony SAB HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s159099_ld_h15_ab.png?lock=720x540",
+        "urls": [
+            "http://38.96.178.205/SONYHD/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Entertainment Television HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_ENTERTAINMENT_TELEVISION/images/LOGO_HD/image.png",
+        "urls": [
+            "http://38.96.178.205/SONYHD/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Max HD",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s157590_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://drk6xq0vhn.gpcdn.net/hls/set_max_m4fb8dz2wp6kr9s_720/index.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Max 2",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s143801_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "http://107.167.16.138/sonymax2/index.m3u8?token=test"
+        ]
+    },
+    {
+        "name": "Sony Sports Ten 3 Hindi HD",
+        "category": "Sports",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_TEN_3/images/LOGO_HD/image.png",
+        "urls": [
+            "https://r2.amml.in/sony-ten-3-hd/live.m3u8"
+        ]
+    },
+    {
+        "name": "DD Sports",
+        "category": "Sports",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://dtil.tmsimg.com/assets/s158255_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
+            "https://cdn.pishow.tv/ott/live/1161/master.m3u8",
+            "https://mumbai-edge.smartplaytv.in/DDSportsHD/index.m3u8"
+        ]
+    },
+    {
+        "name": "Willow Sports",
+        "category": "Sports",
+        "language": "English",
+        "tier": "PAID",
+        "logo_url": "",
+        "urls": [
+            "https://d36r8jifhgsk5j.cloudfront.net/Willow_TV.m3u8"
+        ]
+    },
+    {
+        "name": "Sony KAL Hindi",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://dtil.tmsimg.com/assets/s157590_ld_h15_aa.png?lock=720x540",
+        "urls": [
+            "https://wurlsonypicturestv.global.transmit.live/hls/68deeb1c0238cda82df543dd/v1/spt_sonykal_1/lg_us/latest/main/hls/playlist.m3u8"
+        ]
+    },
+    {
+        "name": "Sony Wah",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_WAH/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/1743466790?profile=pass"
+        ]
+    },
+    {
+        "name": "Sony Pal",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_SONY_PAL/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/1571254341?profile=pass",
+            "https://fta.ektv.in/live/53/53_0.m3u8"
+        ]
+    },
+    {
+        "name": "Star Bharat HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_BHARAT/images/LOGO_HD/image.png",
+        "urls": [
+            "https://d1taaads3ztvmu.cloudfront.net/120723/smil:lifeokuk.smil/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b",
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavBharat.m3u8"
+        ]
+    },
+    {
+        "name": "Star Plus HD",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_PLUS/images/LOGO_HD/image.png",
+        "urls": [
+            "https://d1rc86nwwc9fag.cloudfront.net/260723/starplusuk_2500/chunks.m3u8",
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8"
+        ]
+    },
+    {
+        "name": "Star Gold",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_GOLD/images/LOGO_HD/image.png",
+        "urls": [
+            "https://fta.ektv.in/live/52/52_0.m3u8"
+        ]
+    },
+    {
+        "name": "Star Maa HD",
+        "category": "Entertainment",
+        "language": "Telugu",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_MAA/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:starmaa1.smil/chunklist_b2628000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Maa Movies HD",
+        "category": "Movies",
+        "language": "Telugu",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_MAA_MOVIES/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:maamovies.smil/chunklist_b2628000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Pravah HD",
+        "category": "Entertainment",
+        "language": "Marathi",
+        "tier": "PAID",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_PRAVAH/images/LOGO_HD/image.png",
+        "urls": [
+            "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:starpravah.smil/chunklist_b1928000.m3u8"
+        ]
+    },
+    {
+        "name": "Star Utsav",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_UTSAV/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/894286890?profile=pass"
+        ]
+    },
+    {
+        "name": "Star Utsav Movies",
+        "category": "Movies",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://xstreamcp-assets-msp.streamready.in/assets/LIVETV/LIVECHANNEL/LIVETV_LIVETVCHANNEL_STAR_UTSAV_MOVIES/images/LOGO_HD/image.png",
+        "urls": [
+            "http://163.61.226.31:9981/stream/channelid/1225596390?profile=pass"
+        ]
+    },
+    {
+        "name": "Starnet",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/J3jB7Kr.png",
+        "urls": [
+            "https://5a1178b42cc03.streamlock.net/8220/8220/playlist.m3u8"
+        ]
+    },
+    {
+        "name": "Utsav Bharat",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/IQ2n0WY.png",
+        "urls": [
+            "https://d1taaads3ztvmu.cloudfront.net/120723/smil:lifeokuk.smil/playlist.m3u8?hdnts=st=1735898689~exp=1835898688~acl=*~hmac=f5fe24724fe05481e3841f9eb5ab8efdee0a3dd83645ae9dcf45703f525bab7b"
+        ]
+    },
+    {
+        "name": "Utsav Plus",
+        "category": "Entertainment",
+        "language": "Hindi",
+        "tier": "FTA",
+        "logo_url": "https://i.imgur.com/TERVtWT.png",
+        "urls": [
+            "https://raw.githubusercontent.com/amazeyourself/adaptive-streams/refs/heads/main/streams/gb/YuppTV/UtsavPlus.m3u8"
+        ]
+    }
+]
+
+TOP_PRIORITY_BRANDS = [
+    # Movies
+    "goldmines", "zee cinema", "sony max", "star gold", "colors cineplex",
+    "b4u movies", "shemaroo movies", "bhojpuri cinema", "b4u kadak", "manoranjan movies",
+    "manoranjan grand", "sony pix", "star gold 2", "sony max 2", "zee action", "zee classic",
+    "zee bollywood", "zee anmol cinema", "shemaroo classic", "dhinchaak", "cinema tv",
+    "maha movie", "movie plus", "enterr10 movies", "bflix", "pitaara", "shubh cinema",
+    # Sports
+    "sony sports ten 3", "sony sports ten 1", "sony sports ten 2", "sony sports ten 5",
+    "sony sports ten 4", "sony sports", "dd sports", "star sports", "sports18",
+    "willow sports", "eurosport", "cricket gold", "kabaddi 24x7",
+    # Entertainment
+    "sony sab", "colors hd", "colors", "star plus", "zee tv",
+    "sony entertainment television", "set india", "sony tv", "&tv", "and tv",
+    "star bharat", "dangal 2", "dangal", "star utsav", "colors rishtey",
+    "zee anmol", "sony pal", "shemaroo tv", "shemaroo umang", "big magic",
+    "bindass", "sony wah", "sony kal", "enterr10", "manoranjan tv",
+    # News
+    "aaj tak", "abp news", "india tv", "zee news", "republic bharat", "news18 india",
+    "ndtv india", "times now navbharat", "tv9 bharatvarsh", "dd news", "dd india",
+    "zee bharat", "zee hindustan", "news nation", "news 24", "good news today",
+    "bharat 24", "sansad tv", "times now", "ndtv 24x7", "republic tv", "cnn news 18",
+    "india today", "wion", "cnbc awaaz", "zee business", "et now swadesh",
+    # Music
+    "9xm", "mastiii", "mtv", "b4u music", "9x jalwa", "9x tashan", "zoom", "zing",
+    "music india", "balle balle",
+    # Kids
+    "cartoon network", "pogo", "hungama", "nickelodeon", "nick", "sonic",
+    "disney", "sony yay", "discovery kids", "gubbare", "etv bal bharat",
+    # Devotional & DD
+    "aastha", "sanskar", "sadhna", "bhakti sagar", "arihant", "jinvaani",
+    "paras", "divya tv", "ishwar tv", "disha tv", "shubh tv", "lord buddha",
+    "subhavaartha", "svbc", "dd national", "dd kisan", "dd bharati", "dd retro"
+]
+
+FOREIGN_KEYWORDS = [
+    'romania', 'russia', 'russian', 'uk', 'usa', 'america', 'american',
+    'canada', 'australia', 'france', 'french', 'germany', 'german', 'spain',
+    'spanish', 'italy', 'italian', 'albania', 'dubai', 'qatar', 'kuwait',
+    'saudi', 'turkey', 'turkish', 'china', 'chinese', 'japan', 'japanese',
+    'korea', 'korean', 'vietnam', 'thailand', 'malaysia', 'indonesia',
+    'philippines', 'brazil', 'mexico', 'argentina', 'colombia', 'nigeria',
+    'kenya', 'south africa', 'egypt', 'iran', 'iraq', 'pakistan', 'afghanistan',
+    'bangladesh', 'nepal', 'sri lanka', 'rexdale', 'calgary', 'toronto',
+    'london', 'europe', 'european', 'apac', 'mena', 'americas', 'latam',
+    'fifa', 'fifa+', 'sports first', 'goal tv', 'tennis channel', 'sportsgrid',
+    '5plus', '5stars', 'a spor', 'fight network', 'red bull tv', 'motorvision',
+    'mavtv', 'canal+', 'bein', 'sky sports', 'espn', 'fox sports'
+]
+
+REGIONAL_LANGS = [
+    'tamil', 'telugu', 'kannada', 'malayalam', 'bhojpuri', 'bengali',
+    'bangla', 'gujarati', 'odia', 'oriya', 'punjabi', 'marathi', 'assamese', 'urdu'
+]
+
+FOREIGN_COUNTRY_ID_RE = re.compile(
+    r'\.(us|ru|ua|tr|il|fr|es|de|ro|it|pl|nl|br|mx|ar|co|cl|pe|cn|jp|kr|vn|th|id|ph|eg|sa|ae|qa|kw|ir|pk|bd|lk|np|af)@',
+    re.I
 )
 
-# ---------------------------------------------------------------------------
-# 2. Strict Channel-Stream Mismatch Protection
-# ---------------------------------------------------------------------------
+
+def norm_key(name):
+    if not name:
+        return ""
+    raw = name.lower()
+    raw = re.sub(r'\bset\s*max\b', 'sonymax', raw)
+    raw = re.sub(r'\bset\s*india\b', 'sonyentertainmenttelevision', raw)
+    raw = re.sub(r'\bsony\s*set\b', 'sonyentertainmenttelevision', raw)
+    raw = re.sub(r'\b(sub|sab)\s*tv\b', 'sonysab', raw)
+    raw = re.sub(r'\(\s*(hd|sd|fhd|4k|uhd)\s*\)|\[\s*(hd|sd|fhd|4k|uhd)\s*\]', ' ', raw)
+    clean = re.sub(r'\(.*?\)|\[.*?\]', ' ', raw)
+    clean = re.sub(r'\b(hd|sd|fhd|4k|uhd|official|live|stream)\b', ' ', clean)
+    return re.sub(r'[^a-z0-9]', '', clean)
+
 
 def canonical_channel_key(name: str, tvg_id: str = "") -> str:
-    """
-    Produces an identity-safe key that preserves channel numbers, variants,
-    and regional language qualifiers so distinct channels NEVER merge.
-    """
+    """Produces an identity-safe key that preserves channel identity and numbers."""
     raw = (name or "").strip().lower()
     if not raw and tvg_id:
         raw = tvg_id.split("@")[0].replace(".in", "").lower()
-
-    # Extract any meaningful language or variant inside parentheses before stripping resolution tags
-    paren_tokens: list[str] = []
-    for m in re.finditer(r"[\(\[]([^\)\]]+)[\)\]]", raw):
-        inner = m.group(1).strip().lower()
-        # Ignore pure resolution or status notes like (1080p), (1080i), (720p), [Not 24/7], [Geo-blocked]
-        if re.fullmatch(r"\d{3,4}[pi]|hd|sd|fhd|4k|uhd|not\s*24/7|geo[-\s]*blocked|backup|mirror|india|in", inner):
-            continue
-        paren_tokens.append(re.sub(r"[^a-z0-9]+", "", inner))
-
-    # Strip resolution/status brackets from main string
+    raw = re.sub(r'\bset\s*max\b', 'sonymax', raw)
+    raw = re.sub(r'\bset\s*india\b', 'sonyentertainmenttelevision', raw)
+    raw = re.sub(r'\b(sub|sab)\s*tv\b', 'sonysab', raw)
     cleaned = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", raw)
-
-    # Normalize common aliases without losing identity
-    cleaned = re.sub(r"\bset\s*max\b", "sonymax", cleaned)
-    cleaned = re.sub(r"\bset\s*india\b", "sonyentertainmenttelevision", cleaned)
-    cleaned = re.sub(r"\bsony\s*set\b", "sonyentertainmenttelevision", cleaned)
-    cleaned = re.sub(r"\bsub\s*tv\b", "sonysab", cleaned)
-    cleaned = re.sub(r"\bsab\s*tv\b", "sonysab", cleaned)
-    cleaned = re.sub(r"&tv\b", "andtv", cleaned)
-
-    # Remove only generic suffix tokens, NEVER remove numbers or 'sports'/'movies'/'news'
-    cleaned = re.sub(r"\b(hd|sd|fhd|4k|india|official|live|stream)\b", " ", cleaned)
-    # Remove trailing 'tv' or 'channel' only when the remaining name has >= 4 chars
-    base_no_tv = re.sub(r"\b(tv|channel|television)\b", " ", cleaned)
-    if len(re.sub(r"[^a-z0-9]", "", base_no_tv)) >= 4:
-        cleaned = base_no_tv
-
-    key = re.sub(r"[^a-z0-9]", "", cleaned)
-    if paren_tokens:
-        for pt in paren_tokens:
-            if pt and pt not in key:
-                key += "_" + pt
-    return key
+    cleaned = re.sub(r"\b(hd|sd|fhd|4k|uhd|official|live|stream)\b", " ", cleaned)
+    return re.sub(r"[^a-z0-9]+", "", cleaned)
 
 
-def is_cross_channel_mismatch(channel_name: str, stream_url: str, stream_title: str = "") -> bool:
-    """
-    Blocks streams that belong to a different TV network or channel from being
-    assigned to `channel_name`. Fixes issues where SET Max played Zee Cinema
-    or Star Sports 1 played a generic sports stream.
-    """
-    ck = canonical_channel_key(channel_name)
-    url = (stream_url or "").strip().lower()
-    stitle = (stream_title or "").strip().lower()
-
-    if not url:
+def known_channel_mismatch(name, url):
+    """Reject confirmed dead hosts or cross-channel/Pakistan spoof feeds."""
+    if not url or not (url.startswith('http://') or url.startswith('https://')):
         return True
-    if any(dead in url for dead in DEAD_HOST_SUBSTRINGS):
+    u = url.strip().lower()
+    if any(bad in u for bad in BAD_DOMAINS):
         return True
 
-    # 1. Sony Max / SET Max must NEVER play Zee Cinema, Goldmines, or Colors Cineplex
-    if "sonymax" in ck or "setmax" in ck:
-        if any(bad in url for bad in ("zeecinema", "/live/53/", "colorscineplex", "b4u", "dangal", "shemaroo")):
-            return True
-
-    # 2. Star Sports 1 / Star Sports 2 / Star Sports Hindi must NEVER play generic unrelated feeds
-    if "starsports" in ck:
-        if any(bad in url for bad in (
-            "b17adfe543354fdd8d189b110617cddd",
-            "pishow.tv/ott/live/1161",
-            "nellaiiptv.com/sdmedia",
-            "sportsgrid",
-            "cricketgold",
-            "tennis2",
-        )):
-            return True
-        if "starsports1" in ck and "starsports2" in url:
-            return True
-        if "starsports2" in ck and "starsports1" in url:
-            return True
-
-    # 3. Ten Sports / Sony Sports Ten / Eurosport must NEVER play generic DD/CricketGold feeds
-    if "tensports" in ck or "sonyten" in ck or "eurosport" in ck:
-        if any(bad in url for bad in (
-            "b17adfe543354fdd8d189b110617cddd",
-            "pishow.tv/ott/live/1161",
-            "nellaiiptv.com/sdmedia",
-        )):
-            return True
-
-    # 4. Sony SAB must NEVER play Colors, Dangal, Shemaroo, or Sony SET
-    if "sonysab" in ck:
-        if any(bad in url for bad in ("colorsapac", "colors", "live-dangal", "shemaroo", "/sonyhd/")):
-            return True
-
-    # 5. Star Gold must NEVER play Colors Cineplex or ektv FTA movie feeds
-    if "stargold" in ck or "utsavgold" in ck:
-        if any(bad in url for bad in ("colorscineplex", "/live/52/", "/live/47/", "/live/53/", "zeecinema")):
-            return True
-
-    # 6. Cartoon Network / Nickelodeon must NEVER play Animax or Green Gold
-    if "cartoonnetwork" in ck or "nickelodeon" in ck or ck.startswith("nick"):
-        if any(bad in url for bad in ("animax", "greengold", "grngld", "zillarbarta", "pishow.tv/ott/live/32")):
-            return True
-
-    # 7. Pogo / Sony YAY / Hungama / Discovery Kids must NEVER cross-play Green Gold or Animax
-    if any(k in ck for k in ("pogo", "sonyyay", "hungama", "discoverykids", "gubbare")):
-        if any(bad in url for bad in ("animax", "greengold", "grngld", "zillarbarta")):
-            return True
-
-    # 8. Zee TV must NEVER play Anand TV; B4U Movies must NEVER play B4U Bhojpuri; India TV must NEVER play Awaaz India
-    if "zeetv" in ck and "anandtv" in url:
+    n = norm_key(name)
+    if 'pakistan' in n or re.search(r'(\.pk\b|/pakistan/|/pk/)', u):
         return True
-    if "b4umovies" in ck and "bhojpuri" in url:
+    if ('sonymax' in n or 'setmax' in n) and any(x in u for x in ('zeecinema', '/live/53/', 'colorscineplex', 'dangal', 'shemaroo', 'b4u')):
         return True
-    if "indiatv" in ck and "awaazind" in url:
+    if 'stargold' in n and any(x in u for x in ('colorscineplex', '/live/52/', '/live/47/')):
         return True
-
-    # 9. General URL-to-Network sanity guard: if URL explicitly names a rival channel
-    rival_signatures = [
-        ("zeecinema", ("zeecinema",)),
-        ("colorsapac", ("colors",)),
-        ("colorscineplex", ("colorscineplex",)),
-        ("colorstamil", ("colorstamil",)),
-        ("live-dangal2", ("dangal2",)),
-        ("live-dangal.", ("dangal",)),
-        ("b4u_bhojpuri", ("b4ubhojpuri",)),
-        ("shemarootv", ("shemaroo",)),
-        ("shemarooumang", ("shemarooumang",)),
-        ("aajtakhd", ("aajtak",)),
-        ("abpnews", ("abpnews",)),
-        ("ndtvindia", ("ndtvindia",)),
-        ("ndtv24x7", ("ndtv24x7", "ndtv")),
-        ("republicbharat", ("republicbharat",)),
-        ("timesnownavbharat", ("timesnownavbharat",)),
-    ]
-    for sig, allowed_keys in rival_signatures:
-        if sig in url and not any(ak in ck for ak in allowed_keys):
-            return True
-
-    # 10. If stream_title is present and clearly belongs to a different channel
-    if stitle:
-        st_key = canonical_channel_key(stitle)
-        if st_key and ck and st_key != ck and (len(st_key) >= 5 and st_key not in ck and ck not in st_key):
-            return True
-
+    if 'starsports' in n and any(x in u for x in (
+        'b17adfe543354fdd8d189b110617cddd', '/live/1161/',
+        'nellaiiptv.com/sdmedia', 'sportsgrid', 'cricketgold', 'tennis2'
+    )):
+        return True
+    if ('tensports' in n or 'sonyten' in n or 'eurosport' in n) and any(x in u for x in (
+        'b17adfe543354fdd8d189b110617cddd', '/live/1161/', 'nellaiiptv.com/sdmedia', 'cricketgold'
+    )):
+        return True
+    if 'sonysab' in n and any(x in u for x in ('colors', 'colorsapac', 'zeetv', 'dangal', 'shemaroo')):
+        return True
     return False
 
 
-# ---------------------------------------------------------------------------
-# 3. Category, Region, Zone & Tier (FTA vs Paid) Classification
-# ---------------------------------------------------------------------------
-
-PAID_BRAND_PATTERNS: tuple[str, ...] = (
+PAID_BRAND_PATTERNS = (
     "star plus", "star gold", "star bharat", "star maa", "star vijay", "star jalsha",
     "star pravah", "star suvarna", "star kirano", "star sports", "utsav plus", "utsav gold",
     "utsav bharat", "sony", "set max", "sab tv", "ten sports", "pix", "bbc earth",
@@ -283,558 +482,619 @@ PAID_BRAND_PATTERNS: tuple[str, ...] = (
     "history tv18", "fyi tv18", "cnbc", "et now",
     "sun tv", "ktv", "adithya", "sun music", "sun life", "gemini", "udaya",
     "surya tv", "surya movies", "surya comedy", "surya music",
-    "asianet", "mazhavil", "etv", "raj tv", "jaya tv", "polimer",
+    "asianet", "mazhavil", "etv", "raj tv", "jaya tv", "polimer", "willow"
 )
 
-FTA_BRAND_PATTERNS: tuple[str, ...] = (
+FTA_BRAND_PATTERNS = (
     "dd", "doordarshan", "sansad", "lok sabha", "rajya sabha", "all india radio",
     "star utsav", "zee anmol", "sony pal", "sony wah", "colors rishtey",
     "dangal", "shemaroo", "goldmines", "b4u", "enterr10", "manoranjan", "dhamaal",
     "mastiii", "9xm", "9x jalwa", "9x tashan", "9x jhakaas", "zoom", "showbox",
-    "aaj tak", "abp", "india tv", "republic", "tv9", "ndtv india", "news18", "zee news",
+    "aaj tak", "abp", "india tv", "republic", "tv9", "ndtv", "news18", "zee news",
     "zee bharat", "zee hindustan", "zee business", "good news today", "gnt", "news 24",
     "news nation", "india news", "sudarshan", "public tv", "otv", "kanak", "kalinga",
     "surya samachar", "ktv bangla", "etv bharat",
     "aastha", "sanskar", "sadhna", "ishwar", "paras", "peace of mind", "mh one",
-    "ptc", "chardikla", "bhojpuri cinema", "fakt marathi", "faktananda",
+    "ptc", "chardikla", "bhojpuri cinema", "fakt marathi", "faktananda"
 )
 
-
-def _compile_brand_regex(patterns: tuple[str, ...]) -> re.Pattern[str]:
-    alts = "|".join(re.escape(p) for p in patterns)
-    return re.compile(rf"(?<!\w)(?:{alts})(?!\w)", re.IGNORECASE)
-
-
-_PAID_BRAND_RE = _compile_brand_regex(PAID_BRAND_PATTERNS)
-_FTA_BRAND_RE = _compile_brand_regex(FTA_BRAND_PATTERNS)
-_FTA_REGIONAL_NEWS_RE = re.compile(
-    r"(?<!\w)(?:zee|asianet|polimer|etv|sun)\b.*\b(?:news|samachar|khabar|seithigal)(?!\w)",
-    re.IGNORECASE,
-)
+_PAID_RE = re.compile(rf"(?<!\w)(?:{'|'.join(re.escape(p) for p in PAID_BRAND_PATTERNS)})(?!\w)", re.IGNORECASE)
+_FTA_RE = re.compile(rf"(?<!\w)(?:{'|'.join(re.escape(p) for p in FTA_BRAND_PATTERNS)})(?!\w)", re.IGNORECASE)
+_FTA_REGIONAL_NEWS_RE = re.compile(r"(?<!\w)(?:zee|asianet|polimer|etv|sun)\b.*\b(?:news|samachar|khabar|seithigal)(?!\w)", re.IGNORECASE)
 
 
-def classify_tier(name: str, raw_group: str = "") -> str:
-    clean_name = (name or "").strip().lower()
-    if not clean_name:
+def classify_tier(name: str) -> str:
+    clean = (name or "").strip().lower()
+    if not clean:
         return "FTA"
-    if _FTA_BRAND_RE.search(clean_name) or _FTA_REGIONAL_NEWS_RE.search(clean_name):
+    if _FTA_RE.search(clean) or _FTA_REGIONAL_NEWS_RE.search(clean):
         return "FTA"
-    if _PAID_BRAND_RE.search(clean_name):
+    if _PAID_RE.search(clean):
         return "PAID"
     return "FTA"
 
 
-def classify_category(raw_group: str, name: str) -> str:
-    lower_name = (name or "").lower()
-    if "&tv" in lower_name or "and tv" in lower_name:
-        return "Entertainment"
-    text = f"{raw_group or ''} {name or ''}".lower()
+def map_category(raw_group, name):
+    g = (raw_group or "").lower()
+    n = (name or "").lower()
+    combined = f"{g} {n}"
 
-    if any(k in text for k in ("movie", "cinema", "film", "talkies", "goldmines", "max", "pictures", "flix", "blockbuster", "cinemalu", "picchar", "thirai")):
-        return "Movies"
-    if any(k in text for k in ("kid", "cartoon", "anime", "animax", "child", "disney", "hungama", "nick", "sonic", "pogo", "yay", "gubbare", "chhota bheem", "green gold", "bal bharat")):
-        return "Kids"
-    if any(k in text for k in ("music", "song", "mastiii", "9xm", "jalwa", "tashan", "jhakaas", "zoom", "beats", "mtv", "vh1", "sangeet", "filmi gaane", "balle balle", "isai", "murasu")):
-        return "Music"
-    if any(k in text for k in ("sport", "cricket", "football", "fifa", "wwe", "ten ", "star sports", "sports18", "sony six", "eurosport", "tennis", "racing", "khel")):
+    if any(k in combined for k in ['sport', 'cricket', 'football', 'fifa', 'wwe', 'willow']):
         return "Sports"
-    if any(k in text for k in ("business", "finance", "market", "money", "stock", "sensex", "nifty", "profit", "cnbc", "et now", "bloomberg")):
-        return "Business"
-    if any(k in text for k in ("bhakti", "aarti", "pooja", "devot", "relig", "aastha", "sanskar", "sadhna", "gurbani", "spiritual", "darshan", "ishwar", "paras", "subharti", "om ", "vedic", "quran", "bible", "god", "prarthana")):
-        return "Devotional"
-    if any(k in text for k in ("doc", "info", "science", "learn", "history", "nat geo", "national geographic", "discovery", "animal planet", "wild", "travel", "epic", "kisan", "knowledge", "gyan", "pmevidya", "swayam", "education", "bbc earth")):
-        return "Education"
-    if any(k in text for k in ("news", "samachar", "khabar", "aaj tak", "ndtv", "wion", "republic", "abp", "headline", "24x7", "tv9", "news18", "sandesh", "puthiya", "thanthi", "manorama", "mathrubhumi", "sakshi", "eenadu", "kanak", "argus", "pratidin", "zee 24")):
+    if any(k in combined for k in ['cinema', 'movie', 'film', 'goldmines', 'box office', 'cine', 'sony max']):
+        return "Movies"
+    if any(k in combined for k in ['kid', 'cartoon', 'pogo', 'disney', 'anime', 'hungama', 'nickelodeon', 'sonic', 'sony yay']):
+        return "Kids"
+    if any(k in combined for k in ['news', 'samachar', 'khabar', 'aaj tak', 'abp', 'ndtv', 'republic', 'zee news']):
         return "News"
-    if any(k in text for k in ("punjab", "marath", "tamil", "telugu", "bengal", "bangla", "gujarat", "malayal", "kannada", "odia", "oriya", "bhojpuri", "assam", "regional", "kashir", "girnar", "sahyadri", "podhigai", "saptagiri", "yadagiri", "chandana")):
+    if any(k in combined for k in ['music', 'gaana', 'sangeet', 'song', '9xm', 'mtv', 'b4u music', 'zoom']):
+        return "Music"
+    if any(k in combined for k in ['bhakti', 'devotional', 'religio', 'aarti', 'mandir', 'dharma', 'aastha', 'sanskar', 'sadhna', 'ishwar']):
+        return "Devotional"
+    if any(k in combined for k in ['business', 'bazaar', 'market', 'money', 'et now', 'cnbc', 'sensex']):
+        return "Business"
+    if any(k in combined for k in ['discovery', 'history', 'nat geo', 'science', 'education', 'gyan', 'documentary']):
+        return "Education"
+    if any(k in combined for k in ['bhojpuri', 'punjabi', 'marathi', 'gujarati', 'bengali', 'tamil', 'telugu', 'kannada', 'malayalam', 'odia', 'assamese']):
         return "Regional"
     return "Entertainment"
 
 
-def classify_zone_and_region(language: str, name: str) -> tuple[str, str, bool]:
-    lang = (language or "Hindi").strip()
-    text = f"{lang} {name}".lower()
-
-    if any(k in text for k in ("tamil", "chennai", "podhigai", "sun tv", "star vijay", "kalaignar", "polimer", "thanthi")):
-        return ("South India", "Tamil Nadu", True)
-    if any(k in text for k in ("telugu", "andhra", "telangana", "hyderabad", "star maa", "gemini", "etv telugu", "sakshi", "tv9 telugu")):
-        return ("South India", "Andhra & Telangana", True)
-    if any(k in text for k in ("kannada", "karnataka", "bengaluru", "udaya", "suvarna", "chandana", "public tv")):
-        return ("South India", "Karnataka", True)
-    if any(k in text for k in ("malayalam", "kerala", "asianet", "surya", "mazhavil", "manorama", "mathrubhumi", "kairali", "flowers")):
-        return ("South India", "Kerala", True)
-    if any(k in text for k in ("marathi", "maharashtra", "mumbai", "sahyadri", "pravah", "majha", "lokmat", "saam", "24 taas")):
-        return ("West India", "Maharashtra", True)
-    if any(k in text for k in ("gujarati", "gujarat", "girnar", "asmita", "sandesh", "24 kalak", "gstv", "vtv")):
-        return ("West India", "Gujarat", True)
-    if any(k in text for k in ("rajasthani", "rajasthan", "marwar", "jaipur", "first india")):
-        return ("West India", "Rajasthan", True)
-    if any(k in text for k in ("bengali", "bangla", "kolkata", "jalsha", "ananda", "24 ghanta", "sangeet bangla", "aakash aath")):
-        return ("East India", "West Bengal", True)
-    if any(k in text for k in ("odia", "oriya", "odisha", "tarang", "sarthak", "kanak", "otv", "kalinga", "argus")):
-        return ("East India", "Odisha", True)
-    if any(k in text for k in ("bhojpuri", "bihar", "jharkhand", "maithili", "biskope", "kashish")):
-        return ("East India", "Bihar & Jharkhand", True)
-    if any(k in text for k in ("assamese", "assam", "northeast", "north east", "prag", "pratidin", "dy365", "rang", "rengoni")):
-        return ("North-East India", "Assam & North-East", True)
-    if any(k in text for k in ("punjabi", "punjab", "jalandhar", "ptc", "chardikla", "mh one", "pitaara")):
-        return ("North India", "Punjab & Haryana", True)
-    if any(k in text for k in ("urdu", "kashmiri", "kashir", "gulistan")):
-        return ("North India", "Jammu & Kashmir", True)
-    if any(k in text for k in ("madhya pradesh", "chhattisgarh", "ibc24", "bansal")):
-        return ("Central India", "MP & Chhattisgarh", True)
-    if any(k in text for k in ("uttar pradesh", "uttarakhand", "abp ganga")):
-        return ("North India", "UP & Uttarakhand", True)
-
-    return ("National", "All India", False)
+def detect_language(name, raw_lang="Hindi"):
+    n = (name or "").lower()
+    rl = (raw_lang or "").strip()
+    if any(k in n for k in ['punjabi', 'ptc', 'apna punjab', 'pitaara']):
+        return "Punjabi"
+    if any(k in n for k in ['bhojpuri', 'b4u bhojpuri', 'dabangg', 'ananya']):
+        return "Bhojpuri"
+    if any(k in n for k in ['gujarat', 'gujarati', 'colors gujarati']):
+        return "Gujarati"
+    if any(k in n for k in ['marathi', 'zee 24 taas', 'colors marathi', 'pravah']):
+        return "Marathi"
+    if any(k in n for k in ['bangla', 'bengali', 'zee 24 ghanta', 'jalsha', 'sony aath']):
+        return "Bengali"
+    if any(k in n for k in ['tamil', 'sun tv', 'jaya', 'polimer', 'star vijay']):
+        return "Tamil"
+    if any(k in n for k in ['telugu', 'etv', 'gemini', 'star maa']):
+        return "Telugu"
+    if any(k in n for k in ['kannada', 'udaya', 'colors kannada', 'suvarna']):
+        return "Kannada"
+    if any(k in n for k in ['malayalam', 'asianet', 'surya', 'mazhavil']):
+        return "Malayalam"
+    if any(k in n for k in ['odia', 'oriya', 'sarthak', 'otv', 'kalinga', 'kanak']):
+        return "Odia"
+    if any(k in n for k in ['assam', 'dy 365', 'prag', 'rang', 'rengoni']):
+        return "Assamese"
+    if any(k in n for k in ['urdu', 'ete', 'kashir', 'gulistan']):
+        return "Urdu"
+    if any(k in n for k in ['english', 'times now', 'cnn', 'bbc', 'wion', 'sony pix', 'willow']):
+        return "English"
+    return rl or "Hindi"
 
 
-# ---------------------------------------------------------------------------
-# 4. Network Fetching & M3U / API Parsing
-# ---------------------------------------------------------------------------
+def is_channel_foreign(ch):
+    name = (ch.get('name') if isinstance(ch, dict) else str(ch or '')).lower()
+    for fw in FOREIGN_KEYWORDS:
+        if not fw.isalnum():
+            if fw in name:
+                return True
+        else:
+            if re.search(r'\b' + re.escape(fw) + r'\b', name):
+                if fw == 'uk' and ('uttarakhand' in name or 'up & uk' in name or 'up uk' in name):
+                    continue
+                return True
+    return False
 
-USER_AGENT = (
-    "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/126.0.0.0 Mobile Safari/537.36"
+
+def get_channel_priority_score(ch):
+    if isinstance(ch, dict):
+        name = (ch.get('name') or '').lower()
+        cat = ch.get('category', '')
+        lang = (ch.get('language') or '').lower()
+    else:
+        name = (str(ch) or '').lower()
+        cat = ''
+        lang = ''
+
+    if is_channel_foreign(name):
+        return -1000
+    for idx, brand in enumerate(TOP_PRIORITY_BRANDS):
+        if brand in name:
+            return 3000 - (idx * 10)
+    if cat == 'Regional' or any(rl == lang for rl in REGIONAL_LANGS):
+        return 500
+    return 1000
+
+
+def _fetch_text(url, timeout=6):
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=timeout, context=SSL_CONTEXT) as response:
+        data = response.read(131072)
+        return data.decode('utf-8', errors='ignore'), response.geturl()
+
+
+def _fetch_bytes(url, timeout=5, byte_range='bytes=0-2048'):
+    headers = dict(HEADERS)
+    if byte_range:
+        headers['Range'] = byte_range
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=SSL_CONTEXT) as response:
+            return response.read(2048), response.geturl()
+    except urllib.error.HTTPError as e:
+        if e.code == 416 and byte_range:
+            req2 = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req2, timeout=timeout, context=SSL_CONTEXT) as response2:
+                return response2.read(2048), response2.geturl()
+        raise
+
+
+def _check_media_playlist(child_text, child_final_url, timeout=5):
+    if '#EXTM3U' not in child_text[:128].upper():
+        return False
+
+    # Reject hardware-DRM gated playlists (Widevine / FairPlay / PlayReady / SAMPLE-AES)
+    upper_text = child_text.upper()
+    if 'SAMPLE-AES' in upper_text or 'WIDEVINE' in upper_text or 'PLAYREADY' in upper_text or 'COM.APPLE.FPS' in upper_text:
+        return False
+
+    is_aes128 = 'METHOD=AES-128' in upper_text
+    if is_aes128:
+        key_match = re.search(r'#EXT-X-KEY:[^\r\n]*URI="([^"]+)"', child_text, re.I)
+        if key_match:
+            key_url = urljoin(child_final_url, key_match.group(1).strip())
+            if key_url.startswith(('http://', 'https://')):
+                try:
+                    kbytes, _ = _fetch_bytes(key_url, timeout=timeout, byte_range=None)
+                    if len(kbytes) < 16 or kbytes.lstrip().startswith((b'<', b'{')):
+                        return False
+                except Exception:
+                    return False
+
+    # Check fMP4 init segment if present, otherwise first media segment
+    map_match = re.search(r'#EXT-X-MAP:[^\r\n]*URI="([^"]+)"', child_text, re.I)
+    segment = next((line.strip() for line in child_text.splitlines()
+                    if line.strip() and not line.startswith('#')), None)
+    probe_rel = map_match.group(1).strip() if map_match else segment
+    if not probe_rel:
+        return '#EXTINF:' in child_text and '#EXT-X-TARGETDURATION:' in child_text
+
+    media_url = urljoin(child_final_url, probe_rel)
+    sample, _ = _fetch_bytes(media_url, timeout=timeout, byte_range='bytes=0-2048')
+    if not sample or len(sample) < 8:
+        return False
+    lead = sample.lstrip().lower()
+    if lead.startswith((b'<html', b'<!doc', b'<?xml', b'{')):
+        return False
+
+    if is_aes128:
+        return len(sample) >= 188
+    if map_match or sample[4:8] in (b'ftyp', b'styp', b'moof', b'sidx', b'mdat'):
+        return True
+    if len(sample) >= 188 and sample[0] == 0x47:
+        return True
+    # ADTS AAC or ID3 audio-only streams
+    if len(sample) >= 4 and ((sample[0] == 0xFF and (sample[1] & 0xF0) == 0xF0) or sample[:3] == b'ID3'):
+        return True
+    return len(sample) >= 512 and b'\x47' in sample[:200]
+
+
+def test_stream_health(url, timeout=4.5):
+    """Verify reachable HLS playlist, rejecting DRM/HTML pages while supporting AES-128 & fMP4."""
+    try:
+        text, final_url = _fetch_text(url, timeout=timeout)
+        if '#EXTM3U' not in text[:128].upper():
+            return False
+
+        if '#EXT-X-STREAM-INF' in text:
+            variants = [line.strip() for line in text.splitlines()
+                        if line.strip() and not line.startswith('#')]
+            for variant in variants[:2]:
+                try:
+                    child_url = urljoin(final_url, variant)
+                    child_text, child_final_url = _fetch_text(child_url, timeout=timeout)
+                    if _check_media_playlist(child_text, child_final_url, timeout=timeout):
+                        return True
+                except Exception:
+                    continue
+            return False
+
+        return _check_media_playlist(text, final_url, timeout=timeout)
+    except Exception:
+        return False
+
+
+def fetch_url_text(url, timeout=12):
+    try:
+        req = urllib.request.Request(url, headers=HEADERS)
+        with urllib.request.urlopen(req, timeout=timeout, context=SSL_CONTEXT) as resp:
+            return resp.read().decode('utf-8', errors='ignore')
+    except Exception as e:
+        print(f"[!] Error fetching {url}: {e}")
+        return ""
+
+
+COUNTRY_CLEAN_RE = re.compile(
+    r'\s*[\(\[]\s*(?:India|Pakistan|United\s+Kingdom|UK|United\s+States|USA|US|U\.S\.A\.|U\.K\.|UAE|U\.A\.E\.|United\s+Arab\s+Emirates|Bangladesh|Nepal|Sri\s+Lanka|Canada|Australia|Netherlands|Germany|France|Italy|Spain|Russia|China|Japan|Singapore|Malaysia|Saudi\s+Arabia|Afghanistan|Qatar|Kuwait|Oman|Bahrain|Turkey|Indonesia|Philippines|Thailand|Vietnam|New\s+Zealand|South\s+Africa|Ireland|Brazil|Mexico|International|Global|Worldwide|APAC|MENA|Americas|Europe|IN|PK|GB|CA|AU|AE|BD|NP|LK|US)\s*[\)\]]',
+    re.I
+)
+END_COUNTRY_RE = re.compile(
+    r'\s*[-|/:]\s*(?:India|Pakistan|United\s+Kingdom|United\s+States|Canada|Australia|Bangladesh|Nepal|Sri\s+Lanka|UAE|Saudi\s+Arabia|Afghanistan|UK|USA|Global)\s*$',
+    re.I
+)
+TAG_CLEAN_RE = re.compile(
+    r'\s*[\(\[]\s*(?:\d{3,4}[pi]|not\s*24\/7|geo[-\s]*blocked|backup|mirror)\s*[\)\]]',
+    re.I
 )
 
 
-def fetch_text(url: str, timeout: float = 15.0, retries: int = 3) -> str:
-    last_exc: Exception | None = None
-    for attempt in range(1, max(1, retries) + 1):
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": USER_AGENT,
-                "Accept": "*/*",
-                "Connection": "close",
-            },
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw = resp.read()
-                return raw.decode("utf-8", errors="replace")
-        except Exception as exc:
-            last_exc = exc
-            if attempt < retries:
-                time.sleep(1.0 * attempt)
-    print(f"[Warn] Failed to fetch {url} after {retries} attempts: {last_exc}", file=sys.stderr)
-    return ""
+def clean_channel_name(name):
+    if not name:
+        return ''
+    cleaned = TAG_CLEAN_RE.sub('', name)
+    cleaned = COUNTRY_CLEAN_RE.sub('', cleaned)
+    cleaned = END_COUNTRY_RE.sub('', cleaned)
+    return re.sub(r'\s+', ' ', cleaned).strip()
 
 
-def parse_m3u_entries(m3u_text: str, default_lang: str = "Hindi") -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    if not m3u_text:
-        return entries
-
+def parse_m3u(m3u_text, default_lang="Hindi", is_global_category=False):
+    channels = []
     lines = m3u_text.splitlines()
-    cur_meta: dict[str, str] | None = None
-    user_agent_opt = ""
-    referrer_opt = ""
+    cur_id, cur_name, cur_logo, cur_group, cur_lang = '', '', '', '', default_lang
 
-    for raw_line in lines:
-        line = raw_line.strip()
-        if not line:
-            continue
+    for line in lines:
+        line = line.strip()
+        if line.startswith('#EXTINF:'):
+            id_match = re.search(r'tvg-id="([^"]+)"', line, re.I)
+            logo_match = re.search(r'tvg-logo="([^"]+)"', line, re.I)
+            group_match = re.search(r'group-title="([^"]+)"', line, re.I)
+            lang_match = re.search(r'tvg-language="([^"]+)"', line, re.I)
 
-        if line.startswith("#EXTINF:"):
-            id_m = re.search(r'tvg-id="([^"]*)"', line, re.I) or re.search(r"tvg-id=([^\s,]+)", line, re.I)
-            name_m = re.search(r'tvg-name="([^"]*)"', line, re.I)
-            logo_m = re.search(r'tvg-logo="([^"]*)"', line, re.I)
-            group_m = re.search(r'group-title="([^"]*)"', line, re.I)
-            lang_m = re.search(r'tvg-language="([^"]*)"', line, re.I)
+            cur_id = id_match.group(1).strip() if id_match else ''
+            cur_logo = logo_match.group(1).strip() if logo_match else ''
+            cur_group = group_match.group(1).strip() if group_match else ''
+            cur_lang = lang_match.group(1).strip() if lang_match else default_lang
 
-            comma_idx = line.rfind(",")
-            display_name = line[comma_idx + 1 :].strip() if comma_idx != -1 else ""
-            if not display_name and name_m:
-                display_name = name_m.group(1).strip()
+            comma_idx = line.rfind(',')
+            raw_n = line[comma_idx + 1:].strip() if comma_idx != -1 else ''
+            cur_name = clean_channel_name(raw_n)
+        elif line.startswith('http://') or line.startswith('https://'):
+            stream_url = line.split('|')[0].strip()
+            if cur_name and stream_url:
+                if cur_id and '.pk@' in cur_id.lower():
+                    cur_id, cur_name, cur_logo, cur_group, cur_lang = '', '', '', '', default_lang
+                    continue
+                if is_global_category and cur_id and FOREIGN_COUNTRY_ID_RE.search(cur_id):
+                    if not any(b in cur_name.lower() for b in TOP_PRIORITY_BRANDS):
+                        cur_id, cur_name, cur_logo, cur_group, cur_lang = '', '', '', '', default_lang
+                        continue
+                if not any(bad in stream_url.lower() for bad in BAD_DOMAINS):
+                    channels.append({
+                        "raw_id": cur_id,
+                        "name": cur_name,
+                        "logo": cur_logo,
+                        "group": cur_group,
+                        "lang": cur_lang,
+                        "url": stream_url
+                    })
+            cur_id, cur_name, cur_logo, cur_group, cur_lang = '', '', '', '', default_lang
 
-            # Clean display_name of noisy tags like (1080p) (1080i) [Not 24/7] while keeping language/variant tags
-            clean_display = re.sub(r"\s*[\(\[](\d{3,4}[pi]|not\s*24/7|geo[-\s]*blocked|backup)[\)\]]", "", display_name, flags=re.I).strip()
-            res_m = re.search(r"(\d{3,4}[pi])", display_name, re.I)
-
-            cur_meta = {
-                "tvg_id": id_m.group(1).strip() if id_m else "",
-                "name": clean_display or display_name,
-                "raw_name": display_name,
-                "logo": logo_m.group(1).strip() if logo_m else "",
-                "group": group_m.group(1).strip() if group_m else "",
-                "language": lang_m.group(1).strip() if lang_m and lang_m.group(1).strip() else default_lang,
-                "quality": res_m.group(1) if res_m else "1080p",
-            }
-            user_agent_opt = ""
-            referrer_opt = ""
-
-        elif line.startswith("#EXTVLCOPT:"):
-            if "http-user-agent=" in line.lower():
-                user_agent_opt = line.split("=", 1)[1].strip()
-            elif "http-referrer=" in line.lower() or "http-referer=" in line.lower():
-                referrer_opt = line.split("=", 1)[1].strip()
-
-        elif line.startswith(("http://", "https://")):
-            stream_url = line.split("|")[0].strip()
-            if cur_meta and cur_meta.get("name"):
-                entries.append({
-                    **cur_meta,
-                    "url": stream_url,
-                    "user_agent": user_agent_opt,
-                    "referrer": referrer_opt,
-                })
-            cur_meta = None
-            user_agent_opt = ""
-            referrer_opt = ""
-
-    return entries
+    return channels
 
 
-def discover_from_iptv_org_api() -> list[dict[str, Any]]:
-    """
-    Fetches official IPTV-org JSON API (`channels.json`, `streams.json`, `logos.json`, `feeds.json`)
-    and extracts all Indian channels (country == 'IN' or Indian broadcast languages) with exact channel IDs.
-    """
-    print("[Discovery] Fetching official IPTV-org JSON API...")
-    channels_raw = fetch_text(IPTV_API_CHANNELS, timeout=25.0, retries=3)
-    streams_raw = fetch_text(IPTV_API_STREAMS, timeout=30.0, retries=3)
-    logos_raw = fetch_text(IPTV_API_LOGOS, timeout=25.0, retries=3)
-    feeds_raw = fetch_text(IPTV_API_FEEDS, timeout=25.0, retries=3)
-
-    if not channels_raw or not streams_raw:
-        return []
+def fetch_iptv_org_api_items():
+    """Fetch official iptv-org Indian channels, feeds, streams, and logos in parallel."""
+    api_urls = {
+        "channels": IPTV_ORG_API_CHANNELS,
+        "streams": IPTV_ORG_API_STREAMS,
+        "logos": IPTV_ORG_API_LOGOS,
+        "feeds": IPTV_ORG_API_FEEDS,
+    }
+    raw_texts = {}
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        futs = {ex.submit(fetch_url_text, url, 15): k for k, url in api_urls.items()}
+        for f in as_completed(futs):
+            raw_texts[futs[f]] = f.result()
 
     try:
-        channels_data = json.loads(channels_raw)
-        streams_data = json.loads(streams_raw)
-        logos_data = json.loads(logos_raw) if logos_raw else []
-        feeds_data = json.loads(feeds_raw) if feeds_raw else []
-    except Exception as exc:
-        print(f"[Warn] JSON API parse error: {exc}", file=sys.stderr)
-        return []
+        ch_list = json.loads(raw_texts.get("channels") or "[]")
+        st_list = json.loads(raw_texts.get("streams") or "[]")
+        lg_list = json.loads(raw_texts.get("logos") or "[]")
+        fd_list = json.loads(raw_texts.get("feeds") or "[]")
+    except Exception as e:
+        print(f"[!] Warning parsing iptv-org API JSON: {e}")
+        return [], {}
 
-    # Map logos by channel ID
-    logo_map: dict[str, str] = {}
-    for lg in logos_data:
-        cid = lg.get("channel")
-        lurl = lg.get("url")
-        if cid and lurl and lurl.startswith("http") and cid not in logo_map:
-            logo_map[cid] = lurl
+    logo_by_cid = {}
+    for lg in lg_list:
+        if isinstance(lg, dict) and lg.get("channel") and lg.get("url", "").startswith("http"):
+            logo_by_cid.setdefault(lg["channel"], lg["url"])
 
-    # Map feed languages & broadcast areas by (channel, feed_id) and channel
-    feed_lang_map: dict[str, str] = {}
-    indian_feed_channels: set[str] = set()
-    for fd in feeds_data:
-        cid = fd.get("channel")
-        if not cid:
+    feed_area_by_key = {}
+    for fd in fd_list:
+        if isinstance(fd, dict) and fd.get("channel") and fd.get("id"):
+            feed_area_by_key[(fd["channel"], fd["id"])] = fd.get("broadcast_area") or []
+
+    indian_ch = {}
+    for c in ch_list:
+        if not isinstance(c, dict) or c.get("is_nsfw") or not c.get("id"):
             continue
-        langs = fd.get("languages") or []
-        areas = fd.get("broadcast_area") or []
-        if "c/IN" in areas or any(l in INDIAN_FEED_TRIGGER_LANGS for l in langs):
-            indian_feed_channels.add(cid)
-        for lcode in langs:
-            if lcode in INDIAN_LANG_CODES and cid not in feed_lang_map:
-                feed_lang_map[cid] = INDIAN_LANG_CODES[lcode]
+        cid = c["id"]
+        if c.get("country") == "IN" or cid.lower().endswith(".in"):
+            indian_ch[cid] = c
 
-    # Filter Indian channels
-    indian_channels: dict[str, dict[str, Any]] = {}
-    for ch in channels_data:
-        if ch.get("is_nsfw"):
+    items = []
+    for st in st_list:
+        if not isinstance(st, dict):
             continue
-        cid = ch.get("id") or ""
-        country = (ch.get("country") or "").upper()
-        if country == "IN" or cid.endswith(".in") or cid in indian_feed_channels:
-            indian_channels[cid] = ch
-
-    # Match streams to Indian channels
-    discovered: list[dict[str, Any]] = []
-    for st in streams_data:
-        cid = st.get("channel")
+        cid = st.get("channel") or ""
         surl = (st.get("url") or "").strip()
-        if not cid or not surl or cid not in indian_channels:
+        if cid not in indian_ch or not surl:
             continue
-        ch_meta = indian_channels[cid]
-        name = ch_meta.get("name") or cid.split(".")[0]
-        cats = ch_meta.get("categories") or []
+        feed_id = st.get("feed") or ""
+        area = feed_area_by_key.get((cid, feed_id), [])
+        if any("c/PK" in str(a) for a in area) or "pakistan" in feed_id.lower():
+            continue
+        meta = indian_ch[cid]
+        raw_name = meta.get("name") or st.get("title") or cid.split(".")[0]
+        cleaned = clean_channel_name(raw_name)
+        if not cleaned:
+            continue
+        cats = meta.get("categories") or []
         raw_group = cats[0] if cats else ""
-        lang = feed_lang_map.get(cid, "Hindi")
-        feed_id = st.get("feed") or "HD"
-        quality = st.get("quality") or "1080p"
-
-        discovered.append({
-            "tvg_id": f"{cid}@{feed_id}" if feed_id else cid,
-            "name": name,
-            "raw_name": st.get("title") or name,
-            "logo": logo_map.get(cid, ""),
+        items.append({
+            "raw_id": f"{cid}@{feed_id}" if feed_id else cid,
+            "name": cleaned,
+            "logo": logo_by_cid.get(cid, ""),
             "group": raw_group,
-            "language": lang,
-            "quality": quality,
+            "lang": "Hindi",
             "url": surl,
-            "user_agent": st.get("user_agent") or "",
-            "referrer": st.get("referrer") or "",
-            "website": ch_meta.get("website") or "",
-            "network": ch_meta.get("network") or "",
         })
 
-    print(f"[Discovery] Found {len(discovered)} Indian stream records from IPTV-org API.")
-    return discovered
+    print(f"[*] Extracted {len(items)} Indian items from official iptv-org API.")
+    return items, logo_by_cid
 
 
-# ---------------------------------------------------------------------------
-# 5. Stream Health Probing (Concurrent HLS Manifest Verification)
-# ---------------------------------------------------------------------------
+def build_bharat_tv_channels(verify_streams=True, max_workers=40):
+    all_raw_items = []
 
-def probe_hls_stream(
-    url: str,
-    timeout: float = 6.5,
-    user_agent: str = "",
-    referrer: str = "",
-) -> tuple[bool, int]:
-    """
-    Checks if a stream URL is alive and returns a valid HLS playlist or media stream.
-    Returns (is_alive, latency_ms).
-    """
-    if not url or not url.startswith("https://"):
-        # Note: GitHub workflow validation requires primary & fallback URLs in channels.json to be https://
-        return (False, 99999)
-    if any(dead in url.lower() for dead in DEAD_HOST_SUBSTRINGS):
-        return (False, 99999)
+    # Fetch M3U playlists and iptv-org JSON API in parallel for maximum channel yield & speed
+    fetch_jobs = [(u, lang, False) for (u, lang) in INDIAN_PLAYLIST_SOURCES] + [
+        (u, lang, True) for (u, lang) in GLOBAL_CATEGORY_SOURCES
+    ]
 
-    ua = (user_agent or "").replace("\r", "").replace("\n", "").strip() or USER_AGENT
-    ref = (referrer or "").replace("\r", "").replace("\n", "").strip()
-    headers = {
-        "User-Agent": ua,
-        "Accept": "application/vnd.apple.mpegurl,application/x-mpegurl,*/*",
-        "Connection": "close",
-    }
-    if ref:
-        headers["Referer"] = ref
+    api_items, logo_by_cid = [], {}
+    m3u_results = []
 
-    start_ts = time.monotonic()
-    req = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            status = getattr(resp, "status", 200)
-            if status < 200 or status >= 400:
-                return (False, 99999)
-            chunk = resp.read(2048).decode("utf-8", errors="ignore")
-            latency = int((time.monotonic() - start_ts) * 1000)
-            if "#EXTM3U" in chunk or "#EXT-X-" in chunk:
-                return (True, latency)
-            ctype = (resp.headers.get("Content-Type") or "").lower()
-            if any(k in ctype for k in ("mpegurl", "mp2t", "octet-stream", "video/")):
-                return (True, latency)
-            return (False, 99999)
-    except Exception:
-        return (False, 99999)
-
-
-# ---------------------------------------------------------------------------
-# 6. Catalogue Aggregation, Deduplication & Export
-# ---------------------------------------------------------------------------
-
-def build_catalogue() -> tuple[list[dict[str, Any]], str]:
-    raw_records: list[dict[str, Any]] = []
-
-    # 1. Pull from IPTV-org JSON API
-    raw_records.extend(discover_from_iptv_org_api())
-
-    # 2. Pull from all Indian M3U playlists concurrently
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-        future_map = {
-            pool.submit(fetch_text, url, 15.0): (label, lang, url)
-            for label, lang, url in M3U_SOURCES
+    with ThreadPoolExecutor(max_workers=12) as ex:
+        api_future = ex.submit(fetch_iptv_org_api_items)
+        m3u_futures = {
+            ex.submit(fetch_url_text, url, 12): (url, lang, is_global)
+            for (url, lang, is_global) in fetch_jobs
         }
-        for fut in concurrent.futures.as_completed(future_map):
-            label, lang, _ = future_map[fut]
-            content = fut.result()
-            parsed = parse_m3u_entries(content, default_lang=lang)
-            print(f"[Discovery] {label}: {len(parsed)} entries")
-            raw_records.extend(parsed)
+        api_items, logo_by_cid = api_future.result()
+        all_raw_items.extend(api_items)
+        for fut in as_completed(m3u_futures):
+            url, lang, is_global = m3u_futures[fut]
+            txt = fut.result()
+            if txt:
+                parsed = parse_m3u(txt, default_lang=lang, is_global_category=is_global)
+                print(f"    -> {len(parsed):4d} streams from {url}")
+                m3u_results.extend(parsed)
 
-    # 3. Detect generic/placeholder stream URLs claimed by 3+ distinct channel keys
-    url_to_channel_keys: dict[str, set[str]] = {}
-    for rec in raw_records:
-        u = (rec.get("url") or "").strip()
-        ck = canonical_channel_key(rec.get("name", ""), rec.get("tvg_id", ""))
-        if u and ck:
-            url_to_channel_keys.setdefault(u, set()).add(ck)
+    all_raw_items.extend(m3u_results)
+    print(f"\n[*] Total raw candidate records: {len(all_raw_items)}")
 
-    overused_urls: set[str] = {
-        u for u, keys in url_to_channel_keys.items() if len(keys) >= 3
-    }
-    if overused_urls:
-        print(f"[Guard] Blocked {len(overused_urls)} generic/overused URLs shared across 3+ unrelated channels.")
-
-    # 4. Group by canonical channel identity
-    grouped: dict[str, dict[str, Any]] = {}
-    candidate_urls: set[str] = set()
-    url_headers: dict[str, tuple[str, str]] = {}
-
-    for rec in raw_records:
-        name = (rec.get("name") or "").strip()
-        url = (rec.get("url") or "").strip()
-        tvg_id = (rec.get("tvg_id") or "").strip()
-        raw_name = (rec.get("raw_name") or "").strip()
-
-        if not name or not url or not url.startswith("https://"):
+    grouped = {}
+    for item in all_raw_items:
+        if known_channel_mismatch(item['name'], item['url']):
             continue
-        if url in overused_urls:
+        key = norm_key(item['name'])
+        if not key:
             continue
-        if is_cross_channel_mismatch(name, url, raw_name):
-            continue
-
-        ck = canonical_channel_key(name, tvg_id)
-        if not ck:
-            continue
-
-        if ck not in grouped:
-            lang = rec.get("language") or "Hindi"
-            cat = classify_category(rec.get("group", ""), name)
-            zone, region, is_reg = classify_zone_and_region(lang, name)
-            tier = classify_tier(name, rec.get("group", ""))
-            grouped[ck] = {
-                "id": tvg_id or f"{ck}.in@HD",
-                "name": name,
-                "network": rec.get("network") or cat,
-                "category": cat,
+        base_cid = (item.get('raw_id') or '').split('@')[0]
+        best_logo = item['logo'] or (logo_by_cid.get(base_cid, '') if base_cid else '')
+        if key not in grouped:
+            category = map_category(item['group'], item['name'])
+            lang = detect_language(item['name'], item['lang'])
+            grouped[key] = {
+                "id": item.get('raw_id') or f"ch_{key}",
+                "name": item['name'],
+                "category": category,
                 "language": lang,
-                "lang_code": lang[:3].lower(),
-                "zone": zone,
-                "region": region,
+                "tier": classify_tier(item['name']),
+                "logo_url": best_logo,
+                "urls": [item['url']]
+            }
+        else:
+            if item['url'] not in grouped[key]["urls"] and len(grouped[key]["urls"]) < 6:
+                grouped[key]["urls"].append(item['url'])
+            if best_logo and not grouped[key]["logo_url"]:
+                grouped[key]["logo_url"] = best_logo
+
+    print(f"[*] Grouped into {len(grouped)} unique channels.")
+
+    # Inject curated priority seeds
+    for seed in CORE_SEEDS:
+        sk = norm_key(seed["name"])
+        tier = seed.get("tier") or classify_tier(seed["name"])
+        if sk in grouped:
+            for u in reversed(seed["urls"]):
+                if u not in grouped[sk]["urls"]:
+                    grouped[sk]["urls"].insert(0, u)
+            grouped[sk]["urls"] = grouped[sk]["urls"][:6]
+            if seed.get("logo_url"):
+                grouped[sk]["logo_url"] = seed["logo_url"]
+            grouped[sk]["tier"] = tier
+            grouped[sk]["category"] = seed["category"]
+            grouped[sk]["language"] = seed["language"]
+        else:
+            grouped[sk] = {
+                "id": f"ch_{sk}",
+                "name": seed["name"],
+                "category": seed["category"],
+                "language": seed["language"],
                 "tier": tier,
-                "logo_url": rec.get("logo") or "",
-                "website": rec.get("website") or "",
-                "is_regional": is_reg or (cat == "Regional"),
-                "quality": rec.get("quality") or "1080p",
-                "urls": [],
+                "logo_url": seed["logo_url"],
+                "urls": list(seed["urls"])
             }
 
-        entry = grouped[ck]
-        if not entry["logo_url"] and rec.get("logo", "").startswith("http"):
-            entry["logo_url"] = rec["logo"]
-        if url not in entry["urls"]:
-            entry["urls"].append(url)
-            candidate_urls.add(url)
-        ua = (rec.get("user_agent") or "").strip()
-        ref = (rec.get("referrer") or "").strip()
-        if (ua or ref) and url not in url_headers:
-            url_headers[url] = (ua, ref)
+    # Prune generic placeholder URLs claimed by 3+ distinct channels BEFORE probing
+    url_to_keys = {}
+    for ch in grouped.values():
+        ck = canonical_channel_key(ch['name'], ch.get('id', ''))
+        for u in ch['urls']:
+            url_to_keys.setdefault(u, set()).add(ck)
 
-    print(f"[Verify] Probing {len(candidate_urls)} unique HTTPS stream URLs across {len(grouped)} channels...")
+    overused_pre = {u for u, keys in url_to_keys.items() if len(keys) >= 3}
+    if overused_pre:
+        print(f"[!] Pruning {len(overused_pre)} generic stream URLs claimed by 3+ channels before ping:")
+        for ou in overused_pre:
+            print(f"    - {ou} (owners: {sorted(url_to_keys[ou])[:5]})")
+        for ch in grouped.values():
+            ch['urls'] = [u for u in ch['urls'] if u not in overused_pre and not known_channel_mismatch(ch['name'], u)]
 
-    # 5. Concurrent health check of all candidate URLs
-    url_health: dict[str, tuple[bool, int]] = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=40) as pool:
-        fut_to_url = {
-            pool.submit(
-                probe_hls_stream,
-                u,
-                6.5,
-                url_headers.get(u, ("", ""))[0],
-                url_headers.get(u, ("", ""))[1],
-            ): u
-            for u in candidate_urls
-        }
-        for fut in concurrent.futures.as_completed(fut_to_url):
-            u = fut_to_url[fut]
-            try:
-                url_health[u] = fut.result()
-            except Exception:
-                url_health[u] = (False, 99999)
-
-    alive_count = sum(1 for ok, _ in url_health.values() if ok)
-    print(f"[Verify] {alive_count}/{len(candidate_urls)} HTTPS streams verified responsive.")
-
-    # 6. Build final verified channel list sorted by priority & latency
-    final_channels: list[dict[str, Any]] = []
-    for ck, item in grouped.items():
-        verified_urls = [
-            (u, url_health.get(u, (False, 99999))[1])
-            for u in item["urls"]
-            if url_health.get(u, (False, 99999))[0]
-        ]
-        if not verified_urls:
-            continue
-
-        # Sort by fastest response latency
-        verified_urls.sort(key=lambda pair: pair[1])
-        primary_url = verified_urls[0][0]
-        fallbacks = [u for u, _ in verified_urls[1:] if u != primary_url][:6]
-
-        final_channels.append({
-            "id": item["id"],
-            "name": item["name"],
-            "network": item["network"],
-            "category": item["category"],
-            "language": item["language"],
-            "lang_code": item["lang_code"],
-            "zone": item["zone"],
-            "region": item["region"],
-            "tier": item["tier"],
-            "logo_url": item["logo_url"],
-            "url": primary_url,
-            "fallback_urls": fallbacks,
-            "website": item["website"],
-            "is_regional": item["is_regional"],
-            "quality": item["quality"],
-            "latency_ms": verified_urls[0][1],
-        })
-
-    # Sort national & popular channels first, regional alphabetically after
-    final_channels.sort(
-        key=lambda c: (
-            1 if c["is_regional"] else 0,
-            0 if c["tier"] == "PAID" else 1,
-            c["latency_ms"],
-            c["name"].lower(),
+    unique_channels = [ch for ch in grouped.values() if ch['urls']]
+    unique_channels.sort(
+        key=lambda ch: (
+            -get_channel_priority_score(ch),
+            ch.get('category') == 'Regional',
+            ch['name'].lower()
         )
     )
 
-    # Assign sequential channel numbers
-    m3u_lines = ['#EXTM3U url-tvg="https://iptv-org.github.io/epg/guides/in.xml"']
-    for idx, ch in enumerate(final_channels, start=1):
-        ch["ch_no"] = idx
-        ch.pop("latency_ms", None)
-        logo_attr = f' tvg-logo="{ch["logo_url"]}"' if ch.get("logo_url") else ""
-        m3u_lines.append(
-            f'#EXTINF:-1 tvg-id="{ch["id"]}" tvg-chno="{idx}" tvg-language="{ch["language"]}" '
-            f'tvg-tier="{ch["tier"]}"{logo_attr} group-title="{ch["category"]}",{ch["name"]}'
+    verified_channels = []
+    if verify_streams:
+        unique_urls = list(dict.fromkeys(u for ch in unique_channels for u in ch['urls']))
+        print(f"\n[*] Probing {len(unique_urls)} unique candidate URLs across {len(unique_channels)} channels ({max_workers} threads)...")
+
+        alive_set = set()
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_url = {executor.submit(test_stream_health, u): u for u in unique_urls}
+            done_count = 0
+            for future in as_completed(future_to_url):
+                u = future_to_url[future]
+                done_count += 1
+                try:
+                    if future.result():
+                        alive_set.add(u)
+                except Exception:
+                    pass
+                if done_count % 200 == 0 or done_count == len(unique_urls):
+                    print(f"    Verified {done_count}/{len(unique_urls)} URLs (Active: {len(alive_set)})")
+
+        # Enforce 3+ sharing check after probe as well
+        alive_url_to_channels = {}
+        for ch in unique_channels:
+            ck = canonical_channel_key(ch['name'], ch.get('id', ''))
+            for u in ch['urls']:
+                if u in alive_set and not known_channel_mismatch(ch['name'], u):
+                    alive_url_to_channels.setdefault(u, set()).add(ck)
+
+        shared_3plus = {u for u, keys in alive_url_to_channels.items() if len(keys) >= 3}
+        if shared_3plus:
+            print(f"[!] Pruning {len(shared_3plus)} active stream URLs claimed by 3+ channels.")
+
+        ch_num = 1
+        for ch in unique_channels:
+            active_urls = [
+                u for u in ch['urls']
+                if u in alive_set and u not in shared_3plus and not known_channel_mismatch(ch['name'], u)
+            ]
+            if active_urls:
+                primary = active_urls[0]
+                fallbacks = []
+                seen_fb = {primary}
+                for u in active_urls[1:]:
+                    if u not in seen_fb:
+                        fallbacks.append(u)
+                        seen_fb.add(u)
+                    if len(fallbacks) >= 4:
+                        break
+
+                tier = ch.get("tier")
+                if tier not in ("FTA", "PAID"):
+                    tier = classify_tier(ch["name"])
+                if tier not in ("FTA", "PAID"):
+                    tier = "FTA"
+
+                verified_channels.append({
+                    "ch_no": ch_num,
+                    "id": ch['id'],
+                    "name": ch['name'],
+                    "category": ch['category'],
+                    "language": ch['language'],
+                    "tier": tier,
+                    "logo_url": ch['logo_url'],
+                    "url": primary,
+                    "fallback_urls": fallbacks,
+                    "streams": [{"name": f"Server {i+1}", "url": u} for i, u in enumerate([primary] + fallbacks)],
+                    "quality": "1080p FHD"
+                })
+                ch_num += 1
+    else:
+        ch_num = 1
+        for ch in unique_channels:
+            valid_urls = [u for u in ch['urls'] if not known_channel_mismatch(ch['name'], u)]
+            if valid_urls:
+                primary = valid_urls[0]
+                fallbacks = [u for u in dict.fromkeys(valid_urls[1:]) if u != primary][:4]
+                tier = ch.get("tier") if ch.get("tier") in ("FTA", "PAID") else classify_tier(ch["name"])
+                verified_channels.append({
+                    "ch_no": ch_num,
+                    "id": ch['id'],
+                    "name": ch['name'],
+                    "category": ch['category'],
+                    "language": ch['language'],
+                    "tier": tier,
+                    "logo_url": ch['logo_url'],
+                    "url": primary,
+                    "fallback_urls": fallbacks,
+                    "streams": [{"name": f"Server {i+1}", "url": u} for i, u in enumerate([primary] + fallbacks)],
+                    "quality": "1080p FHD"
+                })
+                ch_num += 1
+
+    if verify_streams and len(verified_channels) < 100:
+        raise RuntimeError(
+            f"Only {len(verified_channels)} channels passed verification (<100 safety threshold); preserving existing catalogue."
         )
-        m3u_lines.append(ch["url"])
 
-    return final_channels, "\n".join(m3u_lines) + "\n"
-
-
-def main() -> None:
-    channels, m3u_text = build_catalogue()
-    if not channels:
-        print("[Error] No channels were verified! Aborting write to protect existing catalogue.", file=sys.stderr)
-        sys.exit(1)
-
-    now_iso = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    payload = {
-        "updated_at": now_iso,
-        "generator": "BharatTV Next-Gen Channel Discovery & Identity Engine v2.0",
-        "total_channels": len(channels),
-        "fta_channels": sum(1 for c in channels if c.get("tier") == "FTA"),
-        "paid_channels": sum(1 for c in channels if c.get("tier") == "PAID"),
-        "channels": channels,
+    output_data = {
+        "app": "Bharat TV",
+        "version": 1,
+        "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "total_channels": len(verified_channels),
+        "fta_channels": sum(1 for c in verified_channels if c.get("tier") == "FTA"),
+        "paid_channels": sum(1 for c in verified_channels if c.get("tier") == "PAID"),
+        "channels": verified_channels
     }
 
-    json_tmp = Path("channels.json.tmp")
-    m3u_tmp = Path("channels.m3u.tmp")
-    json_tmp.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    m3u_tmp.write_text(m3u_text, encoding="utf-8")
-    os.replace(json_tmp, Path("channels.json"))
-    os.replace(m3u_tmp, Path("channels.m3u"))
-    print(
-        f"[Success] Wrote {len(channels)} verified channels "
-        f"(FTA: {payload['fta_channels']}, PAID: {payload['paid_channels']}) "
-        f"to channels.json and channels.m3u"
-    )
+    out_json = "channels.json"
+    tmp_json = out_json + ".tmp"
+    with open(tmp_json, "w", encoding="utf-8") as f:
+        json.dump(output_data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    os.replace(tmp_json, out_json)
+    print(f"\n[+] Generated {out_json} successfully with {len(verified_channels)} verified channels (FTA: {output_data['fta_channels']}, PAID: {output_data['paid_channels']})!")
+
+    out_m3u = "channels.m3u"
+    tmp_m3u = out_m3u + ".tmp"
+    with open(tmp_m3u, "w", encoding="utf-8") as f:
+        f.write('#EXTM3U url-tvg="https://iptv-org.github.io/epg/guides/in.xml"\n')
+        for ch in verified_channels:
+            f.write(
+                f'#EXTINF:-1 tvg-id="{ch["id"]}" tvg-chno="{ch["ch_no"]}" tvg-language="{ch["language"]}" '
+                f'tvg-tier="{ch["tier"]}" tvg-logo="{ch["logo_url"]}" group-title="{ch["category"]}",{ch["name"]}\n'
+            )
+            f.write(f'{ch["url"]}\n')
+    os.replace(tmp_m3u, out_m3u)
+    print(f"[+] Generated {out_m3u} successfully!")
+
+    return output_data
 
 
 if __name__ == "__main__":
-    main()
+    start_time = time.time()
+    build_bharat_tv_channels(verify_streams=True, max_workers=40)
+    print(f"[*] Completed in {time.time() - start_time:.2f} seconds.")

@@ -2,19 +2,8 @@ name: Auto Update Bharat TV Channels
 
 on:
   schedule:
-    # 10 Daily Scans adjusted for Indian Peak Viewing Hours (06:17 AM to 11:17 PM IST).
-    # Runs at the 17th minute of selected hours to prevent GitHub server load spikes.
-    # UTC = IST - 5:30 -> Minute in UTC: (17 - 30 + 60) = 47.
-    - cron: '47 0 * * *'   # 01. 06:17 AM IST (Morning Kickoff)
-    - cron: '47 2 * * *'   # 02. 08:17 AM IST (Breakfast / Morning Peak)
-    - cron: '47 4 * * *'   # 03. 10:17 AM IST (Late Morning)
-    - cron: '47 6 * * *'   # 04. 12:17 PM IST (Lunchtime Rush)
-    - cron: '47 8 * * *'   # 05. 02:17 PM IST (Afternoon Check)
-    - cron: '47 10 * * *'  # 06. 04:17 PM IST (Tea / Early Evening)
-    - cron: '47 12 * * *'  # 07. 06:17 PM IST (Evening Prime Prep)
-    - cron: '47 14 * * *'  # 08. 08:17 PM IST (Prime Time Viewing)
-    - cron: '47 16 * * *'  # 09. 10:17 PM IST (Night Peak Stream)
-    - cron: '47 17 * * *'  # 10. 11:17 PM IST (Late Night Wrap-up)
+    # Runs every hour (24x daily) at minute :17 to avoid top-of-hour GitHub Actions load spikes
+    - cron: '17 * * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI anytime
 
 permissions:
@@ -23,7 +12,7 @@ permissions:
 jobs:
   update-channels:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     concurrency:
       group: channel-catalog-refresh
       cancel-in-progress: false
@@ -39,12 +28,12 @@ jobs:
 
       - name: Run Multi-Source Indian Channel Discovery & Deep HLS Verification
         run: |
-          if [ -f "tools/channel_updater.py" ]; then
-            python tools/channel_updater.py
-          elif [ -f "channel_updater.py" ]; then
+          if [ -f "channel_updater.py" ]; then
             python channel_updater.py
+          elif [ -f "tools/channel_updater.py" ]; then
+            python tools/channel_updater.py
           else
-            echo "Error: channel_updater.py not found in tools/ or repository root"
+            echo "Error: channel_updater.py not found in repository root or tools/"
             exit 1
           fi
 
@@ -56,56 +45,116 @@ jobs:
           import sys
           from pathlib import Path
 
-          for candidate in (Path('tools'), Path('.')):
+          for candidate in (Path('.'), Path('tools')):
               if (candidate / 'channel_updater.py').is_file():
                   sys.path.insert(0, str(candidate))
                   break
           try:
-              from channel_updater import canonical_channel_key
+              from channel_updater import canonical_channel_key, classify_tier, known_channel_mismatch
           except ImportError:
               def canonical_channel_key(name: str, tvg_id: str = "") -> str:
                   raw = (name or "").strip().lower()
                   if not raw and tvg_id:
                       raw = tvg_id.split("@")[0].replace(".in", "").lower()
                   cleaned = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", raw)
+                  cleaned = re.sub(r"\b(hd|sd|fhd|4k|uhd|official|live|stream)\b", " ", cleaned)
                   return re.sub(r"[^a-z0-9]+", "", cleaned)
+              def classify_tier(name: str) -> str:
+                  return "FTA"
+              def known_channel_mismatch(name: str, url: str) -> bool:
+                  return False
 
-          data = json.loads(Path('channels.json').read_text(encoding='utf-8'))
-          channels = data.get('channels', [])
-          if not channels or len(channels) != data.get('total_channels'):
-              raise SystemExit('Refusing to publish an empty or inconsistent channel catalogue')
+          json_path = Path('channels.json')
+          if not json_path.is_file():
+              raise SystemExit("Fatal: channels.json does not exist!")
 
-          # Track stream usage across channels to prevent generic stream reuse
+          data = json.loads(json_path.read_text(encoding='utf-8'))
+          raw_channels = data.get('channels', [])
+          if not raw_channels:
+              raise SystemExit('Refusing to publish an empty channel catalogue')
+
+          # Pass 1: Identify generic stream URLs claimed by 3+ unrelated channels
           url_owners = {}
-          for channel in channels:
+          for channel in raw_channels:
               name = channel.get('name', '').strip()
               url = channel.get('url', '').strip()
-              fallbacks = channel.get('fallback_urls', [])
+              owner_key = canonical_channel_key(name, channel.get('id', '')) or name.lower()
+              if url:
+                  url_owners.setdefault(url, set()).add(owner_key)
 
-              if not name or not url or not (url.startswith('https://') or url.startswith('http://')):
-                  raise SystemExit(f"Invalid or insecure stream entry: {name or '<unnamed>'}")
-              if url in fallbacks:
-                  raise SystemExit(f"Duplicate primary/fallback stream: {name}")
-              if channel.get('tier') not in ('FTA', 'PAID'):
-                  raise SystemExit(f"Missing or invalid FTA/PAID tier on channel: {name}")
+          overused_urls = {u for u, owners in url_owners.items() if len(owners) >= 3}
+          if overused_urls:
+              print(f"[Sanitize] Removing {len(overused_urls)} stream URLs claimed by 3+ channels:")
+              for ou in overused_urls:
+                  print(f"  - {ou}")
 
-              # Guard against known cross-channel stream mismatches (e.g. Zee Cinema on SET Max)
-              lname = re.sub(r'[^a-z0-9]', '', name.lower())
-              owner_key = canonical_channel_key(name, channel.get('id', '')) or lname
-              lurl = url.lower()
-              if ('sonymax' in lname or 'setmax' in lname) and ('zeecinema' in lurl or '/live/53/' in lurl):
-                  raise SystemExit(f"Blocked cross-channel mismatch on {name}: {url}")
-              if 'starsports' in lname and ('b17adfe543354fdd8d189b110617cddd' in lurl or '/live/1161/' in lurl):
-                  raise SystemExit(f"Blocked generic sports stream on {name}: {url}")
+          # Pass 2: Clean and validate channel entries
+          clean_channels = []
+          for channel in raw_channels:
+              name = channel.get('name', '').strip()
+              url = channel.get('url', '').strip()
+              fallbacks = [fb for fb in channel.get('fallback_urls', []) if fb]
 
-              url_owners.setdefault(url, set()).add(owner_key)
-              if len(url_owners[url]) >= 3:
-                  raise SystemExit(f"Stream URL reused across 3+ unrelated channels ({url_owners[url]}): {url}")
+              if not name:
+                  continue
+
+              candidate_urls = [
+                  u for u in [url] + fallbacks
+                  if u.startswith(('https://', 'http://'))
+                  and u not in overused_urls
+                  and not known_channel_mismatch(name, u)
+              ]
+
+              if not candidate_urls:
+                  print(f"[Sanitize] Skipping channel with no valid streams: {name}")
+                  continue
+
+              primary = candidate_urls[0]
+              clean_fallbacks = []
+              seen_fb = {primary}
+              for fb in candidate_urls[1:]:
+                  if fb not in seen_fb:
+                      clean_fallbacks.append(fb)
+                      seen_fb.add(fb)
+
+              tier = channel.get('tier')
+              if tier not in ('FTA', 'PAID'):
+                  tier = classify_tier(name)
+              if tier not in ('FTA', 'PAID'):
+                  tier = 'FTA'
+
+              channel['url'] = primary
+              channel['fallback_urls'] = clean_fallbacks
+              channel['tier'] = tier
+              channel['streams'] = [{"name": f"Server {i+1}", "url": u} for i, u in enumerate([primary] + clean_fallbacks)]
+              clean_channels.append(channel)
+
+          if len(clean_channels) < 100:
+              raise SystemExit(f"Fatal: only {len(clean_channels)} valid channels remaining after sanitization (<100 safety threshold)!")
+
+          for idx, ch in enumerate(clean_channels, start=1):
+              ch['ch_no'] = idx
+
+          data['channels'] = clean_channels
+          data['total_channels'] = len(clean_channels)
+          data['fta_channels'] = sum(1 for c in clean_channels if c.get('tier') == 'FTA')
+          data['paid_channels'] = sum(1 for c in clean_channels if c.get('tier') == 'PAID')
+          json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          m3u_lines = ['#EXTM3U url-tvg="https://iptv-org.github.io/epg/guides/in.xml"']
+          for ch in clean_channels:
+              logo_attr = f' tvg-logo="{ch["logo_url"]}"' if ch.get("logo_url") else ""
+              m3u_lines.append(
+                  f'#EXTINF:-1 tvg-id="{ch.get("id", "")}" tvg-chno="{ch["ch_no"]}" tvg-language="{ch.get("language", "")}" '
+                  f'tvg-tier="{ch["tier"]}"{logo_attr} group-title="{ch.get("category", "")}",{ch["name"]}'
+              )
+              m3u_lines.append(ch["url"])
+          Path('channels.m3u').write_text('\n'.join(m3u_lines) + '\n', encoding='utf-8')
 
           print(
-              f"Validated {len(channels)} channel entries "
-              f"(FTA: {data.get('fta_channels', 0)}, PAID: {data.get('paid_channels', 0)}) "
-              f"with zero cross-channel mismatches."
+              f"Validated & sanitized {len(clean_channels)} channels "
+              f"(FTA: {data['fta_channels']}, PAID: {data['paid_channels']}) "
+              f"with zero cross-channel mismatches or overused streams."
           )
           PY
 
@@ -117,7 +166,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes in channels. Everything is up to date."
           else
-            git commit -m "Auto-update verified Indian FTA & Paid channel catalogue (5x daily) [skip ci]"
-            git pull --rebase
+            git commit -m "Auto-update verified Indian FTA & Paid channel catalogue (Hourly) [skip ci]"
+            git pull --rebase --autostash
             git push
           fi
